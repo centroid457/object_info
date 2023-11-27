@@ -10,9 +10,7 @@ from object_info import *
 
 
 # =====================================================================================================================
-class Test__888888888888:
-    VICTIM: Type[print_object_info] = type("VICTIM", (print_object_info,), {})
-
+class Test_1:
     @classmethod
     def setup_class(cls):
         pass
@@ -22,11 +20,19 @@ class Test__888888888888:
         pass
 
     def setup_method(self, method):
-        self.VICTIM = type("VICTIM", (print_object_info,), {})
+        pass
 
     # -----------------------------------------------------------------------------------------------------------------
-    def test__ClassMethod_and_obj(self):
-        assert True
+    def test__obj_show_attr_all(self):
+        obj_show_attr_all(list)
 
 
 # =====================================================================================================================
+class Cls1:
+    attr1=1
+    attr2=2
+
+
+if __name__ == "__main__":
+    obj_show_attr_all(Cls1())
+    ObjectInfo(Cls1()).print_object_info()
