@@ -34,6 +34,40 @@ class ObjectInfo:
 
         print("*"*50)
 
+    # =================================================================================================================
+    # FROM ET
+    def print_object_info_ET(self) -> None:
+        """print all params from pcb
+        by calling all methods startswith 'get*'
+        and print all properties
+        """
+        skipped = []
+
+        print("="*50)
+        for name in dir(self):
+            meth_obj = getattr(self, name)
+
+            if not callable(meth_obj):      # properties
+                value = meth_obj
+                print(f"prop {name:10}\t:{value}")
+                continue
+
+            else:                           # methods
+                if name.startswith("get"):
+                    try:
+                        value = meth_obj()
+                    except Exception as exx:
+                        value = f"EXCEPTION {exx!r}"
+                    print(f"meth {name:15}\t:{value}")
+                    continue
+
+            skipped.append(name)
+
+        print("-"*50)
+        for name in skipped:
+            print(f"{name:15}\t: SKIPPED")
+        print("="*50)
+
 
 # =====================================================================================================================
 # FROM utilities
