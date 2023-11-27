@@ -1,4 +1,5 @@
 from typing import *
+import re
 
 
 # =====================================================================================================================
@@ -71,6 +72,100 @@ class ObjectInfo:
 
 # =====================================================================================================================
 # FROM utilities
+TYPE_ELEMENTARY_SINGLE_TUPLE = (str, int, float, bool, type(None), bytes, )     # starichenko
+
+def value_search_by_list(source=None, search_list=[], search_type_1starts_2full_3ends_4any_5fullmatch=2):  # starichenko
+    """check if source match by type search variants in list
+
+    :param search_type_1starts_2full_3ends_4any_5fullmatch:
+        be carefull to use 4 state!!! "CU" can be found before "CU1" - place less covered values on top!
+    """
+    match_item = None
+
+    if search_type_1starts_2full_3ends_4any_5fullmatch == 1:
+        for search_item in search_list:
+            try:
+                result = source.startswith(search_item)
+            except:
+                result = source == search_item
+
+            if result:
+                match_item = search_item
+                break
+
+    elif search_type_1starts_2full_3ends_4any_5fullmatch == 2:
+        if source in search_list:
+            match_item = source
+
+    elif search_type_1starts_2full_3ends_4any_5fullmatch == 3:
+        for search_item in search_list:
+            try:
+                result = source.endswith(search_item)
+            except:
+                result = source == search_item
+
+            if result:
+                match_item = search_item
+                break
+
+    elif search_type_1starts_2full_3ends_4any_5fullmatch == 4:
+        for search_item in search_list:
+            try:
+                result = search_item in source
+            except:
+                result = source == search_item
+
+            if result:
+                match_item = search_item
+                break
+
+    elif search_type_1starts_2full_3ends_4any_5fullmatch == 5:
+        for search_item in search_list:
+            try:
+                result = re.fullmatch(pattern=search_item, string=source)
+            except:
+                result = source == search_item
+
+            if result:
+                match_item = search_item
+                break
+
+    return match_item
+
+def type_is_iterable(source, dict_as_iterable=True, str_and_bytes_as_iterable=True):  # starichenko
+    """checks if source is iterable.
+
+    :param source: source data
+    :param dict_as_iterable: if you dont want to use dict in your selecting,
+        becouse maybe you need flatten all elements in list/set/tuple into one sequence
+        and dict (as extended list) will be irrelevant!
+    :param str_as_iterable: usually in data processing you need to work with str-type elements as OneSolid element
+        but not iterating through chars!
+    """
+    if isinstance(source, dict):
+        return dict_as_iterable
+    elif isinstance(source, (str, bytes)):
+        return str_and_bytes_as_iterable
+    elif isinstance(source, (tuple, list, set, )):    # need to get it explicitly!!!
+        return True
+    elif hasattr(source, '__iter__') or hasattr(source, '__getitem__'):
+        return True
+    else:
+        return False
+
+def type_is_iterable_but_not_str(source):   # starichenko
+    """checks if source is iterable, but not exactly str!!!"""
+    return type_is_iterable(source, str_and_bytes_as_iterable=False)
+
+def type_is_elementary_single(source):   # starichenko
+    """ check object for Elementary type, Not collection, only separate single element
+    not iterable except str!
+
+    str/int/float/NoneType/bool - True
+    not any objects/otherIterabled - False
+    """
+    return isinstance(source, TYPE_ELEMENTARY_SINGLE_TUPLE)
+
 def obj_show_attr_all(source,
                       show_hidden=True,
                       go_nested_max=0,
