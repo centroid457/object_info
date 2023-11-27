@@ -3,14 +3,12 @@ import re
 
 
 # =====================================================================================================================
-# TODO: use group by prop/meth/exx
 
 
 # =====================================================================================================================
-# FROM utilities
 TYPE_ELEMENTARY_SINGLE_TUPLE = (str, int, float, bool, type(None), bytes, )
 
-def value_search_by_list(source=None, search_list=[]):
+def _value_search_by_list(source=None, search_list=[]):
     match_item = None
 
     for search_item in search_list:
@@ -66,38 +64,71 @@ class ObjectInfo:
     def __init__(self, source: Any):
         self.source = source
 
+    # =================================================================================================================
     def print_object_info(self) -> None:
-        print("="*50)
+        """print all params from pcb
+        by calling all methods startswith 'get*'
+        """
+        # TODO: add objects!!!!
+        # if not isinstance(value, (str, int, float, set, tuple, list, dict, type(None))):
+        #     print(f"{'':<22} {value}")
+        self.objects = []
+
+        self.skipped = []
+        self.properties_ok = {}
+        self.properties_fail = {}
+        self.methods_ok = {}
+        self.methods_fail = {}
+
+        print("="*50 + "print_object_info_ET")
         print(f"str={str(self.source)}")
-        print("-"*50)
         print(f"repr={repr(self.source)}")
-        print("-"*50)
 
         for name in dir(self.source):
-            value = getattr(self.source, name)
-            if callable(value):
+            if False:
+                self.skipped.append(name)
+
+            try:
+                attr_obj = getattr(self.source, name)
+            except Exception as exx:
+                value = f"***EXCEPTION***{exx!r}"
+                self.properties_fail.update({name: value})
+                continue
+
+            if callable(attr_obj):
                 try:
-                    type_ = "M"
-                    value = value()
-                except:
-                    type_ = "A"
-                    value = "*EXX*"
-            print(f"{type_} {name:<20} {value!r}")
-            if not isinstance(value, (str, int, float, set, tuple, list, dict, type(None))):
-                print(f"{'':<22} {value}")
+                    value = attr_obj()
+                    self.methods_ok.update({name: value})
+                except Exception as exx:
+                    value = f"***EXCEPTION***{exx!r}"
+                    self.methods_fail.update({name: value})
+                continue
+
+            else:
+                value = attr_obj
+                self.properties_ok.update({name: value})
+
+        for batch_name in ["properties_ok", "properties_fail", "methods_ok", "methods_fail"]:
+            print("-" * 10 + f"[{batch_name}]" + "-" * 50)
+            for name, value in getattr(self, batch_name).items():
+                print(f"{name:25}\t:{value}")
+
+        print("-"*50 + "SKIPPED")
+        for name in self.skipped:
+            print(f"{name:25}\t: SKIPPED")
 
         print("="*50)
 
     # =================================================================================================================
-    def print_object_info_pro(self,
-                              show_hidden=True,
-                              go_nested_max=0,
-                              go_iterables_max=1,
-                              nested_skip_names=[],
-                              miss_names=[],
-                              _parents_list=[],
-                              _print_step_element=False,
-                              ):
+    def print_object_info__deep(self,
+                                show_hidden=True,
+                                go_nested_max=0,
+                                go_iterables_max=1,
+                                nested_skip_names=[],
+                                miss_names=[],
+                                _parents_list=[],
+                                _print_step_element=False,
+                                ):
         """
         Show structure of object with all names of attributes and string values.
         useful if you want to find out exact info in object or get know if it have not!!!
@@ -175,7 +206,7 @@ class ObjectInfo:
                         msg = f"ELEMTARY SINGLE TYPE item=[{item}]"
                         print(msg)
                     else:
-                        self.__class__(item).print_object_info_pro(
+                        self.__class__(item).print_object_info__deep(
                             show_hidden=show_hidden,
                             go_nested_max=go_nested_max,
                             go_iterables_max=go_iterables_max,
@@ -214,7 +245,7 @@ class ObjectInfo:
             if attr_str in miss_names_special:
                 value = "***MISSED SPECIAL***"
 
-            elif value_search_by_list(source=attr_str, search_list=danger_entries_list):
+            elif _value_search_by_list(source=attr_str, search_list=danger_entries_list):
                 value = "***MISSED DANGER***"
 
             else:
@@ -240,7 +271,7 @@ class ObjectInfo:
             else:
                 attr_or_meth = "obj "
                 if nested_level < go_nested_max and not attr_str.startswith("__") and attr_str not in nested_skip_names:
-                    self.__class__(value).print_object_info_pro(
+                    self.__class__(value).print_object_info__deep(
                         show_hidden=show_hidden,
                         go_nested_max=go_nested_max,
                         go_iterables_max=go_iterables_max,
@@ -263,57 +294,6 @@ class ObjectInfo:
             print(msg)
         return
 
-    # =================================================================================================================
-    def print_object_info_ET(self) -> None:
-        """print all params from pcb
-        by calling all methods startswith 'get*'
-        """
-        self.skipped = []
-        self.properties_ok = {}
-        self.properties_fail = {}
-        self.methods_ok = {}
-        self.methods_fail = {}
-
-        print("="*50 + "print_object_info_ET")
-        print(f"str={str(self.source)}")
-        print("-"*50)
-        print(f"repr={repr(self.source)}")
-
-        for name in dir(self.source):
-            if False:
-                self.skipped.append(name)
-
-            try:
-                attr_obj = getattr(self.source, name)
-            except Exception as exx:
-                value = f"***EXCEPTION***{exx!r}"
-                self.properties_fail.update({name: value})
-                continue
-
-            if callable(attr_obj):
-                try:
-                    value = attr_obj()
-                    self.methods_ok.update({name: value})
-                except Exception as exx:
-                    value = f"***EXCEPTION***{exx!r}"
-                    self.methods_fail.update({name: value})
-                continue
-
-            else:
-                value = attr_obj
-                self.properties_ok.update({name: value})
-
-        for batch_name in ["properties_ok", "properties_fail", "methods_ok", "methods_fail"]:
-            print("-" * 50 + batch_name)
-            for name, value in getattr(self, batch_name).items():
-                print(f"{name:15}\t:{value}")
-
-        print("-"*50 + "SKIPPED")
-        for name in self.skipped:
-            print(f"{name:15}\t: SKIPPED")
-
-        print("="*50)
-
 
 # =====================================================================================================================
 class Cls0:
@@ -334,6 +314,4 @@ class Cls1:
 
 if __name__ == "__main__":
     ObjectInfo(Cls1()).print_object_info()
-    ObjectInfo(Cls1()).print_object_info_pro()
-    ObjectInfo(Cls1()).print_object_info_ET()
-
+    ObjectInfo(Cls1()).print_object_info__deep()
