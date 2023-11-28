@@ -6,6 +6,7 @@ Reason:
 1. to get and save standard text info,  
 it useful to keep this info for future quick eye sight without exact condition like other OS or device/devlist/configuration 
 2. in debugger we cant see result of methods!
+3. useful if you wish to see info from remote source if connecting directly over ssh for example
 
 ## Features
 1. print all properties and methods results
