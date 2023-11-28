@@ -3,10 +3,15 @@ import re
 
 
 # =====================================================================================================================
+pass
 
 
 # =====================================================================================================================
-TYPE_ELEMENTARY_SINGLE_TUPLE = (str, int, float, bool, type(None), bytes, )
+TYPE_ELEMENTARY_SINGLE: tuple = (type(None), bool, str, bytes, int, float, )
+TYPE_ELEMENTARY_COLLECTION: tuple = (set, list, dict, )
+TYPE_ELEMENTARY: tuple = (*TYPE_ELEMENTARY_SINGLE, *TYPE_ELEMENTARY_COLLECTION, )
+print(f"{TYPE_ELEMENTARY=}")
+
 
 def _value_search_by_list(source=None, search_list=[]):
     match_item = None
@@ -21,6 +26,7 @@ def _value_search_by_list(source=None, search_list=[]):
             match_item = search_item
             break
     return match_item
+
 
 def type_is_iterable(source, dict_as_iterable=True, str_and_bytes_as_iterable=True):
     """checks if source is iterable.
@@ -43,9 +49,11 @@ def type_is_iterable(source, dict_as_iterable=True, str_and_bytes_as_iterable=Tr
     else:
         return False
 
+
 def type_is_iterable_but_not_str(source):
     """checks if source is iterable, but not exactly str!!!"""
     return type_is_iterable(source, str_and_bytes_as_iterable=False)
+
 
 def type_is_elementary_single(source):
     """ check object for Elementary type, Not collection, only separate single element
@@ -54,7 +62,7 @@ def type_is_elementary_single(source):
     str/int/float/NoneType/bool - True
     not any objects/otherIterabled - False
     """
-    return isinstance(source, TYPE_ELEMENTARY_SINGLE_TUPLE)
+    return isinstance(source, TYPE_ELEMENTARY_SINGLE)
 
 
 # =====================================================================================================================
@@ -66,23 +74,20 @@ class ObjectInfo:
 
     # =================================================================================================================
     def print_object_info(self) -> None:
-        """print all params from pcb
-        by calling all methods startswith 'get*'
+        """print all params from object
+        if method - try to start it!
         """
-        # TODO: add objects!!!!
-        # if not isinstance(value, (str, int, float, set, tuple, list, dict, type(None))):
-        #     print(f"{'':<22} {value}")
-        self.objects = []
-
         self.skipped = []
         self.properties_ok = {}
         self.properties_fail = {}
+        self.objects = {}
         self.methods_ok = {}
         self.methods_fail = {}
 
-        print("="*50 + "print_object_info_ET")
+        print("="*50 + "print_object_info")
         print(f"str={str(self.source)}")
         print(f"repr={repr(self.source)}")
+        print("-"*50)
 
         for name in dir(self.source):
             if False:
@@ -104,14 +109,19 @@ class ObjectInfo:
                     self.methods_fail.update({name: value})
                 continue
 
-            else:
+            # print(f"{name=}/{attr_obj=}/type={type(attr_obj)}/elementary={isinstance(attr_obj, TYPE_ELEMENTARY)}")
+
+            if isinstance(attr_obj, TYPE_ELEMENTARY):
                 value = attr_obj
                 self.properties_ok.update({name: value})
+            else:
+                value = attr_obj
+                self.objects.update({name: value})
 
-        for batch_name in ["properties_ok", "properties_fail", "methods_ok", "methods_fail"]:
+        for batch_name in ["properties_ok", "properties_fail", "objects", "methods_ok", "methods_fail"]:
             print("-" * 10 + f"[{batch_name}]" + "-" * 50)
             for name, value in getattr(self, batch_name).items():
-                print(f"{name:25}\t:{value}")
+                print(f"{name:25}\t{value.__class__.__name__:10}:{value}")
 
         print("-"*50 + "SKIPPED")
         for name in self.skipped:
@@ -120,16 +130,19 @@ class ObjectInfo:
         print("="*50)
 
     # =================================================================================================================
-    def print_object_info__deep(self,
-                                show_hidden=True,
-                                go_nested_max=0,
-                                go_iterables_max=1,
-                                nested_skip_names=[],
-                                miss_names=[],
-                                _parents_list=[],
-                                _print_step_element=False,
-                                ):
+    def _print_object_info__deep(
+            self,
+            show_hidden=True,
+            go_nested_max=0,
+            go_iterables_max=1,
+            nested_skip_names=[],
+            miss_names=[],
+            _parents_list=[],
+            _print_step_element=False,
+        ):
         """
+        DONT USE IT! TOO COMPLICATED!
+
         Show structure of object with all names of attributes and string values.
         useful if you want to find out exact info in object or get know if it have not!!!
 
@@ -206,7 +219,7 @@ class ObjectInfo:
                         msg = f"ELEMTARY SINGLE TYPE item=[{item}]"
                         print(msg)
                     else:
-                        self.__class__(item).print_object_info__deep(
+                        self.__class__(item)._print_object_info__deep(
                             show_hidden=show_hidden,
                             go_nested_max=go_nested_max,
                             go_iterables_max=go_iterables_max,
@@ -271,7 +284,7 @@ class ObjectInfo:
             else:
                 attr_or_meth = "obj "
                 if nested_level < go_nested_max and not attr_str.startswith("__") and attr_str not in nested_skip_names:
-                    self.__class__(value).print_object_info__deep(
+                    self.__class__(value)._print_object_info__deep(
                         show_hidden=show_hidden,
                         go_nested_max=go_nested_max,
                         go_iterables_max=go_iterables_max,
@@ -295,18 +308,25 @@ class ObjectInfo:
         return
 
 
-# =====================================================================================================================
+# VISUAL TESTS ========================================================================================================
 class Cls0:
     attr1=1
 
+
 class Cls1:
-    attrInt=1
-    attrFloat=2
-    attrSet=[1,2,3]
-    attrList=[1,2,3]
-    attrDict={1:1}
-    attrListObj=[Cls0(), Cls0(), 1]
-    def meth1(self):
+    attrNone = None
+    attrInt = 1
+    attrFloat = 2
+    attrClass = Cls0
+    attrObj = Cls0()
+    attrSet = {1,2,3}
+    attrList = [1,2,3]
+    attrDict = {1:1}
+    attrListObj = [Cls0(), Cls0(), 1]
+    @property
+    def propertyInt(self):
+        return 1
+    def methInt(self):
         return 1
     def methExx(self):
         raise Exception("exxMsg")
@@ -314,4 +334,4 @@ class Cls1:
 
 if __name__ == "__main__":
     ObjectInfo(Cls1()).print_object_info()
-    ObjectInfo(Cls1()).print_object_info__deep()
+    # ObjectInfo(Cls1())._print_object_info__deep()
