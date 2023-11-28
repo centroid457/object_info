@@ -13,8 +13,11 @@ NAME = "object_info"
 
 setup(
   version="0.0.1",
-  description="print info about object (properties+methods results)",
-  keywords=["object info", "object properties", "object methods"],
+  description="print info about object (attributes+properties+methods results)",
+  keywords=[
+    "object info",
+    "object attributes", "object properties", "object methods"
+  ],
   classifiers=[
     # "Topic :: ________________",
 
