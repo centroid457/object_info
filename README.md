@@ -69,10 +69,10 @@ class Cls1:
 
 ObjectInfo(Cls1()).print_object_info()
 """
-==================================================print_object_info
-str=<__main__.Cls1 object at 0x000001F6BFE13FE0>
-repr=<__main__.Cls1 object at 0x000001F6BFE13FE0>
-----------[properties_ok]--------------------------------------------------
+==========PRINT_OBJECT_INFO=========================================================================
+str=<__main__.Cls1 object at 0x000002103087D130>
+repr=<__main__.Cls1 object at 0x000002103087D130>
+----------properties_ok-----------------------------------------------------------------------------
 __dict__                 	dict      :{}
 __doc__                  	NoneType  :None
 __module__               	str       :__main__
@@ -81,26 +81,26 @@ attrDict                 	dict      :{1: 1}
 attrFloat                	int       :2
 attrInt                  	int       :1
 attrList                 	list      :[1, 2, 3]
-attrListObj              	list      :[<__main__.Cls0 object at 0x000001F6BFE126C0>, <__main__.Cls0 object at 0x000001F6BFE13F20>, 1]
+attrListObj              	list      :[<__main__.Cls0 object at 0x000002103087C8F0>, <__main__.Cls0 object at 0x000002103087C950>, 1]
 attrNone                 	NoneType  :None
 attrSet                  	set       :{1, 2, 3}
 propertyInt              	int       :1
-----------[properties_exx]--------------------------------------------------
+----------properties_exx----------------------------------------------------------------------------
 propertyExx              	Exception :exxMsg
-----------[objects]--------------------------------------------------
-attrObj                  	Cls0      :<__main__.Cls0 object at 0x000001F6BFE12B70>
-----------[methods_ok]--------------------------------------------------
-__class__                	Cls1      :<__main__.Cls1 object at 0x000001F6BFE09070>
-__dir__                  	list      :['__module__', 'attrMissFullName', 'attrMissPartName', 'attrNone', 'attrInt', 'attrFloat', 'attrClass', 'attrObj', 'attrSet', 'attrList', 'attrDict', 'attrListObj', 'propertyInt', 'propertyExx', 'methInt', 'methExx', '__dict__', '__weakref__', '__doc__', '__new__', '__repr__', '__hash__', '__str__', '__getattribute__', '__setattr__', '__delattr__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__init__', '__reduce_ex__', '__reduce__', '__getstate__', '__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', '__class__']
+----------objects-----------------------------------------------------------------------------------
+attrObj                  	Cls0      :<__main__.Cls0 object at 0x0000021030873440>
+----------methods_ok--------------------------------------------------------------------------------
+__class__                	Cls1      :<__main__.Cls1 object at 0x000002103087DF70>
+__dir__                  	str       :['__module__', 'attrMissFullName', 'attrMissPartName', 'attrNone', 'attrInt', 'attrFloat', 'attrC...
 __getstate__             	NoneType  :None
-__hash__                 	int       :134955799550
-__repr__                 	str       :<__main__.Cls1 object at 0x000001F6BFE13FE0>
+__hash__                 	int       :141784808723
+__repr__                 	str       :<__main__.Cls1 object at 0x000002103087D130>
 __sizeof__               	int       :16
-__str__                  	str       :<__main__.Cls1 object at 0x000001F6BFE13FE0>
+__str__                  	str       :<__main__.Cls1 object at 0x000002103087D130>
 __subclasshook__         	NotImplementedType:NotImplemented
-attrClass                	Cls0      :<__main__.Cls0 object at 0x000001F6BFE09760>
+attrClass                	Cls0      :<__main__.Cls0 object at 0x000002103087E120>
 methInt                  	int       :1
-----------[methods_exx]--------------------------------------------------
+----------methods_exx-------------------------------------------------------------------------------
 __eq__                   	TypeError :expected 1 argument, got 0
 __format__               	TypeError :Cls1.__format__() takes exactly one argument (0 given)
 __ge__                   	TypeError :expected 1 argument, got 0
@@ -110,9 +110,9 @@ __le__                   	TypeError :expected 1 argument, got 0
 __lt__                   	TypeError :expected 1 argument, got 0
 __ne__                   	TypeError :expected 1 argument, got 0
 methExx                  	Exception :exxMsg
-----------[skipped]--------------------------------------------------
+----------skipped-----------------------------------------------------------------------------------
 attrMissFullName
-----------[skipped_danger]--------------------------------------------------
+----------skipped_danger----------------------------------------------------------------------------
 __delattr__
 __init__
 __init_subclass__
@@ -121,6 +121,6 @@ __reduce__
 __reduce_ex__
 __setattr__
 attrMissPartName
-==================================================
+====================================================================================================
 """
 ```

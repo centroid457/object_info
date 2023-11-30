@@ -12,11 +12,12 @@ with open("README.md", "r") as f:
 NAME = "object_info"
 
 setup(
-  version="0.0.1",
+  version="0.0.2",
   description="print info about object (attributes+properties+methods results)",
   keywords=[
     "object info",
-    "object attributes", "object properties", "object methods"
+    "object attributes", "object properties", "object methods",
+    "print attributes", "print properties", "print methods",
   ],
   classifiers=[
     # "Topic :: ________________",
