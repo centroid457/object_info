@@ -87,16 +87,22 @@ names_danger_entries = [
 
 # =====================================================================================================================
 class ObjectInfo:
+    MAX_VALUE_LEN: int = 100
     source: Any = None
 
-    def __init__(self, source: Any):
+    def __init__(self, source: Optional[Any] = None):
         self.source = source
 
     # =================================================================================================================
-    def print_object_info(self) -> None:
+    def print_object_info(self, source: Optional[Any] = None, max_value_len: Optional[int] = None) -> None:
         """print all params from object
         if method - try to start it!
         """
+        if source is None:
+            source = self.source
+        if max_value_len is None:
+            max_value_len = self.MAX_VALUE_LEN
+
         self.skipped = []
         self.skipped_danger = []
 
@@ -107,11 +113,11 @@ class ObjectInfo:
         self.methods_exx = {}
 
         print("="*50 + "print_object_info")
-        print(f"str={str(self.source)}")
-        print(f"repr={repr(self.source)}")
+        print(f"str={str(source)}")
+        print(f"repr={repr(source)}")
         # print("-"*50)
 
-        for name in dir(self.source):
+        for name in dir(source):
             # SKIP
             if name in names_miss_fullnames:
                 self.skipped.append(name)
@@ -121,7 +127,7 @@ class ObjectInfo:
                 continue
 
             try:
-                attr_obj = getattr(self.source, name)
+                attr_obj = getattr(source, name)
             except Exception as exx:
                 value = exx
                 self.properties_exx.update({name: value})
@@ -146,12 +152,14 @@ class ObjectInfo:
                 self.objects.update({name: value})
 
         for batch_name in ["properties_ok", "properties_exx", "objects", "methods_ok", "methods_exx"]:
-            print("-" * 10 + f"[{batch_name}]" + "-" * 50)
+            print("-" * 10 + f"{batch_name:-<80}")
             for name, value in getattr(self, batch_name).items():
+                if len(str(value)) > max_value_len:
+                    value = str(value)[:max_value_len - 3] + "..."
                 print(f"{name:25}\t{value.__class__.__name__:10}:{value}")
 
         for batch_name in ["skipped", "skipped_danger"]:
-            print("-" * 10 + f"[{batch_name}]" + "-" * 50)
+            print("-" * 10 + f"{batch_name:-<80}")
             for name in getattr(self, batch_name):
                 print(name)
 
