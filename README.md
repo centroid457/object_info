@@ -68,6 +68,7 @@ class Cls1:
 
 
 ObjectInfo(Cls1()).print_object_info()
+ObjectInfo().print_object_info(Cls1())
 """
 ==========PRINT_OBJECT_INFO=========================================================================
 str=<__main__.Cls1 object at 0x000002103087D130>
