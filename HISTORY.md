@@ -1,7 +1,7 @@
 Release History
 ===============
 
-0.0.2 (2023-11-30)
+0.0.3 (2023-11-30)
 -------------------
 **NEW**
 - rename method to simple print! 
