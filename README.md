@@ -67,10 +67,10 @@ class Cls1:
         raise Exception("exxMsg")
 
 
-ObjectInfo(Cls1()).print_object_info()
-ObjectInfo().print_object_info(Cls1())
+ObjectInfo(Cls1()).print()
+ObjectInfo().print(Cls1())
 """
-==========PRINT_OBJECT_INFO=========================================================================
+==========print=====================================================================================
 str=<__main__.Cls1 object at 0x000002103087D130>
 repr=<__main__.Cls1 object at 0x000002103087D130>
 ----------properties_ok-----------------------------------------------------------------------------

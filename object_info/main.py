@@ -94,7 +94,7 @@ class ObjectInfo:
         self.source = source
 
     # =================================================================================================================
-    def print_object_info(self, source: Optional[Any] = None, max_value_len: Optional[int] = None) -> None:
+    def print(self, source: Optional[Any] = None, max_value_len: Optional[int] = None) -> None:
         """print all params from object
         if method - try to start it!
         """
@@ -112,7 +112,7 @@ class ObjectInfo:
         self.methods_ok = {}
         self.methods_exx = {}
 
-        name = "print_object_info"
+        name = "print"
         print("="*10 + f"{name.upper():=<90}")
         print(f"str={str(source)}")
         print(f"repr={repr(source)}")
@@ -362,9 +362,9 @@ class Cls1:
 
 
 if __name__ == "__main__":
-    ObjectInfo(Cls1()).print_object_info()
+    ObjectInfo(Cls1()).print()
 """
-==========PRINT_OBJECT_INFO=========================================================================
+==========PRINT=====================================================================================
 str=<__main__.Cls1 object at 0x000002103087D130>
 repr=<__main__.Cls1 object at 0x000002103087D130>
 ----------properties_ok-----------------------------------------------------------------------------
