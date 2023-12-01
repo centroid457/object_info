@@ -5,7 +5,15 @@ But why? if we can use debugger directly?
 Reason:
 1. to get and save standard text info,  
 it useful to keep this info for future quick eye sight without exact condition like other OS or device/devlist/configuration 
-2. in debugger we cant see result of methods!
+2. in debugger we cant see result of methods!  
+try to see for example information from platform module! it have only methods and no one in object tree in debugger!
+```python
+import platform
+
+obj = platform
+print(platform.platform())
+pass    # place debug point here
+```
 3. useful if you wish to see info from remote source if connecting directly over ssh for example
 
 ## Features
