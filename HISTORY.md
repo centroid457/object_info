@@ -1,6 +1,11 @@
 Release History
 ===============
 
+0.0.4 (2023-12-05)
+-------------------
+**NEW**
+- add parameter only_names_include in print method
+
 0.0.3 (2023-11-30)
 -------------------
 **NEW**
