@@ -94,7 +94,7 @@ class ObjectInfo:
         self.source = source
 
     # =================================================================================================================
-    def print(self, source: Optional[Any] = None, max_value_len: Optional[int] = None) -> None:
+    def print(self, source: Optional[Any] = None, max_value_len: Optional[int] = None, only_names_include: Union[None, str, List[str]] = None) -> None:
         """print all params from object
         if method - try to start it!
         """
@@ -114,12 +114,26 @@ class ObjectInfo:
 
         name = "print"
         print("="*10 + f"{name.upper():=<90}")
+        if only_names_include:
+            print(f"INCLUDE names [{only_names_include}]")
         print(f"str={str(source)}")
         print(f"repr={repr(source)}")
         # print("-"*50)
 
         for name in dir(source):
-            # SKIP
+            # filter names -------------------------
+            if only_names_include:
+                use_name = False
+                if isinstance(only_names_include, str):
+                    only_names_include = [only_names_include, ]
+                for name_include_item in only_names_include:
+                    if name_include_item.lower() in name.lower():
+                        use_name = True
+                        break
+                if not use_name:
+                    continue
+
+            # SKIP -------------------------
             if name in names_miss_fullnames:
                 self.skipped.append(name)
                 continue
@@ -362,7 +376,8 @@ class Cls1:
 
 
 if __name__ == "__main__":
-    ObjectInfo(Cls1()).print()
+    # ObjectInfo(Cls1()).print()
+    ObjectInfo(Cls1()).print(only_names_include="attr")
 """
 ==========PRINT=====================================================================================
 str=<__main__.Cls1 object at 0x000002103087D130>
