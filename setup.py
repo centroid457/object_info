@@ -12,7 +12,7 @@ with open("README.md", "r") as f:
 NAME = "object_info"
 
 setup(
-  version="0.0.4",
+  version="0.0.5",
   description="print info about object (attributes+properties+methods results)",
   keywords=[
     "object info",
