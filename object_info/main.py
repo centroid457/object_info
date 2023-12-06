@@ -88,21 +88,35 @@ names_danger_entries = [
 # =====================================================================================================================
 class ObjectInfo:
     MAX_VALUE_LEN: int = 100
+    HIDE_BUILD_IN: bool = None
+    HIDE_SKIPPED: bool = None
     source: Any = None
 
     def __init__(self, source: Optional[Any] = None):
         self.source = source
 
     # =================================================================================================================
-    def print(self, source: Optional[Any] = None, max_value_len: Optional[int] = None, only_names_include: Union[None, str, List[str]] = None) -> None:
+    def print(
+            self, source: Optional[Any] = None,
+            max_value_len: Optional[int] = None,
+            only_names_include: Union[None, str, List[str]] = None,
+            hide_build_in: Optional[bool] = None,
+            hide_skipped: Optional[bool] = None
+    ) -> None:
         """print all params from object
         if method - try to start it!
         """
+        # apply settings ----------------------------------
         if source is None:
             source = self.source
         if max_value_len is None:
             max_value_len = self.MAX_VALUE_LEN
+        if hide_build_in is None:
+            hide_build_in = self.HIDE_BUILD_IN
+        if hide_skipped is None:
+            hide_skipped = self.HIDE_SKIPPED
 
+        # init arrays ----------------------------------
         self.skipped = []
         self.skipped_danger = []
 
@@ -112,6 +126,7 @@ class ObjectInfo:
         self.methods_ok = {}
         self.methods_exx = {}
 
+        # WORK ----------------------------------
         name = "print"
         print("="*10 + f"{name.upper():=<90}")
         if only_names_include:
@@ -122,6 +137,9 @@ class ObjectInfo:
 
         for name in dir(source):
             # filter names -------------------------
+            if hide_build_in and name.startswith("__"):
+                continue
+
             if only_names_include:
                 use_name = False
                 if isinstance(only_names_include, str):
@@ -166,6 +184,7 @@ class ObjectInfo:
                 value = attr_obj
                 self.objects.update({name: value})
 
+        # RESULTS ----------------------------------
         for batch_name in ["properties_ok", "properties_exx", "objects", "methods_ok", "methods_exx"]:
             print("-" * 10 + f"{batch_name:-<90}")
             for name, value in getattr(self, batch_name).items():
@@ -173,10 +192,11 @@ class ObjectInfo:
                     value = str(value)[:max_value_len - 3] + "..."
                 print(f"{name:25}\t{value.__class__.__name__:10}:{value}")
 
-        for batch_name in ["skipped", "skipped_danger"]:
-            print("-" * 10 + f"{batch_name:-<90}")
-            for name in getattr(self, batch_name):
-                print(name)
+        if not hide_skipped:
+            for batch_name in ["skipped", "skipped_danger"]:
+                print("-" * 10 + f"{batch_name:-<90}")
+                for name in getattr(self, batch_name):
+                    print(name)
 
         print("="*100)
 
@@ -377,7 +397,7 @@ class Cls1:
 
 if __name__ == "__main__":
     # ObjectInfo(Cls1()).print()
-    ObjectInfo(Cls1()).print(only_names_include="attr")
+    ObjectInfo(Cls1()).print(only_names_include="attr", hide_build_in=True, hide_skipped=True)
 """
 ==========PRINT=====================================================================================
 str=<__main__.Cls1 object at 0x000002103087D130>
