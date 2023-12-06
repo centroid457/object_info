@@ -93,30 +93,10 @@ class ObjectInfo:
     source: Any = None
 
     def __init__(self, source: Optional[Any] = None):
+        self.sets_clear()
         self.source = source
 
-    # =================================================================================================================
-    def print(
-            self, source: Optional[Any] = None,
-            max_value_len: Optional[int] = None,
-            only_names_include: Union[None, str, List[str]] = None,
-            hide_build_in: Optional[bool] = None,
-            hide_skipped: Optional[bool] = None
-    ) -> None:
-        """print all params from object
-        if method - try to start it!
-        """
-        # apply settings ----------------------------------
-        if source is None:
-            source = self.source
-        if max_value_len is None:
-            max_value_len = self.MAX_VALUE_LEN
-        if hide_build_in is None:
-            hide_build_in = self.HIDE_BUILD_IN
-        if hide_skipped is None:
-            hide_skipped = self.HIDE_SKIPPED
-
-        # init arrays ----------------------------------
+    def sets_clear(self) -> None:
         self.skipped = []
         self.skipped_danger = []
 
@@ -126,15 +106,24 @@ class ObjectInfo:
         self.methods_ok = {}
         self.methods_exx = {}
 
-        # WORK ----------------------------------
-        name = "print"
-        print("="*10 + f"{name.upper():=<90}")
-        if only_names_include:
-            print(f"INCLUDE names [{only_names_include}]")
-        print(f"str={str(source)}")
-        print(f"repr={repr(source)}")
-        # print("-"*50)
+    def sets_reload(
+            self,
+            source: Optional[Any] = None,
+            only_names_include: Union[None, str, List[str]] = None,
+            hide_build_in: Optional[bool] = None,
+            hide_skipped: Optional[bool] = None
+    ) -> None:
+        self.sets_clear()
 
+        # apply settings ----------------------------------
+        if source is None:
+            source = self.source
+        if hide_build_in is None:
+            hide_build_in = self.HIDE_BUILD_IN
+        if hide_skipped is None:
+            hide_skipped = self.HIDE_SKIPPED
+
+        # WORK ----------------------------------
         for name in dir(source):
             # filter names -------------------------
             if hide_build_in and name.startswith("__"):
@@ -183,6 +172,38 @@ class ObjectInfo:
             else:
                 value = attr_obj
                 self.objects.update({name: value})
+
+    # =================================================================================================================
+    def print(
+            self,
+            source: Optional[Any] = None,
+            max_value_len: Optional[int] = None,
+            only_names_include: Union[None, str, List[str]] = None,
+            hide_build_in: Optional[bool] = None,
+            hide_skipped: Optional[bool] = None
+    ) -> None:
+        """print all params from object
+        if method - try to start it!
+        """
+        # apply settings ----------------------------------
+        if max_value_len is None:
+            max_value_len = self.MAX_VALUE_LEN
+
+        # start printing ----------------------------------
+        name = "print"
+        print("="*10 + f"{name.upper():=<90}")
+        if only_names_include:
+            print(f"INCLUDE names [{only_names_include}]")
+        print(f"str={str(source)}")
+        print(f"repr={repr(source)}")
+        # print("-"*50)
+
+        self.sets_reload(
+            source=source,
+            only_names_include=only_names_include,
+            hide_build_in=hide_build_in,
+            hide_skipped=hide_skipped
+        )
 
         # RESULTS ----------------------------------
         for batch_name in ["properties_ok", "properties_exx", "objects", "methods_ok", "methods_exx"]:
