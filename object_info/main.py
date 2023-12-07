@@ -190,7 +190,7 @@ class ObjectInfo:
             max_value_len = self.MAX_VALUE_LEN
 
         # start printing ----------------------------------
-        name = "print"
+        name = f"{self.__class__.__name__}.print"
         print("="*10 + f"{name.upper():=<90}")
         if only_names_include:
             print(f"INCLUDE names [{only_names_include}]")
