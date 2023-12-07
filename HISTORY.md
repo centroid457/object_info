@@ -3,6 +3,11 @@ Release History
 
 sets_reload
 
+0.0.6 (2023-12-07)
+-------------------
+**NEW**
+- use big name in first print line
+
 0.0.5 (2023-12-06)
 -------------------
 **NEW**
