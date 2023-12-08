@@ -186,6 +186,8 @@ class ObjectInfo:
         if method - try to start it!
         """
         # apply settings ----------------------------------
+        if source is None:
+            source = self.source
         if max_value_len is None:
             max_value_len = self.MAX_VALUE_LEN
 
