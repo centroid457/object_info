@@ -208,12 +208,20 @@ class ObjectInfo:
         )
 
         # RESULTS ----------------------------------
-        for batch_name in ["properties_ok", "properties_exx", "objects", "methods_ok", "methods_exx"]:
+        for batch_name in ["properties_ok", "properties_exx", "methods_ok", "methods_exx"]:
             print("-" * 10 + f"{batch_name:-<90}")
             for name, value in getattr(self, batch_name).items():
                 if len(str(value)) > max_value_len:
                     value = str(value)[:max_value_len - 3] + "..."
                 print(f"{name:25}\t{value.__class__.__name__:10}:{value}")
+
+        for batch_name in ["objects", ]:
+            print("-" * 10 + f"{batch_name:-<90}")
+            for name, value in getattr(self, batch_name).items():
+                for value_var in [f"str({str(value)})", f"repr({repr(value)})"]:
+                    if len(value_var) > max_value_len:
+                        value = str(value_var)[:max_value_len - 3] + "..."
+                    print(f"{name:25}\t{value.__class__.__name__:10}:{value_var}")
 
         if not hide_skipped:
             for batch_name in ["skipped", "skipped_danger"]:
