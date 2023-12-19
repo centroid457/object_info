@@ -1,6 +1,10 @@
 Release History
 ===============
 
+0.1.1 (2023-12-19)
+-------------------
+- add str/repr print for objects
+
 0.1.0 (2023-12-08)
 -------------------
 - fix str/repr print
