@@ -221,7 +221,11 @@ class ObjectInfo:
                 for value_var in [f"str({str(value)})", f"repr({repr(value)})"]:
                     if len(value_var) > max_value_len:
                         value = str(value_var)[:max_value_len - 3] + "..."
-                    print(f"{name:25}\t{value.__class__.__name__:10}:{value_var}")
+                    if value_var.startswith("str"):
+                        print(f"{name:25}\t{value.__class__.__name__:10}:{value_var}")
+                    else:
+                        print(f"{' ':25}\t{value.__class__.__name__:10}:{value_var}")
+
 
         if not hide_skipped:
             for batch_name in ["skipped", "skipped_danger"]:
@@ -427,8 +431,8 @@ class Cls1:
 
 
 if __name__ == "__main__":
-    # ObjectInfo(Cls1()).print()
-    ObjectInfo(Cls1()).print(only_names_include="attr", hide_build_in=True, hide_skipped=True)
+    ObjectInfo(Cls1()).print()
+    # ObjectInfo(Cls1()).print(only_names_include="attr", hide_build_in=True, hide_skipped=True)
 """
 ==========PRINT=====================================================================================
 str=<__main__.Cls1 object at 0x000002103087D130>

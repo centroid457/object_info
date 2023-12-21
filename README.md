@@ -78,9 +78,9 @@ class Cls1:
 ObjectInfo(Cls1()).print()
 ObjectInfo().print(Cls1())
 """
-==========print=====================================================================================
-str=<__main__.Cls1 object at 0x000002103087D130>
-repr=<__main__.Cls1 object at 0x000002103087D130>
+==========OBJECTINFO.PRINT==========================================================================
+str=<__main__.Cls1 object at 0x000001D1B0468650>
+repr=<__main__.Cls1 object at 0x000001D1B0468650>
 ----------properties_ok-----------------------------------------------------------------------------
 __dict__                 	dict      :{}
 __doc__                  	NoneType  :None
@@ -90,24 +90,22 @@ attrDict                 	dict      :{1: 1}
 attrFloat                	int       :2
 attrInt                  	int       :1
 attrList                 	list      :[1, 2, 3]
-attrListObj              	list      :[<__main__.Cls0 object at 0x000002103087C8F0>, <__main__.Cls0 object at 0x000002103087C950>, 1]
+attrListObj              	list      :[<__main__.Cls0 object at 0x000001D1B0468380>, <__main__.Cls0 object at 0x000001D1B0468590>, 1]
 attrNone                 	NoneType  :None
 attrSet                  	set       :{1, 2, 3}
 propertyInt              	int       :1
 ----------properties_exx----------------------------------------------------------------------------
 propertyExx              	Exception :exxMsg
-----------objects-----------------------------------------------------------------------------------
-attrObj                  	Cls0      :<__main__.Cls0 object at 0x0000021030873440>
 ----------methods_ok--------------------------------------------------------------------------------
-__class__                	Cls1      :<__main__.Cls1 object at 0x000002103087DF70>
+__class__                	Cls1      :<__main__.Cls1 object at 0x000001D1B0468A70>
 __dir__                  	str       :['__module__', 'attrMissFullName', 'attrMissPartName', 'attrNone', 'attrInt', 'attrFloat', 'attrC...
 __getstate__             	NoneType  :None
-__hash__                 	int       :141784808723
-__repr__                 	str       :<__main__.Cls1 object at 0x000002103087D130>
+__hash__                 	int       :125007325285
+__repr__                 	str       :<__main__.Cls1 object at 0x000001D1B0468650>
 __sizeof__               	int       :16
-__str__                  	str       :<__main__.Cls1 object at 0x000002103087D130>
+__str__                  	str       :<__main__.Cls1 object at 0x000001D1B0468650>
 __subclasshook__         	NotImplementedType:NotImplemented
-attrClass                	Cls0      :<__main__.Cls0 object at 0x000002103087E120>
+attrClass                	Cls0      :<__main__.Cls0 object at 0x000001D1B0468CB0>
 methInt                  	int       :1
 ----------methods_exx-------------------------------------------------------------------------------
 __eq__                   	TypeError :expected 1 argument, got 0
@@ -119,6 +117,9 @@ __le__                   	TypeError :expected 1 argument, got 0
 __lt__                   	TypeError :expected 1 argument, got 0
 __ne__                   	TypeError :expected 1 argument, got 0
 methExx                  	Exception :exxMsg
+----------objects-----------------------------------------------------------------------------------
+attrObj                  	Cls0      :str(<__main__.Cls0 object at 0x000001D1B03F5B20>)
+                         	Cls0      :repr(<__main__.Cls0 object at 0x000001D1B03F5B20>)
 ----------skipped-----------------------------------------------------------------------------------
 attrMissFullName
 ----------skipped_danger----------------------------------------------------------------------------
@@ -133,33 +134,27 @@ attrMissPartName
 ====================================================================================================
 """
 
-ObjectInfo(Cls1()).print(only_names_include="attr")
+ObjectInfo(Cls1()).print(only_names_include="attr", hide_build_in=True, hide_skipped=True)
 """
-==========PRINT=====================================================================================
+==========OBJECTINFO.PRINT==========================================================================
 INCLUDE names [attr]
-str=<__main__.Cls1 object at 0x000001EE4121E720>
-repr=<__main__.Cls1 object at 0x000001EE4121E720>
+str=<__main__.Cls1 object at 0x000001831C08C770>
+repr=<__main__.Cls1 object at 0x000001831C08C770>
 ----------properties_ok-----------------------------------------------------------------------------
 attrDict                 	dict      :{1: 1}
 attrFloat                	int       :2
 attrInt                  	int       :1
 attrList                 	list      :[1, 2, 3]
-attrListObj              	list      :[<__main__.Cls0 object at 0x000001EE4121E0F0>, <__main__.Cls0 object at 0x000001EE4121E510>, 1]
+attrListObj              	list      :[<__main__.Cls0 object at 0x000001831C08C4A0>, <__main__.Cls0 object at 0x000001831C08C6B0>, 1]
 attrNone                 	NoneType  :None
 attrSet                  	set       :{1, 2, 3}
 ----------properties_exx----------------------------------------------------------------------------
-----------objects-----------------------------------------------------------------------------------
-attrObj                  	Cls0      :<__main__.Cls0 object at 0x000001EE41280E90>
 ----------methods_ok--------------------------------------------------------------------------------
-attrClass                	Cls0      :<__main__.Cls0 object at 0x000001EE40FCA4E0>
+attrClass                	Cls0      :<__main__.Cls0 object at 0x000001831C08CB90>
 ----------methods_exx-------------------------------------------------------------------------------
-__getattribute__         	TypeError :expected 1 argument, got 0
-----------skipped-----------------------------------------------------------------------------------
-attrMissFullName
-----------skipped_danger----------------------------------------------------------------------------
-__delattr__
-__setattr__
-attrMissPartName
+----------objects-----------------------------------------------------------------------------------
+attrObj                  	Cls0      :str(<__main__.Cls0 object at 0x000001831C0CEED0>)
+                         	Cls0      :repr(<__main__.Cls0 object at 0x000001831C0CEED0>)
 ====================================================================================================
 """
 ```
