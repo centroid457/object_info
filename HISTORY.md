@@ -1,6 +1,10 @@
 Release History
 ===============
 
+0.1.2 (2023-12-21)
+-------------------
+- fix str/repr print attr-name only one time
+
 0.1.1 (2023-12-19)
 -------------------
 - add str/repr print for objects
