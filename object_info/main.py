@@ -64,32 +64,25 @@ def type_is_elementary_single(source):
     return isinstance(source, TYPE_ELEMENTARY_SINGLE)
 
 
-names_miss_fullnames = [
-    # TEST
-    "attrMissFullName",
-    # GIT
-    "checkout", "detach",
-]
-
-
-names_danger_entries = [
-    # TEST
-    "MissPartName",
-
-    # MAIN
-    "init", "new", "create", "enter",
-    "set",
-    "clone", "copy", "move",
-    "next",
-    "close", "del", "exit", "clear", "reduce"
-]
-
-
 # =====================================================================================================================
 class ObjectInfo:
     MAX_VALUE_LEN: int = 100
     HIDE_BUILD_IN: bool = None
     HIDE_SKIPPED: bool = None
+
+    SKIP_FULLNAMES = [
+        # GIT
+        "checkout", "detach",
+    ]
+    SKIP_PARTNAMES = [
+        # DANGER
+        "init", "new", "create", "enter",
+        "set",
+        "clone", "copy", "move",
+        "next",
+        "close", "del", "exit", "clear", "reduce"
+    ]
+
     source: Any = None
 
     def __init__(self, source: Optional[Any] = None):
@@ -97,8 +90,8 @@ class ObjectInfo:
         self.source = source
 
     def sets_clear(self) -> None:
-        self.skipped = []
-        self.skipped_danger = []
+        self.skipped_fullnames = []
+        self.skipped_partnames = []
 
         self.properties_ok = {}
         self.properties_exx = {}
@@ -112,6 +105,8 @@ class ObjectInfo:
             only_names_include: Union[None, str, List[str]] = None,
             hide_build_in: Optional[bool] = None,
             hide_skipped: Optional[bool] = None,
+            skip_fullnames: Optional[List[str]] = None,
+            skip_partnames: Optional[List[str]] = None,
             _log_iter: Optional[bool] = None
     ) -> None:
         self.sets_clear()
@@ -149,11 +144,22 @@ class ObjectInfo:
                     continue
 
             # SKIP -------------------------
-            if name in names_miss_fullnames:
-                self.skipped.append(name)
+            SKIP_FULLNAMES = []
+            if self.SKIP_FULLNAMES:
+                SKIP_FULLNAMES.extend(self.SKIP_FULLNAMES)
+            if skip_fullnames:
+                SKIP_FULLNAMES.extend(skip_fullnames)
+            if name in SKIP_FULLNAMES:
+                self.skipped_fullnames.append(name)
                 continue
-            if _value_search_by_list(source=name, search_list=names_danger_entries):
-                self.skipped_danger.append(name)
+
+            SKIP_PARTNAMES = []
+            if self.SKIP_PARTNAMES:
+                SKIP_PARTNAMES.extend(self.SKIP_PARTNAMES)
+            if skip_partnames:
+                SKIP_PARTNAMES.extend(skip_partnames)
+            if _value_search_by_list(source=name, search_list=SKIP_PARTNAMES):
+                self.skipped_partnames.append(name)
                 continue
 
             try:
@@ -189,6 +195,8 @@ class ObjectInfo:
             only_names_include: Union[None, str, List[str]] = None,
             hide_build_in: Optional[bool] = None,
             hide_skipped: Optional[bool] = None,
+            skip_fullnames: Optional[List[str]] = None,
+            skip_partnames: Optional[List[str]] = None,
             _log_iter: Optional[bool] = None
     ) -> None:
         """print all params from object
@@ -216,6 +224,8 @@ class ObjectInfo:
             only_names_include=only_names_include,
             hide_build_in=hide_build_in,
             hide_skipped=hide_skipped,
+            skip_fullnames=skip_fullnames,
+            skip_partnames=skip_partnames,
             _log_iter=_log_iter
         )
 
@@ -239,7 +249,7 @@ class ObjectInfo:
                         print(f"{' ':25}\t{value.__class__.__name__:10}:{value_var}")
 
         if not hide_skipped:
-            for batch_name in ["skipped", "skipped_danger"]:
+            for batch_name in ["skipped_fullnames", "skipped_partnames"]:
                 print("-" * 10 + f"{batch_name:-<90}")
                 for name in getattr(self, batch_name):
                     print(name)
@@ -356,13 +366,13 @@ class ObjectInfo:
                 continue
 
             if miss_names:
-                names_miss_fullnames.extend(miss_names)
+                self.SKIP_FULLNAMES.extend(miss_names)
 
             # get VALUE
-            if attr_str in names_miss_fullnames:
+            if attr_str in self.SKIP_FULLNAMES:
                 value = "***MISSED SPECIAL***"
 
-            elif _value_search_by_list(source=attr_str, search_list=names_danger_entries):
+            elif _value_search_by_list(source=attr_str, search_list=self.SKIP_PARTNAMES):
                 value = "***MISSED DANGER***"
 
             else:
@@ -418,8 +428,8 @@ class Cls0:
 
 
 class Cls1:
-    attrMissFullName = "attrMissFullName"
-    attrMissPartName = "MissPartName"
+    attrSkipFullName = "attrSkipFullName"
+    attrSkipPartName = "attrSkipPartName"
     attrNone = None
     attrInt = 1
     attrFloat = 2
@@ -442,7 +452,7 @@ class Cls1:
 
 
 if __name__ == "__main__":
-    ObjectInfo(Cls1()).print(_log_iter=True)
+    ObjectInfo(Cls1()).print(_log_iter=True, skip_fullnames=["attrSkipFullName", ], skip_partnames=["SkipPartName", ])
     # ObjectInfo(Cls1()).print(only_names_include="attr", hide_build_in=True, hide_skipped=True)
 """
 ==========PRINT=====================================================================================
@@ -467,7 +477,7 @@ propertyExx              	Exception :exxMsg
 attrObj                  	Cls0      :<__main__.Cls0 object at 0x0000021030873440>
 ----------methods_ok--------------------------------------------------------------------------------
 __class__                	Cls1      :<__main__.Cls1 object at 0x000002103087DF70>
-__dir__                  	str       :['__module__', 'attrMissFullName', 'attrMissPartName', 'attrNone', 'attrInt', 'attrFloat', 'attrC...
+__dir__                  	str       :['__module__', 'attrSkipFullName', 'attrSkipPartName', 'attrNone', 'attrInt', 'attrFloat', 'attrC...
 __getstate__             	NoneType  :None
 __hash__                 	int       :141784808723
 __repr__                 	str       :<__main__.Cls1 object at 0x000002103087D130>
@@ -486,9 +496,9 @@ __le__                   	TypeError :expected 1 argument, got 0
 __lt__                   	TypeError :expected 1 argument, got 0
 __ne__                   	TypeError :expected 1 argument, got 0
 methExx                  	Exception :exxMsg
-----------skipped-----------------------------------------------------------------------------------
-attrMissFullName
-----------skipped_danger----------------------------------------------------------------------------
+----------skipped_fullnames-----------------------------------------------------------------------------------
+attrSkipFullName
+----------skipped_partnames----------------------------------------------------------------------------
 __delattr__
 __init__
 __init_subclass__
@@ -496,6 +506,6 @@ __new__
 __reduce__
 __reduce_ex__
 __setattr__
-attrMissPartName
+attrSkipPartName
 ====================================================================================================
 """
