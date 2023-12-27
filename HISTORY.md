@@ -1,6 +1,10 @@
 Release History
 ===============
 
+0.1.4 (2023-12-27)
+-------------------
+- add params skip_partnames/fullnames
+
 0.1.3 (2023-12-27)
 -------------------
 - add _log_iter
