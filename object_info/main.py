@@ -111,7 +111,8 @@ class ObjectInfo:
             source: Optional[Any] = None,
             only_names_include: Union[None, str, List[str]] = None,
             hide_build_in: Optional[bool] = None,
-            hide_skipped: Optional[bool] = None
+            hide_skipped: Optional[bool] = None,
+            _log_iter: Optional[bool] = None
     ) -> None:
         self.sets_clear()
 
@@ -124,7 +125,14 @@ class ObjectInfo:
             hide_skipped = self.HIDE_SKIPPED
 
         # WORK ----------------------------------
-        for name in dir(source):
+        if _log_iter:
+            name = "_log_iter(wait last touched)"
+            print("-" * 10 + f"{name:-<90}")
+
+        for pos, name in enumerate(dir(source), start=1):
+            if _log_iter:
+                print(f"{pos}\t\t{name}")
+
             # filter names -------------------------
             if hide_build_in and name.startswith("__"):
                 continue
@@ -180,10 +188,13 @@ class ObjectInfo:
             max_value_len: Optional[int] = None,
             only_names_include: Union[None, str, List[str]] = None,
             hide_build_in: Optional[bool] = None,
-            hide_skipped: Optional[bool] = None
+            hide_skipped: Optional[bool] = None,
+            _log_iter: Optional[bool] = None
     ) -> None:
         """print all params from object
         if method - try to start it!
+
+        :param _log_iter: useful when we have hidden exx! (pyqt5 for example!) you will get last name before sys.exit!
         """
         # apply settings ----------------------------------
         if source is None:
@@ -204,7 +215,8 @@ class ObjectInfo:
             source=source,
             only_names_include=only_names_include,
             hide_build_in=hide_build_in,
-            hide_skipped=hide_skipped
+            hide_skipped=hide_skipped,
+            _log_iter=_log_iter
         )
 
         # RESULTS ----------------------------------
@@ -225,7 +237,6 @@ class ObjectInfo:
                         print(f"{name:25}\t{value.__class__.__name__:10}:{value_var}")
                     else:
                         print(f"{' ':25}\t{value.__class__.__name__:10}:{value_var}")
-
 
         if not hide_skipped:
             for batch_name in ["skipped", "skipped_danger"]:
@@ -431,7 +442,7 @@ class Cls1:
 
 
 if __name__ == "__main__":
-    ObjectInfo(Cls1()).print()
+    ObjectInfo(Cls1()).print(_log_iter=True)
     # ObjectInfo(Cls1()).print(only_names_include="attr", hide_build_in=True, hide_skipped=True)
 """
 ==========PRINT=====================================================================================
