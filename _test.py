@@ -14,7 +14,7 @@ from object_info import *
 
 
 # =====================================================================================================================
-class Test_1:
+class Test:
     @classmethod
     def setup_class(cls):
         pass
