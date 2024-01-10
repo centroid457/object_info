@@ -3,7 +3,7 @@ Release History
 
 0.1.5 (2024-01-10)
 -------------------
-- SKIP_FULLNAMES.append PyQt5 Qthread
+- SKIP_FULLNAMES.append names for PyQt5 Qthread
 
 0.1.4 (2023-12-27)
 -------------------
