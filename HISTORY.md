@@ -1,6 +1,11 @@
 Release History
 ===============
 
+TODOS/WISHES
+------------
+1. add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!
+
+
 0.1.5 (2024-01-10)
 -------------------
 - SKIP_FULLNAMES.append names for PyQt5 Qthread

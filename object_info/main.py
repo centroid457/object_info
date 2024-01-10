@@ -74,7 +74,7 @@ class ObjectInfo:
         # GIT
         "checkout", "detach",
         # PyQt5 Qthread
-        "exec", "pyqtConfigure",
+        "exec", "exec_", "pyqtConfigure",
     ]
     SKIP_PARTNAMES = [
         # DANGER
