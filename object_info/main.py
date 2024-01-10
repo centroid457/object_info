@@ -73,6 +73,8 @@ class ObjectInfo:
     SKIP_FULLNAMES = [
         # GIT
         "checkout", "detach",
+        # threads
+        "run", "start",
         # PyQt5 Qthread
         "exec", "exec_", "pyqtConfigure",
     ]
