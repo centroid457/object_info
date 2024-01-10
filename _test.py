@@ -14,7 +14,7 @@ from object_info import *
 
 
 # =====================================================================================================================
-class Test:
+class Test_FREEZE:
     @classmethod
     def setup_class(cls):
         pass
