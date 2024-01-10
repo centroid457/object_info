@@ -14,6 +14,9 @@ TODOS/WISHES
 1. seems tuples goes now into objects (but it is not right!)
 
 ***********************************************************************************************************************
+0.1.8 (2024-01-10)
+-------------------
+- SKIP_FULLNAMES.append names for common threads (wait/join)
 
 0.1.7 (2024-01-10)
 -------------------

@@ -74,7 +74,7 @@ class ObjectInfo:
         # GIT
         "checkout", "detach",
         # threads
-        "run", "start",
+        "run", "start", "wait", "join",
         # PyQt5 Qthread
         "exec", "exec_", "pyqtConfigure",
     ]
