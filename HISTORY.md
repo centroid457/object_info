@@ -1,6 +1,10 @@
 Release History
 ===============
 
+0.1.5 (2024-01-10)
+-------------------
+- SKIP_FULLNAMES.append PyQt5 Qthread
+
 0.1.4 (2023-12-27)
 -------------------
 - add params skip_partnames/fullnames

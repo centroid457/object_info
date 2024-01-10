@@ -73,6 +73,8 @@ class ObjectInfo:
     SKIP_FULLNAMES = [
         # GIT
         "checkout", "detach",
+        # PyQt5 Qthread
+        "exec", "pyqtConfigure",
     ]
     SKIP_PARTNAMES = [
         # DANGER
