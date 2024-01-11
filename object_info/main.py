@@ -74,17 +74,18 @@ class ObjectInfo:
         # GIT
         "checkout", "detach",
         # threads
-        "run", "start", "wait", "join",
+        "run", "start", "wait", "join", "terminate", "quit", "disconnect",
         # PyQt5 Qthread
         "exec", "exec_", "pyqtConfigure",
     ]
     SKIP_PARTNAMES = [
         # DANGER
-        "init", "new", "create", "enter",
+        "init", "new", "create", "enter", "install",
         "set",
         "clone", "copy", "move",
         "next",
-        "close", "del", "exit", "clear", "reduce"
+        "clear", "reduce",
+        "close", "del", "exit", "kill",
     ]
 
     source: Any = None
