@@ -15,7 +15,7 @@ Release History
 0.1.10 (2024-01-11)
 -------------------
 - fix tuple
-- 
+- separate collections in groups
 
 0.1.9 (2024-01-11)
 -------------------
