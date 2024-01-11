@@ -1,61 +1,3 @@
-# object_info (v0.1.9)
-
-## DESCRIPTION_SHORT
-Print info about object (attributes+properties+methods results)
-
-## DESCRIPTION_LONG
-designed to print info about object (properties+methods results)
-
-but why? if we can use debugger directly?
-reason:
-1. to get and save standard text info,  
-it useful to keep this info for future quick eye sight without exact condition like other os or device/devlist/configuration 
-2. in debugger we cant see result of methods!  
-try to see for example information from platform module! it have only methods and no one in object tree in debugger!
-```python
-import platform
-
-obj = platform
-print(platform.platform())
-pass    # place debug point here
-```
-3. useful if you wish to see info from remote source if connecting directly over ssh for example
-
-
-## Features
-1. print all properties and methods results  
-2. show exceptions on methods and properties  
-3. skip names by full / part name  
-
-
-********************************************************************************
-## License
-See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
-
-
-## Release history
-See the [HISTORY.md](HISTORY.md) file for release history.
-
-
-## Installation
-```commandline
-pip install object-info
-```
-
-
-## Import
-```python
-from object_info import *
-```
-
-
-********************************************************************************
-## USAGE EXAMPLES
-See tests and sourcecode for other examples.
-
-******************************
-### 1. example1.py
-```python
 from object_info import *
 
 class Cls0:
@@ -167,6 +109,3 @@ attrObj                  	Cls0      :str(<__main__.Cls0 object at 0x000001831C0C
                          	Cls0      :repr(<__main__.Cls0 object at 0x000001831C0CEED0>)
 ====================================================================================================
 """
-```
-
-********************************************************************************
