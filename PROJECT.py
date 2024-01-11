@@ -50,11 +50,14 @@ pass    # place debug point here
 
     # HISTORY -----------------------------------------------
     VERSION: str = "0.1.9"
-    WISHES: List[str] = [
-        "add ..."
+    TODO: List[str] = [
+        "..."
+    ]
+    FIXME: List[str] = [
+        "..."
     ]
     NEWS: List[str] = [
-        "add ..."
+        "..."
     ]
 
 

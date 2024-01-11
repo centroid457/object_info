@@ -8,11 +8,12 @@ class Cls1:
     attrMissPartName = "MissPartName"
     attrNone = None
     attrInt = 1
-    attrFloat = 2
+    attrFloat = 2.2
     attrClass = Cls0
     attrObj = Cls0()
     attrSet = {1,2,3}
     attrList = [1,2,3]
+    attrTuple = (1,2,3)
     attrDict = {1:1}
     attrListObj = [Cls0(), Cls0(), 1]
     @property

@@ -2,8 +2,6 @@ Release History
 ===============
 
 ***********************************************************************************************************************
-TODOS/WISHES
-------------
 # TODO
 1. add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!
 2. realise CHANGE_state/COMPARE_objects (one from different states like thread before and after start)!
@@ -11,9 +9,14 @@ TODOS/WISHES
    - add parameter show only diffs or show all
 
 # FIXME
-1. seems tuples goes now into objects (but it is not right!)
+1. ...
 
 ***********************************************************************************************************************
+0.1.10 (2024-01-11)
+-------------------
+- fix tuple
+- 
+
 0.1.9 (2024-01-11)
 -------------------
 - SKIP NAMES append new

@@ -7,8 +7,15 @@ pass
 
 
 # =====================================================================================================================
-TYPE_ELEMENTARY_SINGLE: tuple = (type(None), bool, str, bytes, int, float, )
-TYPE_ELEMENTARY_COLLECTION: tuple = (set, list, dict, )
+TYPE_ELEMENTARY_SINGLE: tuple = (
+    type(None), bool,
+    str, bytes,
+    int, float,
+)
+TYPE_ELEMENTARY_COLLECTION: tuple = (
+    tuple, list,
+    set, dict,
+)
 TYPE_ELEMENTARY: tuple = (*TYPE_ELEMENTARY_SINGLE, *TYPE_ELEMENTARY_COLLECTION, )
 
 
@@ -185,12 +192,15 @@ class ObjectInfo:
 
             # print(f"{name=}/{attr_obj=}/type={type(attr_obj)}/elementary={isinstance(attr_obj, TYPE_ELEMENTARY)}")
 
-            if isinstance(attr_obj, TYPE_ELEMENTARY):
+            if self.check_type_is_elementary(attr_obj):
                 value = attr_obj
                 self.properties_ok.update({name: value})
             else:
                 value = attr_obj
                 self.objects.update({name: value})
+
+    def check_type_is_elementary(self, obj) -> bool:
+        return isinstance(obj, TYPE_ELEMENTARY)
 
     # =================================================================================================================
     def print(
@@ -235,31 +245,42 @@ class ObjectInfo:
         )
 
         # RESULTS ----------------------------------
-        for batch_name in ["properties_ok", "properties_exx", "methods_ok", "methods_exx"]:
+        for batch_name in [
+            "properties_ok", "properties_exx",
+            "methods_ok", "methods_exx",
+            "objects",
+            "skipped_fullnames", "skipped_partnames",
+        ]:
             print("-" * 10 + f"{batch_name:-<90}")
-            for name, value in getattr(self, batch_name).items():
-                if len(str(value)) > max_value_len:
-                    value = str(value)[:max_value_len - 3] + "..."
-                print(f"{name:25}\t{value.__class__.__name__:10}:{value}")
-
-        for batch_name in ["objects", ]:
-            print("-" * 10 + f"{batch_name:-<90}")
-            for name, value in getattr(self, batch_name).items():
-                for value_var in [f"str({str(value)})", f"repr({repr(value)})"]:
-                    if len(value_var) > max_value_len:
-                        value = str(value_var)[:max_value_len - 3] + "..."
-                    if value_var.startswith("str"):
-                        print(f"{name:25}\t{value.__class__.__name__:10}:{value_var}")
-                    else:
-                        print(f"{' ':25}\t{value.__class__.__name__:10}:{value_var}")
-
-        if not hide_skipped:
-            for batch_name in ["skipped_fullnames", "skipped_partnames"]:
-                print("-" * 10 + f"{batch_name:-<90}")
+            if batch_name.startswith("skip"):
+                if hide_skipped:
+                    continue
                 for name in getattr(self, batch_name):
                     print(name)
+            else:
+                for name, value in getattr(self, batch_name).items():
+                    self._print_name_value(name, value, max_value_len)
 
         print("="*100)
+
+    def _print_name_value(self, name, value, max_value_len: Optional[int] = None) -> None:
+        if max_value_len is None:
+            max_value_len = self.MAX_VALUE_LEN
+
+        if self.check_type_is_elementary(value):
+            if len(str(value)) > max_value_len:
+                value = str(value)[:max_value_len - 3] + "..."
+            print(f"{name:25}\t{value.__class__.__name__:10}:{value}")
+        elif isinstance(value, (Exception, )):
+            print(f"{name:25}\t{value.__class__.__name__:10}:{value!r}")
+        else:
+            for value_var in [f"str({str(value)})", f"repr({repr(value)})"]:
+                if len(value_var) > max_value_len:
+                    value = str(value_var)[:max_value_len - 3] + "..."
+                if value_var.startswith("str"):
+                    print(f"{name:25}\t{value.__class__.__name__:10}:{value_var}")
+                else:
+                    print(f"{' ':25}\t{value.__class__.__name__:10}:{value_var}")
 
     # =================================================================================================================
     def _print_object_info__deep(
