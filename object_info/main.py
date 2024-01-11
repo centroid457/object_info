@@ -258,7 +258,15 @@ class ObjectInfo:
                 for name in getattr(self, batch_name):
                     print(name)
             else:
+                postpone_collections: Dict = {}
                 for name, value in getattr(self, batch_name).items():
+                    if not name.startswith("__") and isinstance(value, TYPE_ELEMENTARY_COLLECTION):
+                        postpone_collections.update({name: value})
+                        continue
+                    self._print_name_value(name, value, max_value_len)
+                if postpone_collections:
+                    print()
+                for name, value in postpone_collections.items():
                     self._print_name_value(name, value, max_value_len)
 
         print("="*100)
