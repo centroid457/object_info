@@ -50,7 +50,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: str = "0.1.10"
+    VERSION: str = "0.1.11"
     TODO: List[str] = [
         "..."
     ]
