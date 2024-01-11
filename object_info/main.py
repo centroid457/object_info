@@ -98,10 +98,10 @@ class ObjectInfo:
     source: Any = None
 
     def __init__(self, source: Optional[Any] = None):
-        self.sets_clear()
+        self._groups_clear()
         self.source = source
 
-    def sets_clear(self) -> None:
+    def _groups_clear(self) -> None:
         self.skipped_fullnames = []
         self.skipped_partnames = []
 
@@ -111,7 +111,7 @@ class ObjectInfo:
         self.methods_ok = {}
         self.methods_exx = {}
 
-    def sets_reload(
+    def _groups_reload(
             self,
             source: Optional[Any] = None,
             only_names_include: Union[None, str, List[str]] = None,
@@ -121,7 +121,7 @@ class ObjectInfo:
             skip_partnames: Optional[List[str]] = None,
             _log_iter: Optional[bool] = None
     ) -> None:
-        self.sets_clear()
+        self._groups_clear()
 
         # apply settings ----------------------------------
         if source is None:
@@ -132,9 +132,8 @@ class ObjectInfo:
             hide_skipped = self.HIDE_SKIPPED
 
         # WORK ----------------------------------
-        if _log_iter:
-            name = "_log_iter(wait last touched)"
-            print("-" * 10 + f"{name:-<90}")
+        name = "_log_iter(wait last touched)"
+        print("-" * 10 + f"{name:-<90}")
 
         for pos, name in enumerate(dir(source), start=1):
             if _log_iter:
@@ -192,14 +191,14 @@ class ObjectInfo:
 
             # print(f"{name=}/{attr_obj=}/type={type(attr_obj)}/elementary={isinstance(attr_obj, TYPE_ELEMENTARY)}")
 
-            if self.check_type_is_elementary(attr_obj):
+            if self._check_type_is_elementary(attr_obj):
                 value = attr_obj
                 self.properties_ok.update({name: value})
             else:
                 value = attr_obj
                 self.objects.update({name: value})
 
-    def check_type_is_elementary(self, obj) -> bool:
+    def _check_type_is_elementary(self, obj) -> bool:
         return isinstance(obj, TYPE_ELEMENTARY)
 
     # =================================================================================================================
@@ -228,13 +227,24 @@ class ObjectInfo:
         # start printing ----------------------------------
         name = f"{self.__class__.__name__}.print"
         print("="*10 + f"{name.upper():=<90}")
-        if only_names_include:
-            print(f"INCLUDE names [{only_names_include}]")
-        print(f"str={str(source)}")
-        print(f"repr={repr(source)}")
-        # print("-"*50)
 
-        self.sets_reload(
+        print(f"str(source)={str(source)}")
+        print(f"repr(source)={repr(source)}")
+
+        # SETTINGS ----------------------------------------
+        name = "settings"
+        print("-"*10 + f"{name.upper():-<90}")
+
+        print(f"{skip_fullnames=}")
+        print(f"{skip_partnames=}")
+        print(f"{only_names_include=}")
+
+        print(f"{hide_build_in=}")
+        print(f"{hide_skipped=}")
+        print(f"{_log_iter=}")
+
+        # GROUPS ----------------------------------------
+        self._groups_reload(
             source=source,
             only_names_include=only_names_include,
             hide_build_in=hide_build_in,
@@ -275,7 +285,7 @@ class ObjectInfo:
         if max_value_len is None:
             max_value_len = self.MAX_VALUE_LEN
 
-        if self.check_type_is_elementary(value):
+        if self._check_type_is_elementary(value):
             if len(str(value)) > max_value_len:
                 value = str(value)[:max_value_len - 3] + "..."
             print(f"{name:25}\t{value.__class__.__name__:10}:{value}")
@@ -302,7 +312,7 @@ class ObjectInfo:
             _print_step_element=False,
         ):
         """
-        DONT USE IT! TOO COMPLICATED!
+        DONT USE IT! TOO COMPLICATED! this is only for history as first result from t8! -NEED DELETE!
 
         Show structure of object with all names of attributes and string values.
         useful if you want to find out exact info in object or get know if it have not!!!
@@ -456,90 +466,4 @@ class ObjectInfo:
         return
 
 
-# VISUAL TESTS ========================================================================================================
-class Cls0:
-    attr1=1
-
-
-class Cls1:
-    attrSkipFullName = "attrSkipFullName"
-    attrSkipPartName = "attrSkipPartName"
-    attrNone = None
-    attrInt = 1
-    attrFloat = 2
-    attrClass = Cls0
-    attrObj = Cls0()
-    attrSet = {1,2,3}
-    attrList = [1,2,3]
-    attrDict = {1:1}
-    attrListObj = [Cls0(), Cls0(), 1]
-    @property
-    def propertyInt(self):
-        return 1
-    @property
-    def propertyExx(self):
-        raise Exception("exxMsg")
-    def methInt(self):
-        return 1
-    def methExx(self):
-        raise Exception("exxMsg")
-
-
-if __name__ == "__main__":
-    ObjectInfo(Cls1()).print(_log_iter=True, skip_fullnames=["attrSkipFullName", ], skip_partnames=["SkipPartName", ])
-    # ObjectInfo(Cls1()).print(only_names_include="attr", hide_build_in=True, hide_skipped=True)
-"""
-==========PRINT=====================================================================================
-str=<__main__.Cls1 object at 0x000002103087D130>
-repr=<__main__.Cls1 object at 0x000002103087D130>
-----------properties_ok-----------------------------------------------------------------------------
-__dict__                 	dict      :{}
-__doc__                  	NoneType  :None
-__module__               	str       :__main__
-__weakref__              	NoneType  :None
-attrDict                 	dict      :{1: 1}
-attrFloat                	int       :2
-attrInt                  	int       :1
-attrList                 	list      :[1, 2, 3]
-attrListObj              	list      :[<__main__.Cls0 object at 0x000002103087C8F0>, <__main__.Cls0 object at 0x000002103087C950>, 1]
-attrNone                 	NoneType  :None
-attrSet                  	set       :{1, 2, 3}
-propertyInt              	int       :1
-----------properties_exx----------------------------------------------------------------------------
-propertyExx              	Exception :exxMsg
-----------objects-----------------------------------------------------------------------------------
-attrObj                  	Cls0      :<__main__.Cls0 object at 0x0000021030873440>
-----------methods_ok--------------------------------------------------------------------------------
-__class__                	Cls1      :<__main__.Cls1 object at 0x000002103087DF70>
-__dir__                  	str       :['__module__', 'attrSkipFullName', 'attrSkipPartName', 'attrNone', 'attrInt', 'attrFloat', 'attrC...
-__getstate__             	NoneType  :None
-__hash__                 	int       :141784808723
-__repr__                 	str       :<__main__.Cls1 object at 0x000002103087D130>
-__sizeof__               	int       :16
-__str__                  	str       :<__main__.Cls1 object at 0x000002103087D130>
-__subclasshook__         	NotImplementedType:NotImplemented
-attrClass                	Cls0      :<__main__.Cls0 object at 0x000002103087E120>
-methInt                  	int       :1
-----------methods_exx-------------------------------------------------------------------------------
-__eq__                   	TypeError :expected 1 argument, got 0
-__format__               	TypeError :Cls1.__format__() takes exactly one argument (0 given)
-__ge__                   	TypeError :expected 1 argument, got 0
-__getattribute__         	TypeError :expected 1 argument, got 0
-__gt__                   	TypeError :expected 1 argument, got 0
-__le__                   	TypeError :expected 1 argument, got 0
-__lt__                   	TypeError :expected 1 argument, got 0
-__ne__                   	TypeError :expected 1 argument, got 0
-methExx                  	Exception :exxMsg
-----------skipped_fullnames-----------------------------------------------------------------------------------
-attrSkipFullName
-----------skipped_partnames----------------------------------------------------------------------------
-__delattr__
-__init__
-__init_subclass__
-__new__
-__reduce__
-__reduce_ex__
-__setattr__
-attrSkipPartName
-====================================================================================================
-"""
+# =====================================================================================================================
