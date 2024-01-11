@@ -7,6 +7,7 @@ Release History
 2. realise CHANGE_state/COMPARE_objects (one from different states like thread before and after start)!
    - this is about to save object STATE!
    - add parameter show only diffs or show all
+   - add TESTS after this step!
 
 # FIXME
 1. ...
