@@ -283,6 +283,7 @@ class ObjectInfo:
 
         print("="*100)
 
+    # =================================================================================================================
     def _print_name_value(self, name, value, max_value_len: Optional[int] = None) -> None:
         if max_value_len is None:
             max_value_len = self.MAX_VALUE_LEN
@@ -301,6 +302,11 @@ class ObjectInfo:
                     print(f"{name:25}\t{value.__class__.__name__:10}:{value_var}")
                 else:
                     print(f"{' ':25}\t{value.__class__.__name__:10}:{value_var}")
+
+    # =================================================================================================================
+    def print_diffs(self) -> None:
+        pass
+        # TODO: FINISH!
 
 
 # =====================================================================================================================
