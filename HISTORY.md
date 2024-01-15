@@ -1,20 +1,24 @@
-Release History
-===============
+# RELEASE HISTORY
 
-***********************************************************************************************************************
-# TODO
-1. add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!
-2. realise PRINT_DIFFS=CHANGE_state/COMPARE_objects (one from different states like thread before and after start)!
-   - this is about to save object STATE!
-   - add parameter show only diffs or show all
-   - add TESTS after this step!
+********************************************************************************
+## TODO
+1. add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!  
+2. realise PRINT_DIFFS=CHANGE_state/COMPARE_objects (one from different states like thread before and after start)!:  
+	- this is about to save object STATE!  
+	- add parameter show only diffs or show all  
+	- add TESTS after this step!  
 
-# FIXME
-1. ...
+********************************************************************************
+## FIXME
+1. ...  
 
-***********************************************************************************************************************
+********************************************************************************
+## NEWS
 
-- del old _print_deep 
+0.1.12 (2024/01/15 10:26:57)
+------------------------------
+- apply new pypi template  
+- del old _print_deep  
 
 0.1.11 (2024-01-11)
 -------------------
@@ -94,3 +98,9 @@ Release History
 - first variant
 
 ***********************************************************************************************************************
+
+
+********************************************************************************
+
+
+********************************************************************************

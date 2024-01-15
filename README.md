@@ -1,4 +1,4 @@
-# object_info (v0.1.10)
+# object_info (v0.1.12)
 
 ## DESCRIPTION_SHORT
 Print info about object (attributes+properties+methods results)
@@ -54,7 +54,7 @@ from object_info import *
 ## USAGE EXAMPLES
 See tests and sourcecode for other examples.
 
-******************************
+------------------------------
 ### 1. example1.py
 ```python
 from object_info import *
