@@ -72,6 +72,7 @@ pass    # place debug point here
     ]
     NEWS: List[str] = [
         "apply new pypi template/2",
+        "add pretty print for one level"
     ]
 
     # FINALIZE -----------------------------------------------

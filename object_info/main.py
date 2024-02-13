@@ -61,20 +61,11 @@ def type_is_iterable_but_not_str(source):
     return type_is_iterable(source, str_and_bytes_as_iterable=False)
 
 
-def type_is_elementary_single(source):
-    """ check object for Elementary type, Not collection, only separate single element
-    not iterable except str!
-
-    str/int/float/NoneType/bool - True
-    not any objects/otherIterabled - False
-    """
-    return isinstance(source, TYPE_ELEMENTARY_SINGLE)
-
-
 # =====================================================================================================================
 class ObjectInfo:
     # SETTINGS --------------------------------------------
     MAX_VALUE_LEN: int = 100
+    MAX_ITER_ITEMS: int = 5
     HIDE_BUILD_IN: bool = None
     HIDE_SKIPPED: bool = None
 
@@ -193,15 +184,24 @@ class ObjectInfo:
 
             # print(f"{name=}/{attr_obj=}/type={type(attr_obj)}/elementary={isinstance(attr_obj, TYPE_ELEMENTARY)}")
 
-            if self._check_type_is_elementary(attr_obj):
+            if self.check_type_is__elementary(attr_obj):
                 value = attr_obj
                 self.properties_ok.update({name: value})
             else:
                 value = attr_obj
                 self.objects.update({name: value})
 
-    def _check_type_is_elementary(self, obj) -> bool:
-        return isinstance(obj, TYPE_ELEMENTARY)
+    @staticmethod
+    def check_type_is__elementary(source) -> bool:
+        return isinstance(source, TYPE_ELEMENTARY)
+
+    @staticmethod
+    def check_type_is__elementary_single(source) -> bool:
+        return isinstance(source, TYPE_ELEMENTARY_SINGLE)
+
+    @staticmethod
+    def check_type_is__elementary_collection(source) -> bool:
+        return isinstance(source, TYPE_ELEMENTARY_COLLECTION)
 
     # =================================================================================================================
     def print(
@@ -284,16 +284,53 @@ class ObjectInfo:
         print("="*100)
 
     # =================================================================================================================
-    def _print_name_value(self, name, value, max_value_len: Optional[int] = None) -> None:
+    def _print_name_value(
+            self,
+            name,
+            value,
+            max_value_len: Optional[int] = None,
+            max_iter_items: Optional[int] = None,
+    ) -> None:
+        # SETTINGS -------------------------------
         if max_value_len is None:
             max_value_len = self.MAX_VALUE_LEN
 
-        if self._check_type_is_elementary(value):
+        if max_iter_items is None:
+            max_iter_items = self.MAX_ITER_ITEMS
+
+        # WORK ---------------------------------------------------------------------------------
+        if self.check_type_is__elementary_single(value):
             if len(str(value)) > max_value_len:
                 value = str(value)[:max_value_len - 3] + "..."
             print(f"{name:25}\t{value.__class__.__name__:10}:{value}")
+
+        elif self.check_type_is__elementary_collection(value):
+            if len(str(value)) <= max_value_len:
+                print(f"{name:25}\t{value.__class__.__name__:10}:{value}")
+                return
+
+            # start some pretty style -------------------------------------
+            print(f"{name:25}\t{value.__class__.__name__:10}:")
+            if not isinstance(value, dict):
+                _index = 0
+                for item in value:
+                    _index += 1
+                    if _index > max_iter_items:
+                        print(f"{' ':25}\t{' ':10}:...")
+                        break
+                    print(f"{' ':25}\t{item.__class__.__name__:10}:{item}")
+            else:
+                _index = 0
+                for item_key, item_value in value.items():
+                    _index += 1
+                    if _index > max_iter_items:
+                        print(f"{' ':25}\t{' ':10}:...")
+                        break
+                    print(f"{' ':25}\t{item_key.__class__.__name__}:{item_value.__class__.__name__:10}:{item_key}: {item_value}")
+
         elif isinstance(value, (Exception, )):
             print(f"{name:25}\t{value.__class__.__name__:10}:{value!r}")
+
         else:
             for value_var in [f"str({str(value)})", f"repr({repr(value)})"]:
                 if len(value_var) > max_value_len:
