@@ -1,15 +1,15 @@
-# object_info (v0.1.12)
+# object_info (v0.1.13)
 
 ## DESCRIPTION_SHORT
-Print info about object (attributes+properties+methods results)
+print info about object (attributes+properties+methods results)
 
 ## DESCRIPTION_LONG
-designed to print info about object (properties+methods results)  
+Designed to print info about object (properties+methods results)  
 
-but why? if we can use debugger directly?  
-reason:  
+But why? if we can use debugger directly?  
+Reason:  
 1. to get and save standard text info,  
-it useful to keep this info for future quick eye sight without exact condition like other os or device/devlist/configuration 
+it useful to keep this info for future quick eye sight without exact condition like other OS or device/devlist/configuration 
 2. in debugger we cant see result of methods!  
 try to see for example information from platform module! it have only methods and no one in object tree in debugger!  
 ```python
@@ -19,7 +19,7 @@ obj = platform
 print(platform.platform())
 pass    # place debug point here
 ```  
-3. useful if you wish to see info from remote source if connecting directly over ssh for example
+3. Useful if you wish to see info from remote source if connecting directly over ssh for example
 
 
 ## Features
@@ -74,7 +74,7 @@ class Cls1:
     attrList = [1,2,3]
     attrTuple = (1,2,3)
     attrDict = {1:1}
-    attrListObj = [Cls0(), Cls0(), 1]
+    attrListObj = [*[Cls0(), ] * 5, 1]
     @property
     def propertyInt(self):
         return 1
@@ -97,11 +97,10 @@ ObjectInfo(Cls1()).print(
     hide_build_in=None,
     hide_skipped=None,
 )
-
 """
 ==========OBJECTINFO.PRINT==========================================================================
-str(source)=<__main__.Cls1 object at 0x0000014AFAC606E0>
-repr(source)=<__main__.Cls1 object at 0x0000014AFAC606E0>
+str(source)=<__main__.Cls1 object at 0x00000160168F6F10>
+repr(source)=<__main__.Cls1 object at 0x00000160168F6F10>
 ----------SETTINGS----------------------------------------------------------------------------------
 skip_fullnames=['attrSkipFullName']
 skip_partnames=['SkipPartName']
@@ -165,24 +164,36 @@ propertyInt              	int       :1
 
 attrDict                 	dict      :{1: 1}
 attrList                 	list      :[1, 2, 3]
-attrListObj              	list      :[<__main__.Cls0 object at 0x0000014AFAC60320>, <__main__.Cls0 object at 0x0000014AFAC60830>, 1]
+attrListObj              	list      :
+                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
+                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
+                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
+                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
+                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
+                         	          :...
 attrSet                  	set       :{1, 2, 3}
 attrTuple                	tuple     :(1, 2, 3)
 ----------properties_exx----------------------------------------------------------------------------
 propertyExx              	Exception :Exception('exxMsg')
 ----------methods_ok--------------------------------------------------------------------------------
-__class__                	Cls1      :str(<__main__.Cls1 object at 0x0000014AFAC61220>)
-                         	Cls1      :repr(<__main__.Cls1 object at 0x0000014AFAC61220>)
-__dir__                  	str       :['__module__', 'attrSkipFullName', 'attrSkipPartName', 'attrNone', 'attrInt', 'attrFloat', 'attrC...
+__class__                	Cls1      :str(<__main__.Cls1 object at 0x0000016016C0AC90>)
+                         	Cls1      :repr(<__main__.Cls1 object at 0x0000016016C0AC90>)
+__dir__                  	list      :
+                         	str       :__module__
+                         	str       :attrSkipFullName
+                         	str       :attrSkipPartName
+                         	str       :attrNone
+                         	str       :attrInt
+                         	          :...
 __getstate__             	NoneType  :None
-__hash__                 	int       :88846655598
-__repr__                 	str       :<__main__.Cls1 object at 0x0000014AFAC606E0>
-__sizeof__               	int       :16
-__str__                  	str       :<__main__.Cls1 object at 0x0000014AFAC606E0>
+__hash__                 	int       :94512936689
+__repr__                 	str       :<__main__.Cls1 object at 0x00000160168F6F10>
+__sizeof__               	int       :24
+__str__                  	str       :<__main__.Cls1 object at 0x00000160168F6F10>
 __subclasshook__         	NotImplementedType:str(NotImplemented)
                          	NotImplementedType:repr(NotImplemented)
-attrClass                	Cls0      :str(<__main__.Cls0 object at 0x0000014AFAC63E60>)
-                         	Cls0      :repr(<__main__.Cls0 object at 0x0000014AFAC63E60>)
+attrClass                	Cls0      :str(<__main__.Cls0 object at 0x0000016016C0AED0>)
+                         	Cls0      :repr(<__main__.Cls0 object at 0x0000016016C0AED0>)
 methInt                  	int       :1
 ----------methods_exx-------------------------------------------------------------------------------
 __eq__                   	TypeError :TypeError('expected 1 argument, got 0')
@@ -195,8 +206,8 @@ __lt__                   	TypeError :TypeError('expected 1 argument, got 0')
 __ne__                   	TypeError :TypeError('expected 1 argument, got 0')
 methExx                  	Exception :Exception('exxMsg')
 ----------objects-----------------------------------------------------------------------------------
-attrObj                  	Cls0      :str(<__main__.Cls0 object at 0x0000014AFAC60410>)
-                         	Cls0      :repr(<__main__.Cls0 object at 0x0000014AFAC60410>)
+attrObj                  	Cls0      :str(<__main__.Cls0 object at 0x00000160168F6DD0>)
+                         	Cls0      :repr(<__main__.Cls0 object at 0x00000160168F6DD0>)
 ----------skipped_fullnames-------------------------------------------------------------------------
 attrSkipFullName
 ----------skipped_partnames-------------------------------------------------------------------------
@@ -214,8 +225,8 @@ attrSkipPartName
 ObjectInfo(Cls1()).print(only_names_include="attr")
 """
 ==========OBJECTINFO.PRINT==========================================================================
-str(source)=<__main__.Cls1 object at 0x0000014AFAC60650>
-repr(source)=<__main__.Cls1 object at 0x0000014AFAC60650>
+str(source)=<__main__.Cls1 object at 0x0000016016C0B0D0>
+repr(source)=<__main__.Cls1 object at 0x0000016016C0B0D0>
 ----------SETTINGS----------------------------------------------------------------------------------
 skip_fullnames=None
 skip_partnames=None
@@ -233,18 +244,24 @@ attrSkipPartName         	str       :SkipPartName
 
 attrDict                 	dict      :{1: 1}
 attrList                 	list      :[1, 2, 3]
-attrListObj              	list      :[<__main__.Cls0 object at 0x0000014AFAC60320>, <__main__.Cls0 object at 0x0000014AFAC60830>, 1]
+attrListObj              	list      :
+                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
+                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
+                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
+                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
+                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
+                         	          :...
 attrSet                  	set       :{1, 2, 3}
 attrTuple                	tuple     :(1, 2, 3)
 ----------properties_exx----------------------------------------------------------------------------
 ----------methods_ok--------------------------------------------------------------------------------
-attrClass                	Cls0      :str(<__main__.Cls0 object at 0x0000014AFAC701A0>)
-                         	Cls0      :repr(<__main__.Cls0 object at 0x0000014AFAC701A0>)
+attrClass                	Cls0      :str(<__main__.Cls0 object at 0x0000016016C0B490>)
+                         	Cls0      :repr(<__main__.Cls0 object at 0x0000016016C0B490>)
 ----------methods_exx-------------------------------------------------------------------------------
 __getattribute__         	TypeError :TypeError('expected 1 argument, got 0')
 ----------objects-----------------------------------------------------------------------------------
-attrObj                  	Cls0      :str(<__main__.Cls0 object at 0x0000014AFAC60410>)
-                         	Cls0      :repr(<__main__.Cls0 object at 0x0000014AFAC60410>)
+attrObj                  	Cls0      :str(<__main__.Cls0 object at 0x00000160168F6DD0>)
+                         	Cls0      :repr(<__main__.Cls0 object at 0x00000160168F6DD0>)
 ----------skipped_fullnames-------------------------------------------------------------------------
 ----------skipped_partnames-------------------------------------------------------------------------
 __delattr__
