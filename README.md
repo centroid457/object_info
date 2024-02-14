@@ -1,4 +1,4 @@
-# object_info (v0.1.13)
+# object_info (v0.1.14)
 
 ## DESCRIPTION_SHORT
 print info about object (attributes+properties+methods results)
