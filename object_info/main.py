@@ -76,6 +76,12 @@ class ObjectInfo:
         "run", "start", "wait", "join", "terminate", "quit", "disconnect",
         # PyQt5 Qthread
         "exec", "exec_", "pyqtConfigure",
+        # change collection content/count/order
+        "pop", "popleft",
+        "append", "appendleft",
+        "extend", "extendleft",
+        "add", "insert",
+        "reverse", "rotate", "sort",
     ]
     SKIP_PARTNAMES = [
         # DANGER
