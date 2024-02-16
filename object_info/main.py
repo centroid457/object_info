@@ -21,6 +21,10 @@ class TypeChecker:
     TYPES_ELEMENTARY: tuple = (*TYPES_ELEMENTARY_SINGLE, *TYPES_ELEMENTARY_COLLECTION,)
 
     @staticmethod
+    def check__name_is_build_in(name: str) -> bool:
+        return name.startswith("__") and name.endswith("__")
+
+    @staticmethod
     def check__iterable(
             # self,
             source: Any,
@@ -79,6 +83,12 @@ def _value_search_by_list(source=None, search_list=[]):
             match_item = search_item
             break
     return match_item
+
+
+# =====================================================================================================================
+class InternalItem(NamedTuple):
+    KEY: str
+    VALUE: str
 
 
 # =====================================================================================================================
@@ -160,14 +170,14 @@ class ObjectInfo:
 
         # WORK --------------------------------------
         name = "log_iter(wait last touched)"
-        print("-" * 10 + f"{name:-<90}")
+        self._print_line__group_separator(name)
 
         for pos, name in enumerate(dir(self.SOURCE), start=1):
             if self.LOG_ITER:
-                print(f"{pos}\t\t{name}")
+                print(f"{pos}:\t\t{name}")
 
             # filter names -------------------------
-            if self.HIDE_BUILD_IN and name.startswith("__"):
+            if self.HIDE_BUILD_IN and TypeChecker.check__name_is_build_in(name):
                 continue
 
             if self.NAMES__USE_ONLY_PARTS:
@@ -233,19 +243,53 @@ class ObjectInfo:
         print(result)
         return result
 
-    def _print_line__name_type_value(self, name: Optional[str] = None, value: Optional[Any] = None, intend: Optional[int] = None) -> str:
+    def _print_line__name_type_value(self, name: Optional[str] = None, value: Union[None, Any, InternalItem] = None, intend: Optional[int] = None) -> str:
+        # -------------------------------
         name = name or ""
+        block_name = f"{name:25}"
+
+        # -------------------------------
+        if isinstance(value, InternalItem):
+            block_type = f"{value.KEY.__class__.__name__}:{value.VALUE.__class__.__name__}"
+        elif value is None:
+            block_type = f"None"
+        else:
+            block_type = f"{value.__class__.__name__}"
+
+        # -------------------------------
         intend = intend or 0
-        _intension = " " * intend
+        _block_intend = " " * intend
+
+        # -------------------------------
+        block_value = f"{value}"
+
+        # -------------------------------
+        result = f"{block_name}\t{block_type}:{_block_intend}{block_value}"
+        # FIXME: FINISH!!!
+        # FIXME: FINISH!!!
+        # FIXME: FINISH!!!
+        # FIXME: FINISH!!!
+        # FIXME: FINISH!!!
+        # FIXME: FINISH!!!
+        # FIXME: FINISH!!!
+        # FIXME: FINISH!!!
+        # FIXME: FINISH!!!
+        # FIXME: FINISH!!!
+
+
+
+
+
+
+
+        if isinstance(value, InternalItem):
+            name = ""
+            result = f"{'':25}\t{value.KEY.__class__.__name__}:{value.VALUE.__class__.__name__}:{_block_intend}{value.KEY}:{value.VALUE}"
 
         if len(str(value)) > self.MAX_VALUE_LEN:
-            if isinstance(value, tuple):
-                pass
-                # TODO: add new class for internal item or use direct DICT/TUPLE with two elements???
-            else:
-                value = str(value)[:self.MAX_VALUE_LEN - 3] + "..."
+            value = str(value)[:self.MAX_VALUE_LEN - 3] + "..."
 
-        result = f"{name:25}\t{value.__class__.__name__:10}:{_intension}{value}"
+        result = f"{name:25}\t{value.__class__.__name__:10}:{_block_intend}{value}"
         print(result)
         return result
 
@@ -274,34 +318,31 @@ class ObjectInfo:
         print(f"{self.LOG_ITER=}")
 
     def _print_block__name_value(self, name, value) -> None:
-        # SETTINGS -------------------------------
-        max_iter_items = self.MAX_ITER_ITEMS
-
         # WORK ---------------------------------------------------------------------------------
         self._print_line__name_type_value(name=name, value=value)
+        if len(str(value)) <= self.MAX_VALUE_LEN:
+            return
 
         if TypeChecker.check__elementary_single(value):
             return
 
         elif TypeChecker.check__elementary_collection(value):
-            if len(str(value)) <= self.MAX_VALUE_LEN:
-                return
-
             # start some pretty style -------------------------------------
             if not isinstance(value, dict):
                 _index = 0
                 for item in value:
                     _index += 1
-                    if _index > max_iter_items:
+                    if _index > self.MAX_ITER_ITEMS:
                         print(f"{' ':25}\t{' ':10}:...")
                         break
 
                     self._print_line__name_type_value(name=None, value=item, intend=4)
-            else:
+
+            elif isinstance(value, dict):
                 _index = 0
                 for item_key, item_value in value.items():
                     _index += 1
-                    if _index > max_iter_items:
+                    if _index > self.MAX_ITER_ITEMS:
                         print(f"{' ':25}\t{' ':10}:...")
                         break
                     self._print_line__name_type_value(name=None, value=item, intend=4)
@@ -319,6 +360,15 @@ class ObjectInfo:
                     print(f"{name:25}\t{value.__class__.__name__:10}:{value_var}")
                 else:
                     print(f"{' ':25}\t{value.__class__.__name__:10}:{value_var}")
+
+
+            for value_var in [f"str({str(value)})", f"repr({repr(value)})"]:
+                if len(value_var) > self.MAX_VALUE_LEN:
+                    value = str(value_var)[:self.MAX_VALUE_LEN - 3] + "..."
+                if value_var.startswith("str"):
+                    self._print_line__name_type_value(name=name, value=value_var)
+                else:
+                    self._print_line__name_type_value(name=None, value=value_var)
 
     # =================================================================================================================
     def print(self) -> None:
