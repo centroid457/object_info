@@ -44,7 +44,7 @@ obj = platform
 print(platform.platform())
 pass    # place debug point here
 ```  
-3. Useful if you wish to see info from remote source if connecting directly over ssh for example  
+3. Useful if you wish to see info from remote SOURCE if connecting directly over ssh for example  
     """
     FEATURES: List[str] = [
         # "feat1",
@@ -72,7 +72,7 @@ pass    # place debug point here
         "..."
     ]
     NEWS: List[str] = [
-        "SKIP_FULLNAMES.extend(change collection content/count/order)"
+        "NAMES__SKIP_FULL.extend(change collection content/count/order)"
     ]
 
     # FINALIZE -----------------------------------------------

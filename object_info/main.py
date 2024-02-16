@@ -1,5 +1,6 @@
 from typing import *
 import re
+# from enum import Enum
 
 
 # =====================================================================================================================
@@ -7,18 +8,64 @@ pass
 
 
 # =====================================================================================================================
-TYPE_ELEMENTARY_SINGLE: tuple = (
-    type(None), bool,
-    str, bytes,
-    int, float,
-)
-TYPE_ELEMENTARY_COLLECTION: tuple = (
-    tuple, list,
-    set, dict,
-)
-TYPE_ELEMENTARY: tuple = (*TYPE_ELEMENTARY_SINGLE, *TYPE_ELEMENTARY_COLLECTION, )
+class TypeChecker:
+    TYPES_ELEMENTARY_SINGLE: tuple = (
+        type(None), bool,
+        str, bytes,
+        int, float,
+    )
+    TYPES_ELEMENTARY_COLLECTION: tuple = (
+        tuple, list,
+        set, dict,
+    )
+    TYPES_ELEMENTARY: tuple = (*TYPES_ELEMENTARY_SINGLE, *TYPES_ELEMENTARY_COLLECTION,)
+
+    @staticmethod
+    def check__iterable(
+            # self,
+            source: Any,
+            dict_as_iterable: bool = True,
+            str_and_bytes_as_iterable: bool = True,
+    ) -> bool:
+        """checks if SOURCE is iterable.
+
+        :param source: SOURCE data
+        :param dict_as_iterable: if you dont want to use dict in your selecting,
+            becouse maybe you need flatten all elements in list/set/tuple into one sequence
+            and dict (as extended list) will be irrelevant!
+        :param str_and_bytes_as_iterable: usually in data processing you need to work with str-type elements as OneSolid element
+            but not iterating through chars!
+        """
+        if isinstance(source, dict):
+            return dict_as_iterable
+        elif isinstance(source, (str, bytes)):
+            return str_and_bytes_as_iterable
+        elif isinstance(source, (tuple, list, set,)):  # need to get it explicitly!!!
+            return True
+        elif hasattr(source, '__iter__') or hasattr(source, '__getitem__'):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def check__iterable_but_not_str(source):
+        """checks if SOURCE is iterable, but not exactly str!!!"""
+        return TypeChecker.check__iterable(source, str_and_bytes_as_iterable=False)
+
+    @staticmethod
+    def check__elementary(source) -> bool:
+        return isinstance(source, TypeChecker.TYPES_ELEMENTARY)
+
+    @staticmethod
+    def check__elementary_single(source) -> bool:
+        return isinstance(source, TypeChecker.TYPES_ELEMENTARY_SINGLE)
+
+    @staticmethod
+    def check__elementary_collection(source) -> bool:
+        return isinstance(source, TypeChecker.TYPES_ELEMENTARY_COLLECTION)
 
 
+# =====================================================================================================================
 def _value_search_by_list(source=None, search_list=[]):
     match_item = None
 
@@ -34,42 +81,32 @@ def _value_search_by_list(source=None, search_list=[]):
     return match_item
 
 
-def type_is_iterable(source, dict_as_iterable=True, str_and_bytes_as_iterable=True):
-    """checks if source is iterable.
+# =====================================================================================================================
+class ObjectState(NamedTuple):
+    SKIPPED_FULLNAMES: List[str] = []
+    SKIPPED_PARTNAMES: List[str] = []
 
-    :param source: source data
-    :param dict_as_iterable: if you dont want to use dict in your selecting,
-        becouse maybe you need flatten all elements in list/set/tuple into one sequence
-        and dict (as extended list) will be irrelevant!
-    :param str_as_iterable: usually in data processing you need to work with str-type elements as OneSolid element
-        but not iterating through chars!
-    """
-    if isinstance(source, dict):
-        return dict_as_iterable
-    elif isinstance(source, (str, bytes)):
-        return str_and_bytes_as_iterable
-    elif isinstance(source, (tuple, list, set, )):    # need to get it explicitly!!!
-        return True
-    elif hasattr(source, '__iter__') or hasattr(source, '__getitem__'):
-        return True
-    else:
-        return False
+    PROPERTIES_OK: Dict[str, Any] = {}
+    PROPERTIES_OBJECTS: Dict[str, Any] = {}
+    PROPERTIES_EXX: Dict[str, Exception] = {}
 
-
-def type_is_iterable_but_not_str(source):
-    """checks if source is iterable, but not exactly str!!!"""
-    return type_is_iterable(source, str_and_bytes_as_iterable=False)
+    METHODS_OK: Dict[str, Any] = {}
+    METHODS_OBJECTS: Dict[str, Any] = {}
+    METHODS_EXX: Dict[str, Exception] = {}
 
 
 # =====================================================================================================================
 class ObjectInfo:
     # SETTINGS --------------------------------------------
+
+    # LOAD ------------------------------------------------
     MAX_VALUE_LEN: int = 100
     MAX_ITER_ITEMS: int = 5
     HIDE_BUILD_IN: bool = None
-    HIDE_SKIPPED: bool = None
+    LOG_ITER: bool = None
 
-    SKIP_FULLNAMES = [
+    NAMES__USE_ONLY_PARTS: List[str] = []
+    NAMES__SKIP_FULL: List[str] = [
         # GIT
         "checkout", "detach",
         # threads
@@ -83,7 +120,7 @@ class ObjectInfo:
         "add", "insert",
         "reverse", "rotate", "sort",
     ]
-    SKIP_PARTNAMES = [
+    NAMES__SKIP_PARTS: List[str] = [
         # DANGER
         "init", "new", "create", "enter", "install",
         "set",
@@ -93,174 +130,205 @@ class ObjectInfo:
         "close", "del", "exit", "kill",
     ]
 
-    # VALUES --------------------------------------------
-    source: Any = None
+    # VALUES --------------------------------------------------
+    ITEM_CLS: type[ObjectState] = ObjectState
+    ITEM: ObjectState = ITEM_CLS()
+    SOURCE: Any = None
 
-    def __init__(self, source: Optional[Any] = None):
-        self._groups_clear()
-        self.source = source
-
-    def _groups_clear(self) -> None:
-        self.skipped_fullnames = []
-        self.skipped_partnames = []
-
-        self.properties_ok = {}
-        self.properties_exx = {}
-        self.objects = {}
-        self.methods_ok = {}
-        self.methods_exx = {}
-
-    def _groups_reload(
+    def __init__(
             self,
             source: Optional[Any] = None,
-            only_names_include: Union[None, str, List[str]] = None,
-            hide_build_in: Optional[bool] = None,
-            hide_skipped: Optional[bool] = None,
-            skip_fullnames: Optional[List[str]] = None,
-            skip_partnames: Optional[List[str]] = None,
-            _log_iter: Optional[bool] = None
-    ) -> None:
-        self._groups_clear()
 
-        # apply settings ----------------------------------
-        if source is None:
-            source = self.source
-        if hide_build_in is None:
-            hide_build_in = self.HIDE_BUILD_IN
-        if hide_skipped is None:
-            hide_skipped = self.HIDE_SKIPPED
+            # max_value_len: Optional[int] = None,
+            # only_names_include: Union[None, str, List[str]] = None,
+            # hide_build_in: Optional[bool] = None,
+            # skip_fullnames: Optional[List[str]] = None,
+            # skip_partnames: Optional[List[str]] = None,
+            # log_iter: Optional[bool] = None
+    ):
+        self._groups__clear()
 
-        # WORK ----------------------------------
-        name = "_log_iter(wait last touched)"
+        if source is not None:
+            self.SOURCE = source
+
+    # =================================================================================================================
+    def _groups__clear(self) -> None:
+        self.ITEM = self.ITEM_CLS()
+
+    def _groups__reload(self) -> None:
+        self._groups__clear()
+
+        # WORK --------------------------------------
+        name = "log_iter(wait last touched)"
         print("-" * 10 + f"{name:-<90}")
 
-        for pos, name in enumerate(dir(source), start=1):
-            if _log_iter:
+        for pos, name in enumerate(dir(self.SOURCE), start=1):
+            if self.LOG_ITER:
                 print(f"{pos}\t\t{name}")
 
             # filter names -------------------------
-            if hide_build_in and name.startswith("__"):
+            if self.HIDE_BUILD_IN and name.startswith("__"):
                 continue
 
-            if only_names_include:
+            if self.NAMES__USE_ONLY_PARTS:
                 use_name = False
-                if isinstance(only_names_include, str):
-                    only_names_include = [only_names_include, ]
-                for name_include_item in only_names_include:
+                for name_include_item in self.NAMES__USE_ONLY_PARTS:
                     if name_include_item.lower() in name.lower():
                         use_name = True
                         break
                 if not use_name:
                     continue
 
-            # SKIP -------------------------
+            # SKIP ----------------------------------
             SKIP_FULLNAMES = []
-            if self.SKIP_FULLNAMES:
-                SKIP_FULLNAMES.extend(self.SKIP_FULLNAMES)
-            if skip_fullnames:
-                SKIP_FULLNAMES.extend(skip_fullnames)
+            if self.NAMES__SKIP_FULL:
+                SKIP_FULLNAMES.extend(self.NAMES__SKIP_FULL)
+            if SKIP_FULLNAMES:
+                SKIP_FULLNAMES.extend(SKIP_FULLNAMES)
             if name in SKIP_FULLNAMES:
-                self.skipped_fullnames.append(name)
+                self.ITEM.SKIPPED_FULLNAMES.append(name)
                 continue
 
             SKIP_PARTNAMES = []
-            if self.SKIP_PARTNAMES:
-                SKIP_PARTNAMES.extend(self.SKIP_PARTNAMES)
-            if skip_partnames:
-                SKIP_PARTNAMES.extend(skip_partnames)
+            if self.NAMES__SKIP_PARTS:
+                SKIP_PARTNAMES.extend(self.NAMES__SKIP_PARTS)
+            if SKIP_PARTNAMES:
+                SKIP_PARTNAMES.extend(SKIP_PARTNAMES)
             if _value_search_by_list(source=name, search_list=SKIP_PARTNAMES):
-                self.skipped_partnames.append(name)
+                self.ITEM.SKIPPED_PARTNAMES.append(name)
                 continue
 
             try:
-                attr_obj = getattr(source, name)
+                attr_obj = getattr(self.SOURCE, name)
             except Exception as exx:
                 value = exx
-                self.properties_exx.update({name: value})
+                self.ITEM.PROPERTIES_EXX.update({name: value})
                 continue
 
             if callable(attr_obj):
                 try:
                     value = attr_obj()
-                    self.methods_ok.update({name: value})
+                    self.ITEM.METHODS_OK.update({name: value})
                 except Exception as exx:
                     value = exx
-                    self.methods_exx.update({name: value})
+                    self.ITEM.METHODS_EXX.update({name: value})
                 continue
 
-            # print(f"{name=}/{attr_obj=}/type={type(attr_obj)}/elementary={isinstance(attr_obj, TYPE_ELEMENTARY)}")
+            # print(f"{name=}/{attr_obj=}/type={type(attr_obj)}/elementary={isinstance(attr_obj, TYPES_ELEMENTARY)}")
 
-            if self.check_type_is__elementary(attr_obj):
+            if TypeChecker.check__elementary(attr_obj):
                 value = attr_obj
-                self.properties_ok.update({name: value})
+                self.ITEM.PROPERTIES_OK.update({name: value})
             else:
                 value = attr_obj
-                self.objects.update({name: value})
-
-    @staticmethod
-    def check_type_is__elementary(source) -> bool:
-        return isinstance(source, TYPE_ELEMENTARY)
-
-    @staticmethod
-    def check_type_is__elementary_single(source) -> bool:
-        return isinstance(source, TYPE_ELEMENTARY_SINGLE)
-
-    @staticmethod
-    def check_type_is__elementary_collection(source) -> bool:
-        return isinstance(source, TYPE_ELEMENTARY_COLLECTION)
+                self.ITEM.PROPERTIES_OBJECTS.update({name: value})
 
     # =================================================================================================================
-    def print(
-            self,
-            source: Optional[Any] = None,
-            max_value_len: Optional[int] = None,
-            only_names_include: Union[None, str, List[str]] = None,
-            hide_build_in: Optional[bool] = None,
-            hide_skipped: Optional[bool] = None,
-            skip_fullnames: Optional[List[str]] = None,
-            skip_partnames: Optional[List[str]] = None,
-            _log_iter: Optional[bool] = None
-    ) -> None:
-        """print all params from object
-        if method - try to start it!
-
-        :param _log_iter: useful when we have hidden exx! (pyqt5 for example!) you will get last name before sys.exit!
+    def _print_line__group_separator(self, name: str) -> str:
         """
+        GOAL MAIN - print!
+        GOAL SECONDARY - return str - just for tests!!!
+        """
+        result = "-" * 10 + f"{name:-<90}"
+        print(result)
+        return result
+
+    def _print_line__name_type_value(self, name: Optional[str] = None, value: Optional[Any] = None, intend: Optional[int] = None) -> str:
+        name = name or ""
+        intend = intend or 0
+        _intension = " " * intend
+
+        if len(str(value)) > self.MAX_VALUE_LEN:
+            if isinstance(value, tuple):
+                pass
+                # TODO: add new class for internal item or use direct DICT/TUPLE with two elements???
+            else:
+                value = str(value)[:self.MAX_VALUE_LEN - 3] + "..."
+
+        result = f"{name:25}\t{value.__class__.__name__:10}:{_intension}{value}"
+        print(result)
+        return result
+
+    # =================================================================================================================
+    def _print_block__head(self) -> None:
         # apply settings ----------------------------------
-        if source is None:
-            source = self.source
-        if max_value_len is None:
+        if self.MAX_VALUE_LEN is None:
             max_value_len = self.MAX_VALUE_LEN
 
         # start printing ----------------------------------
         name = f"{self.__class__.__name__}.print"
-        print("="*10 + f"{name.upper():=<90}")
+        self._print_line__group_separator(name.upper())
 
-        print(f"str(source)={str(source)}")
-        print(f"repr(source)={repr(source)}")
+        print(f"str(SOURCE)={str(self.SOURCE)}")
+        print(f"repr(SOURCE)={repr(self.SOURCE)}")
 
         # SETTINGS ----------------------------------------
-        name = "settings"
-        print("-"*10 + f"{name.upper():-<90}")
+        name = "SETTINGS"
+        self._print_line__group_separator(name)
 
-        print(f"{skip_fullnames=}")
-        print(f"{skip_partnames=}")
-        print(f"{only_names_include=}")
+        print(f"{self.NAMES__SKIP_FULL=}")
+        print(f"{self.NAMES__SKIP_PARTS=}")
+        print(f"{self.NAMES__USE_ONLY_PARTS=}")
 
-        print(f"{hide_build_in=}")
-        print(f"{hide_skipped=}")
-        print(f"{_log_iter=}")
+        print(f"{self.HIDE_BUILD_IN=}")
+        print(f"{self.LOG_ITER=}")
 
+    def _print_block__name_value(self, name, value) -> None:
+        # SETTINGS -------------------------------
+        max_iter_items = self.MAX_ITER_ITEMS
+
+        # WORK ---------------------------------------------------------------------------------
+        self._print_line__name_type_value(name=name, value=value)
+
+        if TypeChecker.check__elementary_single(value):
+            return
+
+        elif TypeChecker.check__elementary_collection(value):
+            if len(str(value)) <= self.MAX_VALUE_LEN:
+                return
+
+            # start some pretty style -------------------------------------
+            if not isinstance(value, dict):
+                _index = 0
+                for item in value:
+                    _index += 1
+                    if _index > max_iter_items:
+                        print(f"{' ':25}\t{' ':10}:...")
+                        break
+
+                    self._print_line__name_type_value(name=None, value=item, intend=4)
+            else:
+                _index = 0
+                for item_key, item_value in value.items():
+                    _index += 1
+                    if _index > max_iter_items:
+                        print(f"{' ':25}\t{' ':10}:...")
+                        break
+                    self._print_line__name_type_value(name=None, value=item, intend=4)
+
+                    print(f"{' ':25}\t{item_key.__class__.__name__}:{item_value.__class__.__name__:10}:{item_key}: {item_value}")
+
+        elif isinstance(value, (Exception, )):
+            print(f"{name:25}\t{value.__class__.__name__:10}:{value!r}")
+
+        else:
+            for value_var in [f"str({str(value)})", f"repr({repr(value)})"]:
+                if len(value_var) > self.MAX_VALUE_LEN:
+                    value = str(value_var)[:self.MAX_VALUE_LEN - 3] + "..."
+                if value_var.startswith("str"):
+                    print(f"{name:25}\t{value.__class__.__name__:10}:{value_var}")
+                else:
+                    print(f"{' ':25}\t{value.__class__.__name__:10}:{value_var}")
+
+    # =================================================================================================================
+    def print(self) -> None:
+        """print all params from object
+        if method - try to start it!
+        """
         # GROUPS ----------------------------------------
-        self._groups_reload(
-            source=source,
-            only_names_include=only_names_include,
-            hide_build_in=hide_build_in,
-            hide_skipped=hide_skipped,
-            skip_fullnames=skip_fullnames,
-            skip_partnames=skip_partnames,
-            _log_iter=_log_iter
-        )
+        self._groups__reload()
+
+        self._print_block__head()
 
         # RESULTS ----------------------------------
         for batch_name in [
@@ -269,82 +337,24 @@ class ObjectInfo:
             "objects",
             "skipped_fullnames", "skipped_partnames",
         ]:
-            print("-" * 10 + f"{batch_name:-<90}")
+            self._print_line__group_separator(batch_name)
+
             if batch_name.startswith("skip"):
-                if hide_skipped:
-                    continue
                 for name in getattr(self, batch_name):
                     print(name)
             else:
                 postpone_collections: Dict = {}
                 for name, value in getattr(self, batch_name).items():
-                    if not name.startswith("__") and isinstance(value, TYPE_ELEMENTARY_COLLECTION):
+                    if not name.startswith("__") and TypeChecker.check__elementary_collection(value):
                         postpone_collections.update({name: value})
                         continue
-                    self._print_name_value(name, value, max_value_len)
+                    self._print_block__name_value(name, value)
                 if postpone_collections:
                     print()
                 for name, value in postpone_collections.items():
-                    self._print_name_value(name, value, max_value_len)
+                    self._print_block__name_value(name, value)
 
         print("="*100)
-
-    # =================================================================================================================
-    def _print_name_value(
-            self,
-            name,
-            value,
-            max_value_len: Optional[int] = None,
-            max_iter_items: Optional[int] = None,
-    ) -> None:
-        # SETTINGS -------------------------------
-        if max_value_len is None:
-            max_value_len = self.MAX_VALUE_LEN
-
-        if max_iter_items is None:
-            max_iter_items = self.MAX_ITER_ITEMS
-
-        # WORK ---------------------------------------------------------------------------------
-        if self.check_type_is__elementary_single(value):
-            if len(str(value)) > max_value_len:
-                value = str(value)[:max_value_len - 3] + "..."
-            print(f"{name:25}\t{value.__class__.__name__:10}:{value}")
-
-        elif self.check_type_is__elementary_collection(value):
-            if len(str(value)) <= max_value_len:
-                print(f"{name:25}\t{value.__class__.__name__:10}:{value}")
-                return
-
-            # start some pretty style -------------------------------------
-            print(f"{name:25}\t{value.__class__.__name__:10}:")
-            if not isinstance(value, dict):
-                _index = 0
-                for item in value:
-                    _index += 1
-                    if _index > max_iter_items:
-                        print(f"{' ':25}\t{' ':10}:...")
-                        break
-                    print(f"{' ':25}\t{item.__class__.__name__:10}:{item}")
-            else:
-                _index = 0
-                for item_key, item_value in value.items():
-                    _index += 1
-                    if _index > max_iter_items:
-                        print(f"{' ':25}\t{' ':10}:...")
-                        break
-                    print(f"{' ':25}\t{item_key.__class__.__name__}:{item_value.__class__.__name__:10}:{item_key}: {item_value}")
-
-        elif isinstance(value, (Exception, )):
-            print(f"{name:25}\t{value.__class__.__name__:10}:{value!r}")
-
-        else:
-            for value_var in [f"str({str(value)})", f"repr({repr(value)})"]:
-                if len(value_var) > max_value_len:
-                    value = str(value_var)[:max_value_len - 3] + "..."
-                if value_var.startswith("str"):
-                    print(f"{name:25}\t{value.__class__.__name__:10}:{value_var}")
-                else:
-                    print(f"{' ':25}\t{value.__class__.__name__:10}:{value_var}")
 
     # =================================================================================================================
     def print_diffs(self) -> None:

@@ -99,16 +99,16 @@ ObjectInfo(Cls1()).print(
 )
 """
 ==========OBJECTINFO.PRINT==========================================================================
-str(source)=<__main__.Cls1 object at 0x00000160168F6F10>
-repr(source)=<__main__.Cls1 object at 0x00000160168F6F10>
+str(SOURCE)=<__main__.Cls1 object at 0x00000160168F6F10>
+repr(SOURCE)=<__main__.Cls1 object at 0x00000160168F6F10>
 ----------SETTINGS----------------------------------------------------------------------------------
 skip_fullnames=['attrSkipFullName']
 skip_partnames=['SkipPartName']
 only_names_include=[]
 hide_build_in=None
 hide_skipped=None
-_log_iter=True
-----------_log_iter(wait last touched)--------------------------------------------------------------
+log_iter=True
+----------log_iter(wait last touched)--------------------------------------------------------------
 1		__class__
 2		__delattr__
 3		__dict__
@@ -225,16 +225,16 @@ attrSkipPartName
 ObjectInfo(Cls1()).print(only_names_include="attr")
 """
 ==========OBJECTINFO.PRINT==========================================================================
-str(source)=<__main__.Cls1 object at 0x0000016016C0B0D0>
-repr(source)=<__main__.Cls1 object at 0x0000016016C0B0D0>
+str(SOURCE)=<__main__.Cls1 object at 0x0000016016C0B0D0>
+repr(SOURCE)=<__main__.Cls1 object at 0x0000016016C0B0D0>
 ----------SETTINGS----------------------------------------------------------------------------------
 skip_fullnames=None
 skip_partnames=None
 only_names_include='attr'
 hide_build_in=None
 hide_skipped=None
-_log_iter=None
-----------_log_iter(wait last touched)--------------------------------------------------------------
+log_iter=None
+----------log_iter(wait last touched)--------------------------------------------------------------
 ----------properties_ok-----------------------------------------------------------------------------
 attrFloat                	float     :2.2
 attrInt                  	int       :1
