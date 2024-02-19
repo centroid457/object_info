@@ -50,14 +50,14 @@ pass    # place debug point here
         # "feat1",
         # ["feat2", "block1", "block2"],
 
-        "print all properties and methods results",
-        "show exceptions on methods and properties",
-        "skip names by full/part names",
-        "separated collections in groups",
+        "print all properties/methods results",
+        "show exceptions on methods/properties",
+        "skip names by full/part names and use only by partnames",
+        "separated collections by groups",
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 1, 14)
+    VERSION: Tuple[int, int, int] = (0, 2, 0)
     TODO: List[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -66,13 +66,17 @@ pass    # place debug point here
             "add parameter show only diffs or show all",
             "add TESTS after this step!",
         ],
-        "apply asyncio.run for coroutine?"
+        "apply asyncio.run for coroutine?",
+        "add sort method in ObjectState"
     ]
     FIXME: List[str] = [
         "..."
     ]
     NEWS: List[str] = [
-        "NAMES__SKIP_FULL.extend(change collection content/count/order)"
+        ["big ref!",
+         "separate result item as ObjectState",
+         "..."
+         ]
     ]
 
     # FINALIZE -----------------------------------------------

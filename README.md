@@ -1,4 +1,4 @@
-# object_info (v0.1.14)
+# object_info (v0.2.0)
 
 ## DESCRIPTION_SHORT
 print info about object (attributes+properties+methods results)
@@ -19,14 +19,14 @@ obj = platform
 print(platform.platform())
 pass    # place debug point here
 ```  
-3. Useful if you wish to see info from remote source if connecting directly over ssh for example
+3. Useful if you wish to see info from remote SOURCE if connecting directly over ssh for example
 
 
 ## Features
-1. print all properties and methods results  
-2. show exceptions on methods and properties  
-3. skip names by full/part names  
-4. separated collections in groups  
+1. print all properties/methods results  
+2. show exceptions on methods/properties  
+3. skip names by full/part names and use only by partnames  
+4. separated collections by groups  
 
 
 ********************************************************************************
@@ -60,9 +60,10 @@ See tests and sourcecode for other examples.
 from object_info import *
 
 class Cls0:
-    attr1=1
+    attr1 = 1
 
 class Cls1:
+    ATTR_UPPERCASE = "UPPERCASE"
     attrSkipFullName = "attrSkipFullName"
     attrSkipPartName = "SkipPartName"
     attrNone = None
@@ -87,185 +88,203 @@ class Cls1:
         raise Exception("exxMsg")
 
 
-# ObjectInfo(Cls1()).print()
-# ObjectInfo().print(Cls1())
-ObjectInfo(Cls1()).print(
-    _log_iter=True,
-    only_names_include=[],
-    skip_fullnames=["attrSkipFullName", ],
-    skip_partnames=["SkipPartName", ],
+ObjectInfo(
+    Cls1(),
+    log_iter=True,
+    names__use_only_parts=[],
+    names__skip_full=["attrSkipFullName", ],
+    names__skip_parts=["SkipPartName", ],
     hide_build_in=None,
-    hide_skipped=None,
-)
+).print()
 """
-==========OBJECTINFO.PRINT==========================================================================
-str(SOURCE)=<__main__.Cls1 object at 0x00000160168F6F10>
-repr(SOURCE)=<__main__.Cls1 object at 0x00000160168F6F10>
+====================================================================================================
+----------OBJECTINFO.PRINT--------------------------------------------------------------------------
+str(SOURCE)=<__main__.Cls1 object at 0x0000011EFDE34A90>
+repr(SOURCE)=<__main__.Cls1 object at 0x0000011EFDE34A90>
 ----------SETTINGS----------------------------------------------------------------------------------
-skip_fullnames=['attrSkipFullName']
-skip_partnames=['SkipPartName']
-only_names_include=[]
-hide_build_in=None
-hide_skipped=None
-log_iter=True
-----------log_iter(wait last touched)--------------------------------------------------------------
-1		__class__
-2		__delattr__
-3		__dict__
-4		__dir__
-5		__doc__
-6		__eq__
-7		__format__
-8		__ge__
-9		__getattribute__
-10		__getstate__
-11		__gt__
-12		__hash__
-13		__init__
-14		__init_subclass__
-15		__le__
-16		__lt__
-17		__module__
-18		__ne__
-19		__new__
-20		__reduce__
-21		__reduce_ex__
-22		__repr__
-23		__setattr__
-24		__sizeof__
-25		__str__
-26		__subclasshook__
-27		__weakref__
-28		attrClass
-29		attrDict
-30		attrFloat
-31		attrInt
-32		attrList
-33		attrListObj
-34		attrNone
-35		attrObj
-36		attrSet
-37		attrSkipFullName
-38		attrSkipPartName
-39		attrTuple
-40		methExx
-41		methInt
-42		propertyExx
-43		propertyInt
-----------properties_ok-----------------------------------------------------------------------------
-__dict__                 	dict      :{}
-__doc__                  	NoneType  :None
-__module__               	str       :__main__
-__weakref__              	NoneType  :None
-attrFloat                	float     :2.2
-attrInt                  	int       :1
-attrNone                 	NoneType  :None
-propertyInt              	int       :1
-
-attrDict                 	dict      :{1: 1}
-attrList                 	list      :[1, 2, 3]
-attrListObj              	list      :
-                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
-                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
-                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
-                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
-                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
-                         	          :...
-attrSet                  	set       :{1, 2, 3}
-attrTuple                	tuple     :(1, 2, 3)
-----------properties_exx----------------------------------------------------------------------------
-propertyExx              	Exception :Exception('exxMsg')
-----------methods_ok--------------------------------------------------------------------------------
-__class__                	Cls1      :str(<__main__.Cls1 object at 0x0000016016C0AC90>)
-                         	Cls1      :repr(<__main__.Cls1 object at 0x0000016016C0AC90>)
-__dir__                  	list      :
-                         	str       :__module__
-                         	str       :attrSkipFullName
-                         	str       :attrSkipPartName
-                         	str       :attrNone
-                         	str       :attrInt
-                         	          :...
-__getstate__             	NoneType  :None
-__hash__                 	int       :94512936689
-__repr__                 	str       :<__main__.Cls1 object at 0x00000160168F6F10>
-__sizeof__               	int       :24
-__str__                  	str       :<__main__.Cls1 object at 0x00000160168F6F10>
-__subclasshook__         	NotImplementedType:str(NotImplemented)
-                         	NotImplementedType:repr(NotImplemented)
-attrClass                	Cls0      :str(<__main__.Cls0 object at 0x0000016016C0AED0>)
-                         	Cls0      :repr(<__main__.Cls0 object at 0x0000016016C0AED0>)
-methInt                  	int       :1
-----------methods_exx-------------------------------------------------------------------------------
-__eq__                   	TypeError :TypeError('expected 1 argument, got 0')
-__format__               	TypeError :TypeError('Cls1.__format__() takes exactly one argument (0 given)')
-__ge__                   	TypeError :TypeError('expected 1 argument, got 0')
-__getattribute__         	TypeError :TypeError('expected 1 argument, got 0')
-__gt__                   	TypeError :TypeError('expected 1 argument, got 0')
-__le__                   	TypeError :TypeError('expected 1 argument, got 0')
-__lt__                   	TypeError :TypeError('expected 1 argument, got 0')
-__ne__                   	TypeError :TypeError('expected 1 argument, got 0')
-methExx                  	Exception :Exception('exxMsg')
-----------objects-----------------------------------------------------------------------------------
-attrObj                  	Cls0      :str(<__main__.Cls0 object at 0x00000160168F6DD0>)
-                         	Cls0      :repr(<__main__.Cls0 object at 0x00000160168F6DD0>)
-----------skipped_fullnames-------------------------------------------------------------------------
-attrSkipFullName
-----------skipped_partnames-------------------------------------------------------------------------
-__delattr__
-__init__
-__init_subclass__
-__new__
-__reduce__
-__reduce_ex__
-__setattr__
-attrSkipPartName
+self.NAMES__USE_ONLY_PARTS=[]
+self.NAMES__SKIP_FULL=['checkout', 'detach', 'run', 'start', 'wait', 'join', 'terminate', 'quit', 'disconnect', 'exec', 'exec_', 'pyqtConfigure', 'pop', 'popleft', 'append', 'appendleft', 'extend', 'extendleft', 'add', 'insert', 'reverse', 'rotate', 'sort', 'attrSkipFullName', 'attrSkipFullName']
+self.NAMES__SKIP_PARTS=['init', 'new', 'create', 'enter', 'install', 'set', 'clone', 'copy', 'move', 'next', 'clear', 'reduce', 'close', 'del', 'exit', 'kill', 'SkipPartName', 'SkipPartName']
+self.HIDE_BUILD_IN=None
+self.LOG_ITER=True
+self.MAX_LINE_LEN=100
+self.MAX_ITER_ITEMS=5
+----------log_iter(wait last touched)---------------------------------------------------------------
+1:		ATTR_UPPERCASE
+2:		__class__
+3:		__delattr__
+4:		__dict__
+5:		__dir__
+6:		__doc__
+7:		__eq__
+8:		__format__
+9:		__ge__
+10:		__getattribute__
+11:		__getstate__
+12:		__gt__
+13:		__hash__
+14:		__init__
+15:		__init_subclass__
+16:		__le__
+17:		__lt__
+18:		__module__
+19:		__ne__
+20:		__new__
+21:		__reduce__
+22:		__reduce_ex__
+23:		__repr__
+24:		__setattr__
+25:		__sizeof__
+26:		__slotnames__
+27:		__str__
+28:		__subclasshook__
+29:		__weakref__
+30:		attrClass
+31:		attrDict
+32:		attrFloat
+33:		attrInt
+34:		attrList
+35:		attrListObj
+36:		attrNone
+37:		attrObj
+38:		attrSet
+39:		attrSkipFullName
+40:		attrSkipPartName
+41:		attrTuple
+42:		methExx
+43:		methInt
+44:		propertyExx
+45:		propertyInt
+----------SKIPPED_FULLNAMES-------------------------------------------------------------------------
+1:		attrSkipFullName
+----------SKIPPED_PARTNAMES-------------------------------------------------------------------------
+1:		__delattr__
+2:		__init__
+3:		__init_subclass__
+4:		__new__
+5:		__reduce__
+6:		__reduce_ex__
+7:		__setattr__
+8:		attrSkipPartName
+----------PROPERTIES__ELEMENTARY_SINGLE-------------------------------------------------------------
+ATTR_UPPERCASE      	str         :UPPERCASE
+__doc__             	NoneType    :None
+__module__          	str         :__main__
+__weakref__         	NoneType    :None
+attrFloat           	float       :2.2
+attrInt             	int         :1
+attrNone            	NoneType    :None
+propertyInt         	int         :1
+----------PROPERTIES__ELEMENTARY_COLLECTION---------------------------------------------------------
+__dict__            	dict        :{}
+__slotnames__       	list        :[]
+attrDict            	dict        :{1: 1}
+attrList            	list        :[1, 2, 3]
+attrListObj         	list        :[<__main__.Cls0 object at 0x0000011EFDFB70D0>, <__main__.Cls0 o...
+                    	Cls0        :	<__main__.Cls0 object at 0x0000011EFDFB70D0>
+                    	Cls0        :	<__main__.Cls0 object at 0x0000011EFDFB70D0>
+                    	Cls0        :	<__main__.Cls0 object at 0x0000011EFDFB70D0>
+                    	Cls0        :	<__main__.Cls0 object at 0x0000011EFDFB70D0>
+                    	Cls0        :	<__main__.Cls0 object at 0x0000011EFDFB70D0>
+                    	            :	...
+attrSet             	set         :{1, 2, 3}
+attrTuple           	tuple       :(1, 2, 3)
+----------PROPERTIES__OBJECTS-----------------------------------------------------------------------
+attrObj             	Cls0        :<__main__.Cls0 object at 0x0000011EFDFB7050>
+                    	__repr()    :<__main__.Cls0 object at 0x0000011EFDFB7050>
+----------PROPERTIES__EXX---------------------------------------------------------------------------
+propertyExx         	Exception   :Exception('exxMsg')
+----------METHODS__ELEMENTARY_SINGLE----------------------------------------------------------------
+__getstate__        	NoneType    :None
+__hash__            	int         :77038761129
+__repr__            	str         :<__main__.Cls1 object at 0x0000011EFDE34A90>
+__sizeof__          	int         :24
+__str__             	str         :<__main__.Cls1 object at 0x0000011EFDE34A90>
+methInt             	int         :1
+----------METHODS__ELEMENTARY_COLLECTION------------------------------------------------------------
+__dir__             	list        :['__module__', 'ATTR_UPPERCASE', 'attrSkipFullName', 'attrSkipP...
+                    	str         :	__module__
+                    	str         :	ATTR_UPPERCASE
+                    	str         :	attrSkipFullName
+                    	str         :	attrSkipPartName
+                    	str         :	attrNone
+                    	            :	...
+----------METHODS__OBJECTS--------------------------------------------------------------------------
+__class__           	Cls1        :<__main__.Cls1 object at 0x0000011EFE5CD490>
+                    	__repr()    :<__main__.Cls1 object at 0x0000011EFE5CD490>
+__subclasshook__    	NotImplementedType:NotImplemented
+                    	__repr()    :NotImplemented
+attrClass           	Cls0        :<__main__.Cls0 object at 0x0000011EFE5CD790>
+                    	__repr()    :<__main__.Cls0 object at 0x0000011EFE5CD790>
+----------METHODS__EXX------------------------------------------------------------------------------
+__eq__              	TypeError   :TypeError('expected 1 argument, got 0')
+__format__          	TypeError   :TypeError('Cls1.__format__() takes exactly one argument (0 give...
+__ge__              	TypeError   :TypeError('expected 1 argument, got 0')
+__getattribute__    	TypeError   :TypeError('expected 1 argument, got 0')
+__gt__              	TypeError   :TypeError('expected 1 argument, got 0')
+__le__              	TypeError   :TypeError('expected 1 argument, got 0')
+__lt__              	TypeError   :TypeError('expected 1 argument, got 0')
+__ne__              	TypeError   :TypeError('expected 1 argument, got 0')
+methExx             	Exception   :Exception('exxMsg')
 ====================================================================================================
 """
 
-ObjectInfo(Cls1()).print(only_names_include="attr")
+ObjectInfo(
+    Cls1(),
+    log_iter=False,
+    names__use_only_parts="attr",
+    # names__skip_full=["attrSkipFullName", ],
+    # names__skip_parts=["SkipPartName", ],
+    # hide_build_in=None,
+).print()
 """
-==========OBJECTINFO.PRINT==========================================================================
-str(SOURCE)=<__main__.Cls1 object at 0x0000016016C0B0D0>
-repr(SOURCE)=<__main__.Cls1 object at 0x0000016016C0B0D0>
+====================================================================================================
+----------OBJECTINFO.PRINT--------------------------------------------------------------------------
+str(SOURCE)=<__main__.Cls1 object at 0x0000011EFE5CD910>
+repr(SOURCE)=<__main__.Cls1 object at 0x0000011EFE5CD910>
 ----------SETTINGS----------------------------------------------------------------------------------
-skip_fullnames=None
-skip_partnames=None
-only_names_include='attr'
-hide_build_in=None
-hide_skipped=None
-log_iter=None
-----------log_iter(wait last touched)--------------------------------------------------------------
-----------properties_ok-----------------------------------------------------------------------------
-attrFloat                	float     :2.2
-attrInt                  	int       :1
-attrNone                 	NoneType  :None
-attrSkipFullName         	str       :attrSkipFullName
-attrSkipPartName         	str       :SkipPartName
-
-attrDict                 	dict      :{1: 1}
-attrList                 	list      :[1, 2, 3]
-attrListObj              	list      :
-                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
-                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
-                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
-                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
-                         	Cls0      :<__main__.Cls0 object at 0x00000160168F6E10>
-                         	          :...
-attrSet                  	set       :{1, 2, 3}
-attrTuple                	tuple     :(1, 2, 3)
-----------properties_exx----------------------------------------------------------------------------
-----------methods_ok--------------------------------------------------------------------------------
-attrClass                	Cls0      :str(<__main__.Cls0 object at 0x0000016016C0B490>)
-                         	Cls0      :repr(<__main__.Cls0 object at 0x0000016016C0B490>)
-----------methods_exx-------------------------------------------------------------------------------
-__getattribute__         	TypeError :TypeError('expected 1 argument, got 0')
-----------objects-----------------------------------------------------------------------------------
-attrObj                  	Cls0      :str(<__main__.Cls0 object at 0x00000160168F6DD0>)
-                         	Cls0      :repr(<__main__.Cls0 object at 0x00000160168F6DD0>)
-----------skipped_fullnames-------------------------------------------------------------------------
-----------skipped_partnames-------------------------------------------------------------------------
-__delattr__
-__setattr__
+self.NAMES__USE_ONLY_PARTS=['attr']
+self.NAMES__SKIP_FULL=['checkout', 'detach', 'run', 'start', 'wait', 'join', 'terminate', 'quit', 'disconnect', 'exec', 'exec_', 'pyqtConfigure', 'pop', 'popleft', 'append', 'appendleft', 'extend', 'extendleft', 'add', 'insert', 'reverse', 'rotate', 'sort', 'attrSkipFullName', 'attrSkipFullName']
+self.NAMES__SKIP_PARTS=['init', 'new', 'create', 'enter', 'install', 'set', 'clone', 'copy', 'move', 'next', 'clear', 'reduce', 'close', 'del', 'exit', 'kill', 'SkipPartName', 'SkipPartName']
+self.HIDE_BUILD_IN=None
+self.LOG_ITER=False
+self.MAX_LINE_LEN=100
+self.MAX_ITER_ITEMS=5
+----------log_iter(wait last touched)---------------------------------------------------------------
+----------SKIPPED_FULLNAMES-------------------------------------------------------------------------
+1:		attrSkipFullName
+----------SKIPPED_PARTNAMES-------------------------------------------------------------------------
+1:		__delattr__
+2:		__setattr__
+3:		attrSkipPartName
+----------PROPERTIES__ELEMENTARY_SINGLE-------------------------------------------------------------
+ATTR_UPPERCASE      	str         :UPPERCASE
+attrFloat           	float       :2.2
+attrInt             	int         :1
+attrNone            	NoneType    :None
+----------PROPERTIES__ELEMENTARY_COLLECTION---------------------------------------------------------
+attrDict            	dict        :{1: 1}
+attrList            	list        :[1, 2, 3]
+attrListObj         	list        :[<__main__.Cls0 object at 0x0000011EFDFB70D0>, <__main__.Cls0 o...
+                    	Cls0        :	<__main__.Cls0 object at 0x0000011EFDFB70D0>
+                    	Cls0        :	<__main__.Cls0 object at 0x0000011EFDFB70D0>
+                    	Cls0        :	<__main__.Cls0 object at 0x0000011EFDFB70D0>
+                    	Cls0        :	<__main__.Cls0 object at 0x0000011EFDFB70D0>
+                    	Cls0        :	<__main__.Cls0 object at 0x0000011EFDFB70D0>
+                    	            :	...
+attrSet             	set         :{1, 2, 3}
+attrTuple           	tuple       :(1, 2, 3)
+----------PROPERTIES__OBJECTS-----------------------------------------------------------------------
+attrObj             	Cls0        :<__main__.Cls0 object at 0x0000011EFDFB7050>
+                    	__repr()    :<__main__.Cls0 object at 0x0000011EFDFB7050>
+----------PROPERTIES__EXX---------------------------------------------------------------------------
+----------METHODS__ELEMENTARY_SINGLE----------------------------------------------------------------
+----------METHODS__ELEMENTARY_COLLECTION------------------------------------------------------------
+----------METHODS__OBJECTS--------------------------------------------------------------------------
+attrClass           	Cls0        :<__main__.Cls0 object at 0x0000011EFE5CDE50>
+                    	__repr()    :<__main__.Cls0 object at 0x0000011EFE5CDE50>
+----------METHODS__EXX------------------------------------------------------------------------------
+__getattribute__    	TypeError   :TypeError('expected 1 argument, got 0')
 ====================================================================================================
 """
 ```

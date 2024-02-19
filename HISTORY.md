@@ -8,6 +8,7 @@
 	- add parameter show only diffs or show all  
 	- add TESTS after this step!  
 3. apply asyncio.run for coroutine?  
+4. add sort method in ObjectState  
 
 ********************************************************************************
 ## FIXME
@@ -15,6 +16,12 @@
 
 ********************************************************************************
 ## NEWS
+
+0.2.0 (2024/02/19 14:57:29)
+------------------------------
+- big ref!:  
+	- separate result item as ObjectState  
+	- ...  
 
 0.1.14 (2024/02/14 11:53:05)
 ------------------------------
