@@ -1,6 +1,7 @@
 from typing import *
 import re
 # from enum import Enum
+from dataclasses import dataclass, astuple, asdict, field
 
 
 # =====================================================================================================================
@@ -48,8 +49,9 @@ class TypeChecker:
             return True
         elif hasattr(source, '__iter__') or hasattr(source, '__getitem__'):
             return True
-        else:
-            return False
+
+        # FINAL ---------------------
+        return False
 
     @staticmethod
     def check__iterable_but_not_str(source):
@@ -67,6 +69,18 @@ class TypeChecker:
     @staticmethod
     def check__elementary_collection(source) -> bool:
         return isinstance(source, TypeChecker.TYPES_ELEMENTARY_COLLECTION)
+
+    @staticmethod
+    def check__elementary_collection_not_dict(source) -> bool:
+        return isinstance(source, TypeChecker.TYPES_ELEMENTARY_COLLECTION) and not isinstance(source, dict)
+
+    @staticmethod
+    def check__Exception(source) -> bool:
+        return isinstance(source, Exception)
+
+    @staticmethod
+    def check__Object(source) -> bool:
+        return not TypeChecker.check__elementary(source) and not TypeChecker.check__Exception(source)
 
 
 # =====================================================================================================================
@@ -86,31 +100,37 @@ def _value_search_by_list(source=None, search_list=[]):
 
 
 # =====================================================================================================================
-class InternalItem(NamedTuple):
+class ItemInternal(NamedTuple):
     KEY: str
     VALUE: str
 
 
 # =====================================================================================================================
-class ObjectState(NamedTuple):
-    SKIPPED_FULLNAMES: List[str] = []
-    SKIPPED_PARTNAMES: List[str] = []
 
-    PROPERTIES_OK: Dict[str, Any] = {}
-    PROPERTIES_OBJECTS: Dict[str, Any] = {}
-    PROPERTIES_EXX: Dict[str, Exception] = {}
+@dataclass
+class ObjectState:
+    """
+    class for keeping results
+    """
+    # TODO: add sort method!!!
+    SKIPPED_FULLNAMES: List[str] = field(default_factory=list)
+    SKIPPED_PARTNAMES: List[str] = field(default_factory=list)
 
-    METHODS_OK: Dict[str, Any] = {}
-    METHODS_OBJECTS: Dict[str, Any] = {}
-    METHODS_EXX: Dict[str, Exception] = {}
+    PROPERTIES__ELEMENTARY_SINGLE: Dict[str, Any] = field(default_factory=dict)
+    PROPERTIES__ELEMENTARY_COLLECTION: Dict[str, Any] = field(default_factory=dict)
+    PROPERTIES__OBJECTS: Dict[str, Any] = field(default_factory=dict)
+    PROPERTIES__EXX: Dict[str, Exception] = field(default_factory=dict)
+
+    METHODS__ELEMENTARY_SINGLE: Dict[str, Any] = field(default_factory=dict)
+    METHODS__ELEMENTARY_COLLECTION: Dict[str, Any] = field(default_factory=dict)
+    METHODS__OBJECTS: Dict[str, Any] = field(default_factory=dict)
+    METHODS__EXX: Dict[str, Exception] = field(default_factory=dict)
 
 
 # =====================================================================================================================
 class ObjectInfo:
     # SETTINGS --------------------------------------------
-
-    # LOAD ------------------------------------------------
-    MAX_VALUE_LEN: int = 100
+    MAX_LINE_LEN: int = 100
     MAX_ITER_ITEMS: int = 5
     HIDE_BUILD_IN: bool = None
     LOG_ITER: bool = None
@@ -140,7 +160,7 @@ class ObjectInfo:
         "close", "del", "exit", "kill",
     ]
 
-    # VALUES --------------------------------------------------
+    # AUX --------------------------------------------------
     ITEM_CLS: type[ObjectState] = ObjectState
     ITEM: ObjectState = ITEM_CLS()
     SOURCE: Any = None
@@ -149,24 +169,53 @@ class ObjectInfo:
             self,
             source: Optional[Any] = None,
 
-            # max_value_len: Optional[int] = None,
-            # only_names_include: Union[None, str, List[str]] = None,
-            # hide_build_in: Optional[bool] = None,
-            # skip_fullnames: Optional[List[str]] = None,
-            # skip_partnames: Optional[List[str]] = None,
-            # log_iter: Optional[bool] = None
+            max_value_len: Optional[int] = None,
+            max_iter_items: Optional[int] = None,
+            hide_build_in: Optional[bool] = None,
+            log_iter: Optional[bool] = None,
+
+            names__use_only_parts: Union[None, str, List[str]] = None,
+            names__skip_full: Union[None, str, List[str]] = None,
+            names__skip_parts: Union[None, str, List[str]] = None,
     ):
-        self._groups__clear()
+
+        # SETTINGS -----------------------------------------------------------
+        # RAPAMS -----------------------
+        if max_value_len is not None:
+            self.MAX_VALUE_LEN = max_value_len
+        if max_iter_items is not None:
+            self.MAX_ITER_ITEMS = max_iter_items
+        if hide_build_in is not None:
+            self.HIDE_BUILD_IN = hide_build_in
+        if log_iter is not None:
+            self.LOG_ITER = log_iter
+
+        # LISTS -----------------------
+        if names__use_only_parts:
+            if isinstance(names__use_only_parts, str):
+                names__use_only_parts = [names__use_only_parts, ]
+            self.NAMES__USE_ONLY_PARTS = names__use_only_parts
+        if names__skip_full:
+            if isinstance(names__skip_full, str):
+                names__skip_full = [names__skip_full, ]
+            self.NAMES__SKIP_FULL.extend(names__skip_full)
+        if names__skip_parts:
+            if isinstance(names__skip_parts, str):
+                names__skip_full = [names__skip_parts, ]
+            self.NAMES__SKIP_PARTS.extend(names__skip_parts)
+
+        # WORK -----------------------------------------------------------
+        self._item_clear()
 
         if source is not None:
             self.SOURCE = source
 
     # =================================================================================================================
-    def _groups__clear(self) -> None:
+    def _item_clear(self) -> None:
         self.ITEM = self.ITEM_CLS()
 
-    def _groups__reload(self) -> None:
-        self._groups__clear()
+    def _item_reload(self) -> None:
+        self._item_clear()
 
         # WORK --------------------------------------
         name = "log_iter(wait last touched)"
@@ -176,7 +225,7 @@ class ObjectInfo:
             if self.LOG_ITER:
                 print(f"{pos}:\t\t{name}")
 
-            # filter names -------------------------
+            # FILTER -----------------------------------------------------------------------
             if self.HIDE_BUILD_IN and TypeChecker.check__name_is_build_in(name):
                 continue
 
@@ -189,7 +238,7 @@ class ObjectInfo:
                 if not use_name:
                     continue
 
-            # SKIP ----------------------------------
+            # SKIP ------------------------------------------------------------------------
             SKIP_FULLNAMES = []
             if self.NAMES__SKIP_FULL:
                 SKIP_FULLNAMES.extend(self.NAMES__SKIP_FULL)
@@ -208,30 +257,42 @@ class ObjectInfo:
                 self.ITEM.SKIPPED_PARTNAMES.append(name)
                 continue
 
+            # PROPERTIES/METHODS + Exception--------------------------------------------------
+            attr_is_method: bool = False
             try:
-                attr_obj = getattr(self.SOURCE, name)
+                value = getattr(self.SOURCE, name)
             except Exception as exx:
-                value = exx
-                self.ITEM.PROPERTIES_EXX.update({name: value})
+                self.ITEM.PROPERTIES__EXX.update({name: exx})
                 continue
 
-            if callable(attr_obj):
+            if callable(value):
+                attr_is_method = True
                 try:
-                    value = attr_obj()
-                    self.ITEM.METHODS_OK.update({name: value})
+                    value = value()
                 except Exception as exx:
-                    value = exx
-                    self.ITEM.METHODS_EXX.update({name: value})
-                continue
+                    self.ITEM.METHODS__EXX.update({name: exx})
+                    continue
 
             # print(f"{name=}/{attr_obj=}/type={type(attr_obj)}/elementary={isinstance(attr_obj, TYPES_ELEMENTARY)}")
 
-            if TypeChecker.check__elementary(attr_obj):
-                value = attr_obj
-                self.ITEM.PROPERTIES_OK.update({name: value})
+            # PLACE VALUE ---------------------------------------------------------------------
+            if TypeChecker.check__elementary_single(value):
+                if attr_is_method:
+                    self.ITEM.METHODS__ELEMENTARY_SINGLE.update({name: value})
+                else:
+                    self.ITEM.PROPERTIES__ELEMENTARY_SINGLE.update({name: value})
+
+            elif TypeChecker.check__elementary_collection(value):
+                if attr_is_method:
+                    self.ITEM.METHODS__ELEMENTARY_COLLECTION.update({name: value})
+                else:
+                    self.ITEM.PROPERTIES__ELEMENTARY_COLLECTION.update({name: value})
+
             else:
-                value = attr_obj
-                self.ITEM.PROPERTIES_OBJECTS.update({name: value})
+                if attr_is_method:
+                    self.ITEM.METHODS__OBJECTS.update({name: value})
+                else:
+                    self.ITEM.PROPERTIES__OBJECTS.update({name: value})
 
     # =================================================================================================================
     def _print_line__group_separator(self, name: str) -> str:
@@ -243,62 +304,52 @@ class ObjectInfo:
         print(result)
         return result
 
-    def _print_line__name_type_value(self, name: Optional[str] = None, value: Union[None, Any, InternalItem] = None, intend: Optional[int] = None) -> str:
+    def _print_line__name_type_value(self, name: Optional[str] = None, type_replace: Optional[str] = None, value: Union[None, Any, ItemInternal] = None, intend: Optional[int] = None) -> str:
         # -------------------------------
         name = name or ""
-        block_name = f"{name:25}"
+        if isinstance(value, ItemInternal):
+            name = ""
+        block_name = f"{name}"
 
         # -------------------------------
-        if isinstance(value, InternalItem):
+        block_type = f"{value.__class__.__name__}"
+        if isinstance(value, ItemInternal):
             block_type = f"{value.KEY.__class__.__name__}:{value.VALUE.__class__.__name__}"
-        elif value is None:
-            block_type = f"None"
-        else:
-            block_type = f"{value.__class__.__name__}"
+        if type_replace is not None:
+            block_type = type_replace
 
         # -------------------------------
         intend = intend or 0
-        _block_intend = " " * intend
+        if isinstance(value, ItemInternal):
+            intend = 1
+
+        _block_intend = "\t" * intend
 
         # -------------------------------
         block_value = f"{value}"
+        if isinstance(value, ItemInternal):
+            block_type = f"{value.KEY}:{value.VALUE}"
+        elif TypeChecker.check__Exception(value):
+            block_value = f"{value!r}"
 
         # -------------------------------
-        result = f"{block_name}\t{block_type}:{_block_intend}{block_value}"
-        # FIXME: FINISH!!!
-        # FIXME: FINISH!!!
-        # FIXME: FINISH!!!
-        # FIXME: FINISH!!!
-        # FIXME: FINISH!!!
-        # FIXME: FINISH!!!
-        # FIXME: FINISH!!!
-        # FIXME: FINISH!!!
-        # FIXME: FINISH!!!
-        # FIXME: FINISH!!!
+        result = f"{block_name:20}\t{block_type:12}:{_block_intend}{block_value}"
 
+        if len(result) > self.MAX_LINE_LEN:
+            result = result[:self.MAX_LINE_LEN - 3] + "..."
 
-
-
-
-
-
-        if isinstance(value, InternalItem):
-            name = ""
-            result = f"{'':25}\t{value.KEY.__class__.__name__}:{value.VALUE.__class__.__name__}:{_block_intend}{value.KEY}:{value.VALUE}"
-
-        if len(str(value)) > self.MAX_VALUE_LEN:
-            value = str(value)[:self.MAX_VALUE_LEN - 3] + "..."
-
-        result = f"{name:25}\t{value.__class__.__name__:10}:{_block_intend}{value}"
+        # --------------------------------------------------------------------------------------
         print(result)
+
+        # -------------------------------
+        if name and TypeChecker.check__Object(value):
+            # additional print for object
+            self._print_line__name_type_value(name=None, type_replace="__repr()", value=f"{value!r}")
+
         return result
 
     # =================================================================================================================
     def _print_block__head(self) -> None:
-        # apply settings ----------------------------------
-        if self.MAX_VALUE_LEN is None:
-            max_value_len = self.MAX_VALUE_LEN
-
         # start printing ----------------------------------
         name = f"{self.__class__.__name__}.print"
         self._print_line__group_separator(name.upper())
@@ -310,98 +361,68 @@ class ObjectInfo:
         name = "SETTINGS"
         self._print_line__group_separator(name)
 
+        print(f"{self.NAMES__USE_ONLY_PARTS=}")
         print(f"{self.NAMES__SKIP_FULL=}")
         print(f"{self.NAMES__SKIP_PARTS=}")
-        print(f"{self.NAMES__USE_ONLY_PARTS=}")
 
         print(f"{self.HIDE_BUILD_IN=}")
         print(f"{self.LOG_ITER=}")
 
+        print(f"{self.MAX_LINE_LEN=}")
+        print(f"{self.MAX_ITER_ITEMS=}")
+
     def _print_block__name_value(self, name, value) -> None:
-        # WORK ---------------------------------------------------------------------------------
+        # ALWAYS ---------------------------------------------------------------------------------
         self._print_line__name_type_value(name=name, value=value)
-        if len(str(value)) <= self.MAX_VALUE_LEN:
+        if len(str(value)) <= self.MAX_LINE_LEN:
             return
 
-        if TypeChecker.check__elementary_single(value):
-            return
+        # SINGLE/EXX/OBJECTS ---------------------------------------------------------------------
+        if any([
+            TypeChecker.check__elementary_single(value),
+            TypeChecker.check__Exception(value),
+            TypeChecker.check__Object(value),
+        ]):
+            pass
 
-        elif TypeChecker.check__elementary_collection(value):
+        # COLLECTION -----------------------------------------------------------------------------
+        if TypeChecker.check__elementary_collection(value):
             # start some pretty style -------------------------------------
             if not isinstance(value, dict):
                 _index = 0
                 for item in value:
                     _index += 1
                     if _index > self.MAX_ITER_ITEMS:
-                        print(f"{' ':25}\t{' ':10}:...")
+                        self._print_line__name_type_value(name=None, type_replace="", value="...", intend=1)
                         break
-
-                    self._print_line__name_type_value(name=None, value=item, intend=4)
+                    self._print_line__name_type_value(name=None, value=item, intend=1)
 
             elif isinstance(value, dict):
                 _index = 0
                 for item_key, item_value in value.items():
                     _index += 1
                     if _index > self.MAX_ITER_ITEMS:
-                        print(f"{' ':25}\t{' ':10}:...")
+                        self._print_line__name_type_value(name=None, type_replace="", value="...", intend=1)
                         break
-                    self._print_line__name_type_value(name=None, value=item, intend=4)
-
-                    print(f"{' ':25}\t{item_key.__class__.__name__}:{item_value.__class__.__name__:10}:{item_key}: {item_value}")
-
-        elif isinstance(value, (Exception, )):
-            print(f"{name:25}\t{value.__class__.__name__:10}:{value!r}")
-
-        else:
-            for value_var in [f"str({str(value)})", f"repr({repr(value)})"]:
-                if len(value_var) > self.MAX_VALUE_LEN:
-                    value = str(value_var)[:self.MAX_VALUE_LEN - 3] + "..."
-                if value_var.startswith("str"):
-                    print(f"{name:25}\t{value.__class__.__name__:10}:{value_var}")
-                else:
-                    print(f"{' ':25}\t{value.__class__.__name__:10}:{value_var}")
-
-
-            for value_var in [f"str({str(value)})", f"repr({repr(value)})"]:
-                if len(value_var) > self.MAX_VALUE_LEN:
-                    value = str(value_var)[:self.MAX_VALUE_LEN - 3] + "..."
-                if value_var.startswith("str"):
-                    self._print_line__name_type_value(name=name, value=value_var)
-                else:
-                    self._print_line__name_type_value(name=None, value=value_var)
+                    self._print_line__name_type_value(name=None, value=ItemInternal(item_key, item_value))
 
     # =================================================================================================================
     def print(self) -> None:
         """print all params from object
         if method - try to start it!
         """
-        # GROUPS ----------------------------------------
-        self._groups__reload()
-
+        print("="*100)
         self._print_block__head()
+        self._item_reload()
 
-        # RESULTS ----------------------------------
-        for batch_name in [
-            "properties_ok", "properties_exx",
-            "methods_ok", "methods_exx",
-            "objects",
-            "skipped_fullnames", "skipped_partnames",
-        ]:
-            self._print_line__group_separator(batch_name)
+        for group_name, group_values in self.ITEM.__getstate__().items():
+            self._print_line__group_separator(group_name)
 
-            if batch_name.startswith("skip"):
-                for name in getattr(self, batch_name):
-                    print(name)
+            if TypeChecker.check__elementary_collection_not_dict(group_values):
+                for pos, name in enumerate(group_values, start=1):
+                    print(f"{pos}:\t\t{name}")
             else:
-                postpone_collections: Dict = {}
-                for name, value in getattr(self, batch_name).items():
-                    if not name.startswith("__") and TypeChecker.check__elementary_collection(value):
-                        postpone_collections.update({name: value})
-                        continue
-                    self._print_block__name_value(name, value)
-                if postpone_collections:
-                    print()
-                for name, value in postpone_collections.items():
+                for name, value in group_values.items():
                     self._print_block__name_value(name, value)
 
         print("="*100)
