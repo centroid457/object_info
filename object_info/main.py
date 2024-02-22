@@ -223,7 +223,7 @@ class ObjectInfo:
 
         for pos, name in enumerate(dir(self.SOURCE), start=1):
             if self.LOG_ITER:
-                print(f"{pos}:\t\t{name}")
+                print(f"{pos}:\t{name}")
 
             # FILTER -----------------------------------------------------------------------
             if self.HIDE_BUILD_IN and TypeChecker.check__name_is_build_in(name):
@@ -420,7 +420,7 @@ class ObjectInfo:
 
             if TypeChecker.check__elementary_collection_not_dict(group_values):
                 for pos, name in enumerate(group_values, start=1):
-                    print(f"{pos}:\t\t{name}")
+                    print(f"{pos}:\t{name}")
             else:
                 for name, value in group_values.items():
                     self._print_block__name_value(name, value)

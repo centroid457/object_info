@@ -57,7 +57,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 0)
+    VERSION: Tuple[int, int, int] = (0, 2, 1)
     TODO: List[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -73,10 +73,7 @@ pass    # place debug point here
         "..."
     ]
     NEWS: List[str] = [
-        ["big ref!",
-         "separate result item as ObjectState",
-         "..."
-         ]
+        "zero del double TAB in iterating lists",
     ]
 
     # FINALIZE -----------------------------------------------
