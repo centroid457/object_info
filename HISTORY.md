@@ -8,7 +8,7 @@
 	- add parameter show only diffs or show all  
 	- add TESTS after this step!  
 3. apply asyncio.run for coroutine?  
-4. add sort method in ObjectState  
+4. merge items Property/Meth? - cause it does not matter callable or not (just add type info block)  
 
 ********************************************************************************
 ## FIXME
@@ -16,6 +16,10 @@
 
 ********************************************************************************
 ## NEWS
+
+0.2.2 (2024/03/07 11:26:33)
+------------------------------
+- fix max_line_len/max_iter_items  
 
 0.2.1 (2024/02/22 11:30:56)
 ------------------------------

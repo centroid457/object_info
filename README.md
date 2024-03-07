@@ -1,4 +1,4 @@
-# object_info (v0.2.1)
+# object_info (v0.2.2)
 
 ## DESCRIPTION_SHORT
 print info about object (attributes+properties+methods results)
@@ -236,6 +236,8 @@ ObjectInfo(
     # names__skip_full=["attrSkipFullName", ],
     # names__skip_parts=["SkipPartName", ],
     # hide_build_in=None,
+    # max_line_len=0,
+    # max_iter_items=0,
 ).print()
 """
 ====================================================================================================

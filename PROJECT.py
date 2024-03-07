@@ -57,7 +57,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 1)
+    VERSION: Tuple[int, int, int] = (0, 2, 2)
     TODO: List[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -67,13 +67,13 @@ pass    # place debug point here
             "add TESTS after this step!",
         ],
         "apply asyncio.run for coroutine?",
-        "add sort method in ObjectState"
+        "merge items Property/Meth? - cause it does not matter callable or not (just add type info block)"
     ]
     FIXME: List[str] = [
         "..."
     ]
     NEWS: List[str] = [
-        "zero del double TAB in iterating lists",
+        "fix max_line_len/max_iter_items",
     ]
 
     # FINALIZE -----------------------------------------------
