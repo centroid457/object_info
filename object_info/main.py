@@ -129,6 +129,9 @@ class ObjectState:
 
 # =====================================================================================================================
 class ObjectInfo:
+    """
+    :ivar MAX_ITER_ITEMS: 0 or None if not limited!
+    """
     # SETTINGS --------------------------------------------
     MAX_LINE_LEN: int = 100
     MAX_ITER_ITEMS: int = 5
@@ -169,7 +172,7 @@ class ObjectInfo:
             self,
             source: Optional[Any] = None,
 
-            max_value_len: Optional[int] = None,
+            max_line_len: Optional[int] = None,
             max_iter_items: Optional[int] = None,
             hide_build_in: Optional[bool] = None,
             log_iter: Optional[bool] = None,
@@ -181,8 +184,8 @@ class ObjectInfo:
 
         # SETTINGS -----------------------------------------------------------
         # RAPAMS -----------------------
-        if max_value_len is not None:
-            self.MAX_VALUE_LEN = max_value_len
+        if max_line_len is not None:
+            self.MAX_LINE_LEN = max_line_len
         if max_iter_items is not None:
             self.MAX_ITER_ITEMS = max_iter_items
         if hide_build_in is not None:
@@ -300,7 +303,7 @@ class ObjectInfo:
         GOAL MAIN - print!
         GOAL SECONDARY - return str - just for tests!!!
         """
-        result = "-" * 10 + f"{name:-<90}"
+        result = "-" * 10 + f"{name:-<90}"      # here is standard MAX_LINE_LEN
         print(result)
         return result
 
@@ -335,7 +338,7 @@ class ObjectInfo:
         # -------------------------------
         result = f"{block_name:20}\t{block_type:12}:{_block_intend}{block_value}"
 
-        if len(result) > self.MAX_LINE_LEN:
+        if self.MAX_LINE_LEN and len(result) > self.MAX_LINE_LEN:
             result = result[:self.MAX_LINE_LEN - 3] + "..."
 
         # --------------------------------------------------------------------------------------
@@ -392,7 +395,7 @@ class ObjectInfo:
                 _index = 0
                 for item in value:
                     _index += 1
-                    if _index > self.MAX_ITER_ITEMS:
+                    if self.MAX_ITER_ITEMS and _index > self.MAX_ITER_ITEMS:
                         self._print_line__name_type_value(name=None, type_replace="", value="...", intend=1)
                         break
                     self._print_line__name_type_value(name=None, value=item, intend=1)
@@ -401,7 +404,7 @@ class ObjectInfo:
                 _index = 0
                 for item_key, item_value in value.items():
                     _index += 1
-                    if _index > self.MAX_ITER_ITEMS:
+                    if self.MAX_ITER_ITEMS and _index > self.MAX_ITER_ITEMS:
                         self._print_line__name_type_value(name=None, type_replace="", value="...", intend=1)
                         break
                     self._print_line__name_type_value(name=None, value=ItemInternal(item_key, item_value))

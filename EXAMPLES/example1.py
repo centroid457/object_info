@@ -177,6 +177,8 @@ ObjectInfo(
     # names__skip_full=["attrSkipFullName", ],
     # names__skip_parts=["SkipPartName", ],
     # hide_build_in=None,
+    # max_line_len=0,
+    # max_iter_items=0,
 ).print()
 """
 ====================================================================================================
