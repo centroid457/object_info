@@ -57,7 +57,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 2)
+    VERSION: Tuple[int, int, int] = (0, 2, 3)
     TODO: List[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -73,7 +73,7 @@ pass    # place debug point here
         "..."
     ]
     NEWS: List[str] = [
-        "fix max_line_len/max_iter_items",
+        "zero [NAMES__SKIP_PARTS] move all from NAMES__SKIP_FULL",
     ]
 
     # FINALIZE -----------------------------------------------

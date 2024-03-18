@@ -140,18 +140,6 @@ class ObjectInfo:
 
     NAMES__USE_ONLY_PARTS: List[str] = []
     NAMES__SKIP_FULL: List[str] = [
-        # GIT
-        "checkout", "detach",
-        # threads
-        "run", "start", "wait", "join", "terminate", "quit", "disconnect",
-        # PyQt5 Qthread
-        "exec", "exec_", "pyqtConfigure",
-        # change collection content/count/order
-        "pop", "popleft",
-        "append", "appendleft",
-        "extend", "extendleft",
-        "add", "insert",
-        "reverse", "rotate", "sort",
     ]
     NAMES__SKIP_PARTS: List[str] = [
         # DANGER
@@ -161,6 +149,21 @@ class ObjectInfo:
         "next",
         "clear", "reduce",
         "close", "del", "exit", "kill",
+
+        # PyQt5 Qthread
+        "exec", "exec_", "pyqtConfigure",
+
+        # GIT
+        "checkout", "detach",
+        # threads
+        "run", "start", "wait", "join", "terminate", "quit", "disconnect",
+
+        # change collection content/count/order
+        "pop", "popleft",
+        "append", "appendleft",
+        "extend", "extendleft",
+        "add", "insert",
+        "reverse", "rotate", "sort",
     ]
 
     # AUX --------------------------------------------------
