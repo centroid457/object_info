@@ -57,7 +57,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 3)
+    VERSION: Tuple[int, int, int] = (0, 2, 4)
     TODO: List[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -73,7 +73,7 @@ pass    # place debug point here
         "..."
     ]
     NEWS: List[str] = [
-        "zero [NAMES__SKIP_PARTS] move all from NAMES__SKIP_FULL",
+        "zero just want to check share pypi",
     ]
 
     # FINALIZE -----------------------------------------------
