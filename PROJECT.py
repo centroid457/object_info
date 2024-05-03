@@ -57,7 +57,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 3)
+    VERSION: Tuple[int, int, int] = (0, 2, 4)
     TODO: List[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -73,8 +73,12 @@ pass    # place debug point here
         "..."
     ]
     NEWS: List[str] = [
-        "zero [NAMES__SKIP_PARTS] move all from NAMES__SKIP_FULL",
+        ["[print] zero",
+            "fix WRAPPER_MAIN_LINE for convenient length in Word",
+            "fix length for ellipsis in overlonged lines"
+         ]
     ]
+
 
     # FINALIZE -----------------------------------------------
     VERSION_STR: str = ".".join(map(str, VERSION))

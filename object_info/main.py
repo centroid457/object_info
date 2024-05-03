@@ -342,7 +342,7 @@ class ObjectInfo:
         result = f"{block_name:20}\t{block_type:12}:{_block_intend}{block_value}"
 
         if self.MAX_LINE_LEN and len(result) > self.MAX_LINE_LEN:
-            result = result[:self.MAX_LINE_LEN - 3] + "..."
+            result = result[:self.MAX_LINE_LEN - 3*2] + "..."
 
         # --------------------------------------------------------------------------------------
         print(result)
@@ -417,7 +417,9 @@ class ObjectInfo:
         """print all params from object
         if method - try to start it!
         """
-        print("="*100)
+        WRAPPER_MAIN_LINE = "="*min(90, self.MAX_LINE_LEN)  # here we need use less then
+
+        print(WRAPPER_MAIN_LINE)
         self._print_block__head()
         self._item_reload()
 
@@ -430,8 +432,7 @@ class ObjectInfo:
             else:
                 for name, value in group_values.items():
                     self._print_block__name_value(name, value)
-
-        print("="*100)
+        print(WRAPPER_MAIN_LINE)
 
     # =================================================================================================================
     def print_diffs(self) -> None:
