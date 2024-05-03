@@ -17,6 +17,12 @@
 ********************************************************************************
 ## NEWS
 
+0.2.4 (2024/05/03 15:10:10)
+------------------------------
+- [print] zero:  
+	- fix WRAPPER_MAIN_LINE for convenient length in Word  
+	- fix length for ellipsis in overlonged lines  
+
 0.2.3 (2024/03/18 11:58:07)
 ------------------------------
 - zero [NAMES__SKIP_PARTS] move all from NAMES__SKIP_FULL  
