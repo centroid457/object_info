@@ -57,7 +57,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 4)
+    VERSION: Tuple[int, int, int] = (0, 2, 5)
     TODO: List[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -73,12 +73,9 @@ pass    # place debug point here
         "..."
     ]
     NEWS: List[str] = [
-        ["[print] zero",
-            "fix WRAPPER_MAIN_LINE for convenient length in Word",
-            "fix length for ellipsis in overlonged lines"
-         ]
+        "[__INIT__.py] fix import",
+        "apply last pypi template",
     ]
-
 
     # FINALIZE -----------------------------------------------
     VERSION_STR: str = ".".join(map(str, VERSION))
