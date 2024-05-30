@@ -17,6 +17,7 @@ class Cls:
 class ClsInt(int):
     pass
 
+
 class Exx(Exception):
     pass
 
@@ -77,9 +78,10 @@ class Test__1:
 
         assert victim(int) is False
         assert victim(int(1)) is False
-        assert victim(str) is True      # not clear
+        assert victim(str) is True      # not clear!!!
         assert victim(str(1)) is True
-
+        assert victim(Exception) is False
+        assert victim(Exception()) is False
         assert victim(Cls) is False
         assert victim(Cls()) is False
         assert victim(ClsInt) is False
@@ -103,12 +105,14 @@ class Test__1:
         assert victim(int(1)) is False
         assert victim(str) is True        # not clear!!!
         assert victim(str(1)) is False
-
+        assert victim(Exception) is False
+        assert victim(Exception()) is False
         assert victim(Cls) is False
         assert victim(Cls()) is False
         assert victim(ClsInt) is False
         assert victim(ClsInt()) is False
 
+    # -----------------------------------------------------------------------------------------------------------------
     def test__check__elementary(self):
         victim = self.Victim.check__elementary
 
@@ -124,11 +128,86 @@ class Test__1:
         assert victim(int(1)) is True
         assert victim(str) is False
         assert victim(str(1)) is True
-
+        assert victim(Exception) is False
+        assert victim(Exception()) is False
+        assert victim(Exx) is False
+        assert victim(Exx()) is False
         assert victim(Cls) is False
         assert victim(Cls()) is False
         assert victim(ClsInt) is False
         assert victim(ClsInt()) is True     # not clear!!!
+
+    def test__check__elementary_single(self):
+        victim = self.Victim.check__elementary_single
+
+        assert victim("str") is True
+        assert victim(b"str") is True
+        assert victim(111) is True
+        assert victim((111, )) is False
+        assert victim([111, ]) is False
+        assert victim({111, }) is False
+        assert victim({111: 222 }) is False
+
+        assert victim(int) is False
+        assert victim(int(1)) is True
+        assert victim(str) is False
+        assert victim(str(1)) is True
+        assert victim(Exception) is False
+        assert victim(Exception()) is False
+        assert victim(Exx) is False
+        assert victim(Exx()) is False
+        assert victim(Cls) is False
+        assert victim(Cls()) is False
+        assert victim(ClsInt) is False
+        assert victim(ClsInt()) is True     # not clear!!!
+
+    def test__check__elementary_collection(self):
+        victim = self.Victim.check__elementary_collection
+
+        assert victim("str") is False
+        assert victim(b"str") is False
+        assert victim(111) is False
+        assert victim((111, )) is True
+        assert victim([111, ]) is True
+        assert victim({111, }) is True
+        assert victim({111: 222 }) is True
+
+        assert victim(int) is False
+        assert victim(int(1)) is False
+        assert victim(str) is False
+        assert victim(str(1)) is False
+        assert victim(Exception) is False
+        assert victim(Exception()) is False
+        assert victim(Exx) is False
+        assert victim(Exx()) is False
+        assert victim(Cls) is False
+        assert victim(Cls()) is False
+        assert victim(ClsInt) is False
+        assert victim(ClsInt()) is False
+
+    def test__check__elementary_collection_not_dict(self):
+        victim = self.Victim.check__elementary_collection_not_dict
+
+        assert victim("str") is False
+        assert victim(b"str") is False
+        assert victim(111) is False
+        assert victim((111, )) is True
+        assert victim([111, ]) is True
+        assert victim({111, }) is True
+        assert victim({111: 222 }) is False
+
+        assert victim(int) is False
+        assert victim(int(1)) is False
+        assert victim(str) is False
+        assert victim(str(1)) is False
+        assert victim(Exception) is False
+        assert victim(Exception()) is False
+        assert victim(Exx) is False
+        assert victim(Exx()) is False
+        assert victim(Cls) is False
+        assert victim(Cls()) is False
+        assert victim(ClsInt) is False
+        assert victim(ClsInt()) is False
 
     # -----------------------------------------------------------------------------------------------------------------
     def test__check__class(self):
@@ -150,7 +229,6 @@ class Test__1:
         assert victim(Exception()) is False
         assert victim(Exx) is True
         assert victim(Exx()) is False
-
         assert victim(Cls) is True
         assert victim(Cls()) is False
         assert victim(ClsInt) is True
@@ -175,7 +253,6 @@ class Test__1:
         assert victim(Exception()) is True
         assert victim(Exx) is False
         assert victim(Exx()) is True
-
         assert victim(Cls) is False
         assert victim(Cls()) is True
         assert victim(ClsInt) is False
@@ -200,7 +277,6 @@ class Test__1:
         assert victim(Exception()) is True
         assert victim(Exx) is True
         assert victim(Exx()) is True
-
         assert victim(Cls) is False
         assert victim(Cls()) is False
         assert victim(ClsInt) is False

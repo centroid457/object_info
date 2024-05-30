@@ -53,6 +53,7 @@ class TypeChecker:
         """checks if SOURCE is iterable, but not exactly str!!!"""
         return TypeChecker.check__iterable(source, str_and_bytes_as_iterable=False)
 
+    # -----------------------------------------------------------------------------------------------------------------
     @staticmethod
     def check__elementary(source) -> bool:
         return isinstance(source, TypeChecker.TYPES_ELEMENTARY)
