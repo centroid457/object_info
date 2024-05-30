@@ -206,7 +206,7 @@ class ObjectInfo:
                     self.ITEM.METHODS__EXX.update({name: exx})
                     continue
 
-            # print(f"{name=}/{attr_obj=}/type={type(attr_obj)}/elementary={isinstance(attr_obj, TYPES_ELEMENTARY)}")
+            # print(f"{name=}/{attr_obj=}/type={type(attr_obj)}/elementary={isinstance(attr_obj, TYPES__ELEMENTARY)}")
 
             # PLACE VALUE ---------------------------------------------------------------------
             if TypeChecker.check__elementary_single(value):

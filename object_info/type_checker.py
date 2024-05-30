@@ -3,16 +3,16 @@ from typing import *
 
 # =====================================================================================================================
 class TypeChecker:
-    TYPES_ELEMENTARY_SINGLE: tuple = (
+    TYPES__ELEMENTARY_SINGLE: tuple = (
         type(None), bool,
         str, bytes,
         int, float,
     )
-    TYPES_ELEMENTARY_COLLECTION: tuple = (
+    TYPES__ELEMENTARY_COLLECTION: tuple = (
         tuple, list,
         set, dict,
     )
-    TYPES_ELEMENTARY: tuple = (*TYPES_ELEMENTARY_SINGLE, *TYPES_ELEMENTARY_COLLECTION,)
+    TYPES__ELEMENTARY: tuple = (*TYPES__ELEMENTARY_SINGLE, *TYPES__ELEMENTARY_COLLECTION,)
 
     # -----------------------------------------------------------------------------------------------------------------
     @staticmethod
@@ -56,19 +56,19 @@ class TypeChecker:
     # -----------------------------------------------------------------------------------------------------------------
     @staticmethod
     def check__elementary(source) -> bool:
-        return isinstance(source, TypeChecker.TYPES_ELEMENTARY)
+        return isinstance(source, TypeChecker.TYPES__ELEMENTARY)
 
     @staticmethod
     def check__elementary_single(source) -> bool:
-        return isinstance(source, TypeChecker.TYPES_ELEMENTARY_SINGLE)
+        return isinstance(source, TypeChecker.TYPES__ELEMENTARY_SINGLE)
 
     @staticmethod
     def check__elementary_collection(source) -> bool:
-        return isinstance(source, TypeChecker.TYPES_ELEMENTARY_COLLECTION)
+        return isinstance(source, TypeChecker.TYPES__ELEMENTARY_COLLECTION)
 
     @staticmethod
     def check__elementary_collection_not_dict(source) -> bool:
-        return isinstance(source, TypeChecker.TYPES_ELEMENTARY_COLLECTION) and not isinstance(source, dict)
+        return isinstance(source, TypeChecker.TYPES__ELEMENTARY_COLLECTION) and not isinstance(source, dict)
 
     # -----------------------------------------------------------------------------------------------------------------
     @staticmethod
