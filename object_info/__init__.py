@@ -5,14 +5,23 @@
 
 
 # =====================================================================================================================
-from .main import (
+from .object_info import (
     # BASE
     ObjectInfo,
 
     # AUX
-    TypeChecker,
     ItemInternal,
     ObjectState,
+
+    # TYPES
+
+    # EXX
+)
+from .type_checker import (
+    # BASE
+    TypeChecker,
+
+    # AUX
 
     # TYPES
 
