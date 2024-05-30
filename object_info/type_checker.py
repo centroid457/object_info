@@ -14,10 +14,12 @@ class TypeChecker:
     )
     TYPES_ELEMENTARY: tuple = (*TYPES_ELEMENTARY_SINGLE, *TYPES_ELEMENTARY_COLLECTION,)
 
+    # -----------------------------------------------------------------------------------------------------------------
     @staticmethod
     def check__name_is_build_in(name: str) -> bool:
-        return name.startswith("__") and name.endswith("__")
+        return name.startswith("__") and name.endswith("__") and len(name) > 4
 
+    # -----------------------------------------------------------------------------------------------------------------
     @staticmethod
     def check__iterable(
             # self,
@@ -67,20 +69,30 @@ class TypeChecker:
     def check__elementary_collection_not_dict(source) -> bool:
         return isinstance(source, TypeChecker.TYPES_ELEMENTARY_COLLECTION) and not isinstance(source, dict)
 
-    @staticmethod
-    def check__Exception(source) -> bool:
-        return isinstance(source, Exception)
-
-    @staticmethod
-    def check__instance(source) -> bool:
-        return not TypeChecker.check__elementary(source) and not TypeChecker.check__Exception(source)
-
+    # -----------------------------------------------------------------------------------------------------------------
     @staticmethod
     def check__class(source) -> bool:
         try:
-            return issubclass(source, type)
+            return issubclass(source, object)
         except:
             return False
+
+    @staticmethod
+    def check__instance(source) -> bool:
+        return not TypeChecker.check__class(source)
+
+    @staticmethod
+    def check__exception(source) -> bool:
+        """
+        any of both variant (Instyance/Class) of any Exception!
+        """
+        if isinstance(source, Exception):
+            return True
+        try:
+            return issubclass(source, Exception)
+        except:
+            pass
+        return False
 
 
 # =====================================================================================================================

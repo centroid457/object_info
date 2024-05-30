@@ -10,26 +10,201 @@ from object_info import *
 
 
 # =====================================================================================================================
+class Cls:
+    pass
+
+
+class ClsInt(int):
+    pass
+
+class Exx(Exception):
+    pass
+
+
+# =====================================================================================================================
 class Test__1:
     @classmethod
     def setup_class(cls):
         pass
+        cls.Victim = TypeChecker
 
-    @classmethod
-    def teardown_class(cls):
-        pass
-
-    def setup_method(self, method):
-        pass
+    # @classmethod
+    # def teardown_class(cls):
+    #     pass
+    #
+    # def setup_method(self, method):
+    #     pass
+    #
+    # def teardown_method(self, method):
+    #     pass
 
     # -----------------------------------------------------------------------------------------------------------------
-    def test__QThread(self):
-        class Victim:
-            def run(self):
-                time.sleep(0.3)
+    def test__name_is_build_in(self):
+        victim = self.Victim.check__name_is_build_in
+        assert victim("_") is False
+        assert victim("__") is False
+        assert victim("____") is False
+        assert victim("__abc__") is True
 
-        ObjectInfo(Victim()).print()
-        assert True
+        assert victim("__abc_") is False
+        assert victim("__abc") is False
+        assert victim("_abc") is False
+        assert victim("_abc_") is False
+        assert victim("_abc__") is False
+        assert victim("abc__") is False
+
+        assert victim("___abc___") is True
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__iterable(self):
+        victim = self.Victim.check__iterable
+
+        assert victim("str", True, True) is True
+        assert victim("str", True, False) is False
+
+        assert victim(b"str", True, True) is True
+        assert victim(b"str", True, False) is False
+
+        assert victim(111) is False
+
+        assert victim((111, )) is True
+        assert victim([111, ]) is True
+        assert victim({111, }) is True
+
+        assert victim({111: 222 }) is True
+        assert victim({111: 222 }, True, True) is True
+        assert victim({111: 222 }, False, True) is False
+
+        assert victim(int) is False
+        assert victim(int(1)) is False
+        assert victim(str) is True      # not clear
+        assert victim(str(1)) is True
+
+        assert victim(Cls) is False
+        assert victim(Cls()) is False
+        assert victim(ClsInt) is False
+        assert victim(ClsInt()) is False
+
+    def test__iterable_but_not_str(self):
+        victim = self.Victim.check__iterable_but_not_str
+
+        assert victim("str") is False
+        assert victim(b"str") is False
+
+        assert victim(111) is False
+
+        assert victim((111, )) is True
+        assert victim([111, ]) is True
+        assert victim({111, }) is True
+
+        assert victim({111: 222 }) is True
+
+        assert victim(int) is False
+        assert victim(int(1)) is False
+        assert victim(str) is True        # not clear!!!
+        assert victim(str(1)) is False
+
+        assert victim(Cls) is False
+        assert victim(Cls()) is False
+        assert victim(ClsInt) is False
+        assert victim(ClsInt()) is False
+
+    def test__check__elementary(self):
+        victim = self.Victim.check__elementary
+
+        assert victim("str") is True
+        assert victim(b"str") is True
+        assert victim(111) is True
+        assert victim((111, )) is True
+        assert victim([111, ]) is True
+        assert victim({111, }) is True
+        assert victim({111: 222 }) is True
+
+        assert victim(int) is False
+        assert victim(int(1)) is True
+        assert victim(str) is False
+        assert victim(str(1)) is True
+
+        assert victim(Cls) is False
+        assert victim(Cls()) is False
+        assert victim(ClsInt) is False
+        assert victim(ClsInt()) is True     # not clear!!!
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__check__class(self):
+        victim = self.Victim.check__class
+
+        assert victim("str") is False
+        assert victim(b"str") is False
+        assert victim(111) is False
+        assert victim((111, )) is False
+        assert victim([111, ]) is False
+        assert victim({111, }) is False
+        assert victim({111: 222 }) is False
+
+        assert victim(int) is True
+        assert victim(int(1)) is False
+        assert victim(str) is True
+        assert victim(str(1)) is False
+        assert victim(Exception) is True
+        assert victim(Exception()) is False
+        assert victim(Exx) is True
+        assert victim(Exx()) is False
+
+        assert victim(Cls) is True
+        assert victim(Cls()) is False
+        assert victim(ClsInt) is True
+        assert victim(ClsInt()) is False
+
+    def test__check__instance(self):
+        victim = self.Victim.check__instance
+
+        assert victim("str") is True
+        assert victim(b"str") is True
+        assert victim(111) is True
+        assert victim((111, )) is True
+        assert victim([111, ]) is True
+        assert victim({111, }) is True
+        assert victim({111: 222 }) is True
+
+        assert victim(int) is False
+        assert victim(int(1)) is True
+        assert victim(str) is False
+        assert victim(str(1)) is True
+        assert victim(Exception) is False
+        assert victim(Exception()) is True
+        assert victim(Exx) is False
+        assert victim(Exx()) is True
+
+        assert victim(Cls) is False
+        assert victim(Cls()) is True
+        assert victim(ClsInt) is False
+        assert victim(ClsInt()) is True
+
+    def test__check__exception(self):
+        victim = self.Victim.check__exception
+
+        assert victim("str") is False
+        assert victim(b"str") is False
+        assert victim(111) is False
+        assert victim((111, )) is False
+        assert victim([111, ]) is False
+        assert victim({111, }) is False
+        assert victim({111: 222 }) is False
+
+        assert victim(int) is False
+        assert victim(int(1)) is False
+        assert victim(str) is False
+        assert victim(str(1)) is False
+        assert victim(Exception) is True
+        assert victim(Exception()) is True
+        assert victim(Exx) is True
+        assert victim(Exx()) is True
+
+        assert victim(Cls) is False
+        assert victim(Cls()) is False
+        assert victim(ClsInt) is False
+        assert victim(ClsInt()) is False
 
 
 # =====================================================================================================================

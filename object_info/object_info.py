@@ -262,7 +262,7 @@ class ObjectInfo:
         block_value = f"{value}"
         if isinstance(value, ItemInternal):
             block_type = f"{value.KEY}:{value.VALUE}"
-        elif TypeChecker.check__Exception(value):
+        elif TypeChecker.check__exception(value):
             block_value = f"{value!r}"
 
         # -------------------------------
@@ -313,7 +313,7 @@ class ObjectInfo:
         # SINGLE/EXX/OBJECTS ---------------------------------------------------------------------
         if any([
             TypeChecker.check__elementary_single(value),
-            TypeChecker.check__Exception(value),
+            TypeChecker.check__exception(value),
             TypeChecker.check__instance(value),
         ]):
             pass
