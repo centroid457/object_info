@@ -70,16 +70,17 @@ class TypeChecker:
     def check__elementary_collection_not_dict(source) -> bool:
         return isinstance(source, TypeChecker.TYPES__ELEMENTARY_COLLECTION) and not isinstance(source, dict)
 
-    # -----------------------------------------------------------------------------------------------------------------
+    # CLASSES ---------------------------------------------------------------------------------------------------------
     @staticmethod
-    def check__class(source) -> bool:
+    def check__class(source: Any) -> bool:
+        # return hasattr(source, "__class__")     # this is incorrect!!! tests get fail!
         try:
             return issubclass(source, object)
         except:
             return False
 
     @staticmethod
-    def check__instance(source) -> bool:
+    def check__instance(source: Any) -> bool:
         return not TypeChecker.check__class(source)
 
     @staticmethod
@@ -94,6 +95,17 @@ class TypeChecker:
         except:
             pass
         return False
+
+    @staticmethod
+    def check__nested__by_cls_or_inst(source: Any, parent: Any) -> bool:
+        """
+        any of both variant (Instyance/Class) comparing with TARGET of both variant (Instyance/Class)
+        """
+        if TypeChecker.check__instance(source):
+            source = source.__class__
+        if TypeChecker.check__instance(parent):
+            parent = parent.__class__
+        return issubclass(source, parent)
 
 
 # =====================================================================================================================

@@ -282,5 +282,33 @@ class Test__1:
         assert victim(ClsInt) is False
         assert victim(ClsInt()) is False
 
+    def test__check__nested__by_cls_or_inst(self):
+        victim = self.Victim.check__nested__by_cls_or_inst
+
+        assert victim("str", "str") is True
+        assert victim("str", str) is True
+        assert victim(str, str) is True
+        assert victim(str, "str") is True
+        assert victim(int, str) is False
+        assert victim(int, "str") is False
+
+        assert victim(int, 111) is True
+        assert victim(111, int) is True
+
+        assert victim(Exception, Exception) is True
+        assert victim(Exception(), Exception) is True
+        assert victim(Exception(), Exception()) is True
+        assert victim(Exception, Exception()) is True
+
+        assert victim(Exx, Exception) is True
+        assert victim(Exx(), Exception) is True
+        assert victim(Exx(), Exception()) is True
+        assert victim(Exx, Exception()) is True
+
+        assert victim(Exception, Exx) is False
+        assert victim(Exception(), Exx) is False
+        assert victim(Exception(), Exx()) is False
+        assert victim(Exception, Exx()) is False
+
 
 # =====================================================================================================================
