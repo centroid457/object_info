@@ -57,7 +57,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 5)
+    VERSION: Tuple[int, int, int] = (0, 2, 6)
     TODO: List[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -73,8 +73,13 @@ pass    # place debug point here
         "..."
     ]
     NEWS: List[str] = [
-        "[__INIT__.py] fix import",
-        "apply last pypi template",
+        ["[TypeChecker]",
+            "separate class",
+            "separate tests",
+            "finish tests",
+            "add check__class",
+            "fix check__exception for both INst/Cls",
+         ]
     ]
 
     # FINALIZE -----------------------------------------------

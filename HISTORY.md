@@ -17,6 +17,15 @@
 ********************************************************************************
 ## NEWS
 
+0.2.6 (2024/05/30 16:17:43)
+------------------------------
+- [TypeChecker]:  
+	- separate class  
+	- separate tests  
+	- finish tests  
+	- add check__class  
+	- fix check__exception for both INst/Cls  
+
 0.2.5 (2024/05/22 12:41:54)
 ------------------------------
 - [__INIT__.py] fix import  
