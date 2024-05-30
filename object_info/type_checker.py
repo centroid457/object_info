@@ -100,6 +100,8 @@ class TypeChecker:
     def check__nested__by_cls_or_inst(source: Any, parent: Any) -> bool:
         """
         any of both variant (Instyance/Class) comparing with TARGET of both variant (Instyance/Class)
+
+        specially created for pytest_aux for comparing with Exception!
         """
         if TypeChecker.check__instance(source):
             source = source.__class__
