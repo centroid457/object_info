@@ -10,8 +10,13 @@ from object_info import *
 
 
 # =====================================================================================================================
-class Cls:
+def func():
     pass
+
+
+class Cls:
+    def meth(self):
+        pass
 
 
 class ClsInt(int):
@@ -233,6 +238,11 @@ class Test__1:
         assert victim(Cls()) is False
         assert victim(ClsInt) is True
         assert victim(ClsInt()) is False
+
+        assert victim(func) is False
+        assert victim(Cls.meth) is False
+        assert victim(Cls().meth) is False
+
 
     def test__check__instance(self):
         victim = self.Victim.check__instance

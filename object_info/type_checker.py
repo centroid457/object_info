@@ -73,6 +73,9 @@ class TypeChecker:
     # CLASSES ---------------------------------------------------------------------------------------------------------
     @staticmethod
     def check__class(source: Any) -> bool:
+        """
+        works both for funcs/meths for any Сды/Штые1 see tests test__check__class
+        """
         # return hasattr(source, "__class__")     # this is incorrect!!! tests get fail!
         try:
             return issubclass(source, object)
