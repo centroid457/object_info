@@ -29,7 +29,7 @@ class PROJECT:    # AUX --------------------------------------------------
     # add DOUBLE SPACE at the end of all lines! for correct representation in MD-viewers
     DESCRIPTION_SHORT: str = "print info about object (attributes+properties+methods results)"
     DESCRIPTION_LONG: str = """
-Designed to print info about object (properties+methods results)  
+Designed to print info about object (properties+methods results)
 
 But why? if we can use debugger directly?  
 Reason:  
@@ -57,7 +57,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 7)
+    VERSION: Tuple[int, int, int] = (0, 2, 8)
     TODO: List[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -73,7 +73,7 @@ pass    # place debug point here
         "..."
     ]
     NEWS: List[str] = [
-        "[TypeChecker] add check__nested__by_cls_or_inst",
+        "[TypeChecker] extend test__check__class for funcs/meth ClsInst",
     ]
 
     # FINALIZE -----------------------------------------------

@@ -1,10 +1,10 @@
-# object_info (v0.2.7)
+# object_info (v0.2.8)
 
 ## DESCRIPTION_SHORT
 print info about object (attributes+properties+methods results)
 
 ## DESCRIPTION_LONG
-Designed to print info about object (properties+methods results)  
+Designed to print info about object (properties+methods results)
 
 But why? if we can use debugger directly?  
 Reason:  
