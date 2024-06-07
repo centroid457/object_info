@@ -2,6 +2,7 @@ from typing import *
 
 
 # =====================================================================================================================
+@final
 class TypeChecker:
     TYPES__ELEMENTARY_SINGLE: tuple = (
         type(None), bool,
@@ -81,6 +82,21 @@ class TypeChecker:
             return issubclass(source, object)
         except:
             return False
+
+    @staticmethod
+    def check__func_or_meth(source: Any) -> bool:
+        """
+        creates specially for detect all funcs like func/meth/or even DescriptedClasses (it is class but actually used like func!)
+        recommended using instead of just Callable! cause Callable keeps additionally every class instead of just simple func/method!
+        """
+        result = (
+                (not TypeChecker.check__class(source) and callable(source))
+                # or
+                # source in TypeChecker.TYPES__ELEMENTARY
+                or
+                (TypeChecker.check__class(source) and issubclass(source, TypeChecker.TYPES__ELEMENTARY))
+        )
+        return result
 
     @staticmethod
     def check__instance(source: Any) -> bool:

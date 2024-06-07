@@ -22,6 +22,11 @@ class Cls:
 class ClsInt(int):
     pass
 
+class ClsStr(str):
+    pass
+
+# class ClsBool(bool):  # cant use it!
+#     pass
 
 class Exx(Exception):
     pass
@@ -243,6 +248,36 @@ class Test__1:
         assert victim(Cls.meth) is False
         assert victim(Cls().meth) is False
 
+    def test__check__func_or_meth(self):
+        victim = self.Victim.check__func_or_meth
+
+        assert victim("str") is False
+        assert victim(b"str") is False
+        assert victim(111) is False
+        assert victim((111, )) is False
+        assert victim([111, ]) is False
+        assert victim({111, }) is False
+        assert victim({111: 222 }) is False
+
+        assert victim(int) is True
+        assert victim(int(1)) is False
+        assert victim(str) is True
+        assert victim(str(1)) is False
+        assert victim(Exception) is False
+        assert victim(Exception()) is False
+        assert victim(Exx) is False
+        assert victim(Exx()) is False
+        assert victim(Cls) is False
+        assert victim(Cls()) is False
+        assert victim(ClsInt) is True
+        assert victim(ClsInt()) is False
+
+        assert victim(func) is True
+        assert victim(Cls.meth) is True
+        assert victim(Cls().meth) is True
+
+        assert victim(ClsInt) is True
+        assert victim(ClsStr) is True
 
     def test__check__instance(self):
         victim = self.Victim.check__instance
