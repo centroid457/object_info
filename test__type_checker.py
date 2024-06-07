@@ -19,17 +19,36 @@ class Cls:
         pass
 
 
+class Exx(Exception):
+    pass
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# class ClsBool(bool):  # cant use it!
+#     pass
+
+
 class ClsInt(int):
     pass
+
 
 class ClsStr(str):
     pass
 
-# class ClsBool(bool):  # cant use it!
-#     pass
 
-class Exx(Exception):
+class ClsList(list):
     pass
+
+
+class ClsSet(set):
+    pass
+
+
+class ClsDict(dict):
+    pass
+
+
+CLASSES__AS_FUNC: list = [ClsInt, ClsStr, ClsList, ClsSet, ClsDict, ]
 
 
 # =====================================================================================================================
@@ -276,8 +295,8 @@ class Test__1:
         assert victim(Cls.meth) is True
         assert victim(Cls().meth) is True
 
-        assert victim(ClsInt) is True
-        assert victim(ClsStr) is True
+        for class_i in CLASSES__AS_FUNC:
+            assert victim(class_i) is True
 
     def test__check__instance(self):
         victim = self.Victim.check__instance
