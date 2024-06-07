@@ -57,7 +57,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 8)
+    VERSION: Tuple[int, int, int] = (0, 2, 9)
     TODO: List[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -73,7 +73,7 @@ pass    # place debug point here
         "..."
     ]
     NEWS: List[str] = [
-        "[TypeChecker] extend test__check__class for funcs/meth ClsInst",
+        "[TypeChecker] add check__func_or_meth",
     ]
 
     # FINALIZE -----------------------------------------------
