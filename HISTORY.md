@@ -9,6 +9,7 @@
 	- add TESTS after this step!  
 3. apply asyncio.run for coroutine?  
 4. merge items Property/Meth? - cause it does not matter callable or not (just add type info block)  
+5. add check__instance_of_user_class  
 
 ********************************************************************************
 ## FIXME
@@ -16,6 +17,13 @@
 
 ********************************************************************************
 ## NEWS
+
+0.2.10 (2024/06/13 15:10:03)
+------------------------------
+- [TypeChecker]:  
+	- add check__instance_not_elementary  
+	- zero finish test.parametrisation  
+	- fix check__class for callables  
 
 0.2.9 (2024/06/07 14:09:00)
 ------------------------------
