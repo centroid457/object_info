@@ -102,6 +102,8 @@ class TypeChecker:
     def check__instance(source: Any) -> bool:
         return not TypeChecker.check__class(source)
 
+    # TODO: add check__instance_of_user_class
+
     @staticmethod
     def check__exception(source) -> bool:
         """

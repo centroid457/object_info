@@ -67,7 +67,10 @@ pass    # place debug point here
             "add TESTS after this step!",
         ],
         "apply asyncio.run for coroutine?",
-        "merge items Property/Meth? - cause it does not matter callable or not (just add type info block)"
+        "merge items Property/Meth? - cause it does not matter callable or not (just add type info block)",
+
+        "add check__instance_of_user_class",
+
     ]
     FIXME: List[str] = [
         "..."

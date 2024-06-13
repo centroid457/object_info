@@ -7,14 +7,20 @@ import shutil
 from tempfile import TemporaryDirectory
 
 from object_info import *
+from pytest_aux import *
 
 
 # =====================================================================================================================
+func_lambda = lambda: None
+
+
 def func():
     pass
 
 
 class Cls:
+    attr = None
+
     def meth(self):
         pass
 
@@ -69,52 +75,77 @@ class Test__1:
     #     pass
 
     # -----------------------------------------------------------------------------------------------------------------
-    def test__name_is_build_in(self):
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            ("_", False),
+            ("__", False),
+            ("____", False),
+
+            ("___abc___", True),
+            ("__abc__", True),
+            ("__abc_", False),
+            ("__abc", False),
+
+            ("_abc__", False),
+            ("_abc_", False),
+            ("_abc", False),
+
+            ("abc__", False),
+            ("abc_", False),
+            ("abc", False),
+        ]
+    )
+    def test__name_is_build_in(self, args, _EXPECTED):
         victim = self.Victim.check__name_is_build_in
-        assert victim("_") is False
-        assert victim("__") is False
-        assert victim("____") is False
-        assert victim("__abc__") is True
-
-        assert victim("__abc_") is False
-        assert victim("__abc") is False
-        assert victim("_abc") is False
-        assert victim("_abc_") is False
-        assert victim("_abc__") is False
-        assert victim("abc__") is False
-
-        assert victim("___abc___") is True
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
-    def test__iterable(self):
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (("str", True, True), True),
+            (("str", True, False), False),
+
+            ((b"bytes", True, True), True),
+            ((b"bytes", True, False), False),
+
+            ((111, ), False),
+            (((111, ),), True),
+            (([111, ],), True),
+            (({111, },), True),
+            (({111: 222, },), True),
+            (({111: 222, }, True, True), True),
+            (({111: 222, }, False, True), False),
+
+            (int, False),
+            (int(1), False),
+            (str, True),        # not clear!!!
+            (str(1), True),
+
+            (Exception, False),
+            (Exception(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, False),
+            (ClsInt(), False),
+
+        ]
+    )
+    def test__iterable(self, args, _EXPECTED):
         victim = self.Victim.check__iterable
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
 
-        assert victim("str", True, True) is True
-        assert victim("str", True, False) is False
 
-        assert victim(b"str", True, True) is True
-        assert victim(b"str", True, False) is False
 
-        assert victim(111) is False
 
-        assert victim((111, )) is True
-        assert victim([111, ]) is True
-        assert victim({111, }) is True
 
-        assert victim({111: 222 }) is True
-        assert victim({111: 222 }, True, True) is True
-        assert victim({111: 222 }, False, True) is False
 
-        assert victim(int) is False
-        assert victim(int(1)) is False
-        assert victim(str) is True      # not clear!!!
-        assert victim(str(1)) is True
-        assert victim(Exception) is False
-        assert victim(Exception()) is False
-        assert victim(Cls) is False
-        assert victim(Cls()) is False
-        assert victim(ClsInt) is False
-        assert victim(ClsInt()) is False
+
+
+
+
 
     def test__iterable_but_not_str(self):
         victim = self.Victim.check__iterable_but_not_str
@@ -239,6 +270,41 @@ class Test__1:
         assert victim(ClsInt()) is False
 
     # -----------------------------------------------------------------------------------------------------------------
+    def test__check__func_or_meth(self):
+        victim = self.Victim.check__func_or_meth
+
+        assert victim("str") is False
+        assert victim(b"str") is False
+        assert victim(111) is False
+        assert victim((111,)) is False
+        assert victim([111, ]) is False
+        assert victim({111, }) is False
+        assert victim({111: 222}) is False
+
+        assert victim(int) is True
+        assert victim(int(1)) is False
+        assert victim(str) is True
+        assert victim(str(1)) is False
+        assert victim(Exception) is False
+        assert victim(Exception()) is False
+        assert victim(Exx) is False
+        assert victim(Exx()) is False
+        assert victim(Cls) is False
+        assert victim(Cls()) is False
+        assert victim(ClsInt) is True
+        assert victim(ClsInt()) is False
+
+        assert victim(func) is True
+        assert victim(func_lambda) is True
+        assert victim(Cls.meth) is True
+        assert victim(Cls().meth) is True
+        assert victim(Cls.attr) is False
+        assert victim(Cls().attr) is False
+
+        for class_i in CLASSES__AS_FUNC:
+            assert victim(class_i) is True
+
+    # -----------------------------------------------------------------------------------------------------------------
     def test__check__class(self):
         victim = self.Victim.check__class
 
@@ -264,39 +330,16 @@ class Test__1:
         assert victim(ClsInt()) is False
 
         assert victim(func) is False
+        assert victim(func_lambda) is False
         assert victim(Cls.meth) is False
         assert victim(Cls().meth) is False
-
-    def test__check__func_or_meth(self):
-        victim = self.Victim.check__func_or_meth
-
-        assert victim("str") is False
-        assert victim(b"str") is False
-        assert victim(111) is False
-        assert victim((111, )) is False
-        assert victim([111, ]) is False
-        assert victim({111, }) is False
-        assert victim({111: 222 }) is False
-
-        assert victim(int) is True
-        assert victim(int(1)) is False
-        assert victim(str) is True
-        assert victim(str(1)) is False
-        assert victim(Exception) is False
-        assert victim(Exception()) is False
-        assert victim(Exx) is False
-        assert victim(Exx()) is False
-        assert victim(Cls) is False
-        assert victim(Cls()) is False
-        assert victim(ClsInt) is True
-        assert victim(ClsInt()) is False
-
-        assert victim(func) is True
-        assert victim(Cls.meth) is True
-        assert victim(Cls().meth) is True
+        assert victim(Cls.attr) is False
+        assert victim(Cls().attr) is False
 
         for class_i in CLASSES__AS_FUNC:
             assert victim(class_i) is True
+
+    # TODO: add check__instance_of_user_class
 
     def test__check__instance(self):
         victim = self.Victim.check__instance
@@ -322,6 +365,17 @@ class Test__1:
         assert victim(ClsInt) is False
         assert victim(ClsInt()) is True
 
+        assert victim(func) is False
+        assert victim(func_lambda) is False
+        assert victim(Cls.meth) is False
+        assert victim(Cls().meth) is False
+        assert victim(Cls.attr) is True
+        assert victim(Cls().attr) is True
+
+        for class_i in CLASSES__AS_FUNC:
+            assert victim(class_i) is False
+
+    # -----------------------------------------------------------------------------------------------------------------
     def test__check__exception(self):
         victim = self.Victim.check__exception
 
