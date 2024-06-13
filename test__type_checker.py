@@ -465,7 +465,7 @@ class Test__1:
         victim = self.Victim.check__class
         pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
 
-    # TODO: add check__instance_of_user_class
+    # TODO: add check__instance_of_user_class **************************************************************************
 
     @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
@@ -497,10 +497,10 @@ class Test__1:
             (ClsInt, False),
             (ClsInt(), True),    # int() == 0!!!
 
-            (func, False),          # FIXME!!! *************************************************************************
-            (func_lambda, False),   # FIXME!!! *************************************************************************
-            (Cls.meth, False),      # FIXME!!! *************************************************************************
-            (Cls().meth, False),    # FIXME!!! *************************************************************************
+            (func, False),
+            (func_lambda, False),
+            (Cls.meth, False),
+            (Cls().meth, False),
             (Cls.attr, True),
             (Cls().attr, True),
 

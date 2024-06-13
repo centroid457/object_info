@@ -100,7 +100,7 @@ class TypeChecker:
 
     @staticmethod
     def check__instance(source: Any) -> bool:
-        return not TypeChecker.check__class(source)
+        return not TypeChecker.check__class(source) and not TypeChecker.check__func_or_meth(source)
 
     # TODO: add check__instance_of_user_class
 
