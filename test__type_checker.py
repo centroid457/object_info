@@ -11,6 +11,9 @@ from pytest_aux import *
 
 
 # =====================================================================================================================
+values_elementary_single = [None, True, False, 0, 11, 11.22]
+
+
 func_lambda = lambda: None
 
 
@@ -104,6 +107,191 @@ class Test__1:
     @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
         argvalues=[
+            (None, True),
+            (True, True),
+            (False, True),
+            (0, True),
+            (111, True),
+            (111.222, True),
+            ("str", True),
+            (b"bytes", True),
+
+            (((111, ),), True),
+            (([111, ],), True),
+            (({111, },), True),
+            (({111: 222, },), True),
+
+            (int, False),
+            (int(1), True),
+            (str, False),
+            (str(1), True),
+
+            (Exception, False),
+            (Exception(), False),
+            (Exx, False),
+            (Exx(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, False),
+            (ClsInt(), True),    # int() == 0!!!
+
+            (func, False),
+            (func_lambda, False),
+            (Cls.meth, False),
+            (Cls().meth, False),
+            (Cls.attr, True),
+            (Cls().attr, True),
+
+            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__elementary(self, args, _EXPECTED):
+        victim = self.Victim.check__elementary
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (None, True),
+            (True, True),
+            (False, True),
+            (0, True),
+            (111, True),
+            (111.222, True),
+            ("str", True),
+            (b"bytes", True),
+
+            (((111, ),), False),
+            (([111, ],), False),
+            (({111, },), False),
+            (({111: 222, },), False),
+
+            (int, False),
+            (int(1), True),
+            (str, False),
+            (str(1), True),
+
+            (Exception, False),
+            (Exception(), False),
+            (Exx, False),
+            (Exx(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, False),
+            (ClsInt(), True),    # int() == 0!!!
+
+            (func, False),
+            (func_lambda, False),
+            (Cls.meth, False),
+            (Cls().meth, False),
+            (Cls.attr, True),
+            (Cls().attr, True),
+
+            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__elementary_single(self, args, _EXPECTED):
+        victim = self.Victim.check__elementary_single
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (None, False),
+            (True, False),
+            (False, False),
+            (0, False),
+            (111, False),
+            (111.222, False),
+            ("str", False),
+            (b"bytes", False),
+
+            (((111, ),), True),
+            (([111, ],), True),
+            (({111, },), True),
+            (({111: 222, },), True),
+
+            (int, False),
+            (int(1), False),
+            (str, False),
+            (str(1), False),
+
+            (Exception, False),
+            (Exception(), False),
+            (Exx, False),
+            (Exx(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, False),
+            (ClsInt(), False),    # int() == 0!!!
+
+            (func, False),
+            (func_lambda, False),
+            (Cls.meth, False),
+            (Cls().meth, False),
+            (Cls.attr, False),
+            (Cls().attr, False),
+
+            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__elementary_collection(self, args, _EXPECTED):
+        victim = self.Victim.check__elementary_collection
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (None, False),
+            (True, False),
+            (False, False),
+            (0, False),
+            (111, False),
+            (111.222, False),
+            ("str", False),
+            (b"bytes", False),
+
+            (((111, ),), True),
+            (([111, ],), True),
+            (({111, },), True),
+            (({111: 222, },), False),
+
+            (int, False),
+            (int(1), False),
+            (str, False),
+            (str(1), False),
+
+            (Exception, False),
+            (Exception(), False),
+            (Exx, False),
+            (Exx(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, False),
+            (ClsInt(), False),    # int() == 0!!!
+
+            (func, False),
+            (func_lambda, False),
+            (Cls.meth, False),
+            (Cls().meth, False),
+            (Cls.attr, False),
+            (Cls().attr, False),
+
+            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__elementary_collection_not_dict(self, args, _EXPECTED):
+        victim = self.Victim.check__elementary_collection_not_dict
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
             (("str", True, True), True),
             (("str", True, False), False),
 
@@ -112,6 +300,8 @@ class Test__1:
 
             # -----------------------
             (None, False),
+            (True, False),
+            (False, False),
             (0, False),
             (111, False),
             (111.222, False),
@@ -158,6 +348,8 @@ class Test__1:
         argnames="args, _EXPECTED",
         argvalues=[
             (None, False),
+            (True, False),
+            (False, False),
             (0, False),
             (111, False),
             (111.222, False),
@@ -195,184 +387,7 @@ class Test__1:
         ]
     )
     def test__iterable_but_not_str(self, args, _EXPECTED):
-        victim = self.Victim.check__iterable_but_not_str
-        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
-
-    # -----------------------------------------------------------------------------------------------------------------
-    @pytest.mark.parametrize(
-        argnames="args, _EXPECTED",
-        argvalues=[
-            (None, True),
-            (0, True),
-            (111, True),
-            (111.222, True),
-            ("str", True),
-            (b"bytes", True),
-
-            (((111, ),), True),
-            (([111, ],), True),
-            (({111, },), True),
-            (({111: 222, },), True),
-
-            (int, False),
-            (int(1), True),
-            (str, False),
-            (str(1), True),
-
-            (Exception, False),
-            (Exception(), False),
-            (Exx, False),
-            (Exx(), False),
-
-            (Cls, False),
-            (Cls(), False),
-            (ClsInt, False),
-            (ClsInt(), True),    # int() == 0!!!
-
-            (func, False),
-            (func_lambda, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, True),
-            (Cls().attr, True),
-
-            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
-        ]
-    )
-    def test__check__elementary(self, args, _EXPECTED):
-        victim = self.Victim.check__elementary
-        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
-
-    @pytest.mark.parametrize(
-        argnames="args, _EXPECTED",
-        argvalues=[
-            (None, True),
-            (0, True),
-            (111, True),
-            (111.222, True),
-            ("str", True),
-            (b"bytes", True),
-
-            (((111, ),), False),
-            (([111, ],), False),
-            (({111, },), False),
-            (({111: 222, },), False),
-
-            (int, False),
-            (int(1), True),
-            (str, False),
-            (str(1), True),
-
-            (Exception, False),
-            (Exception(), False),
-            (Exx, False),
-            (Exx(), False),
-
-            (Cls, False),
-            (Cls(), False),
-            (ClsInt, False),
-            (ClsInt(), True),    # int() == 0!!!
-
-            (func, False),
-            (func_lambda, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, True),
-            (Cls().attr, True),
-
-            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
-        ]
-    )
-    def test__check__elementary_single(self, args, _EXPECTED):
-        victim = self.Victim.check__elementary_single
-        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
-
-    @pytest.mark.parametrize(
-        argnames="args, _EXPECTED",
-        argvalues=[
-            (None, False),
-            (0, False),
-            (111, False),
-            (111.222, False),
-            ("str", False),
-            (b"bytes", False),
-
-            (((111, ),), True),
-            (([111, ],), True),
-            (({111, },), True),
-            (({111: 222, },), True),
-
-            (int, False),
-            (int(1), False),
-            (str, False),
-            (str(1), False),
-
-            (Exception, False),
-            (Exception(), False),
-            (Exx, False),
-            (Exx(), False),
-
-            (Cls, False),
-            (Cls(), False),
-            (ClsInt, False),
-            (ClsInt(), False),    # int() == 0!!!
-
-            (func, False),
-            (func_lambda, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, False),
-            (Cls().attr, False),
-
-            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
-        ]
-    )
-    def test__check__elementary_collection(self, args, _EXPECTED):
-        victim = self.Victim.check__elementary_collection
-        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
-
-    @pytest.mark.parametrize(
-        argnames="args, _EXPECTED",
-        argvalues=[
-            (None, False),
-            (0, False),
-            (111, False),
-            (111.222, False),
-            ("str", False),
-            (b"bytes", False),
-
-            (((111, ),), True),
-            (([111, ],), True),
-            (({111, },), True),
-            (({111: 222, },), False),
-
-            (int, False),
-            (int(1), False),
-            (str, False),
-            (str(1), False),
-
-            (Exception, False),
-            (Exception(), False),
-            (Exx, False),
-            (Exx(), False),
-
-            (Cls, False),
-            (Cls(), False),
-            (ClsInt, False),
-            (ClsInt(), False),    # int() == 0!!!
-
-            (func, False),
-            (func_lambda, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, False),
-            (Cls().attr, False),
-
-            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
-        ]
-    )
-    def test__check__elementary_collection_not_dict(self, args, _EXPECTED):
-        victim = self.Victim.check__elementary_collection_not_dict
+        victim = self.Victim.check__iterable_not_str
         pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -380,6 +395,8 @@ class Test__1:
         argnames="args, _EXPECTED",
         argvalues=[
             (None, False),
+            (True, False),
+            (False, False),
             (0, False),
             (111, False),
             (111.222, False),
@@ -425,6 +442,8 @@ class Test__1:
         argnames="args, _EXPECTED",
         argvalues=[
             (None, False),
+            (True, False),
+            (False, False),
             (0, False),
             (111, False),
             (111.222, False),
@@ -465,12 +484,12 @@ class Test__1:
         victim = self.Victim.check__class
         pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
 
-    # TODO: add check__instance_of_user_class **************************************************************************
-
     @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
         argvalues=[
             (None, True),
+            (True, True),
+            (False, True),
             (0, True),
             (111, True),
             (111.222, True),
@@ -511,11 +530,59 @@ class Test__1:
         victim = self.Victim.check__instance
         pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
 
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (None, False),
+            (True, False),
+            (False, False),
+            (0, False),
+            (111, False),
+            (111.222, False),
+            ("str", False),
+            (b"bytes", False),
+
+            (((111, ),), False),
+            (([111, ],), False),
+            (({111, },), False),
+            (({111: 222, },), False),
+
+            (int, False),
+            (int(1), False),
+            (str, False),
+            (str(1), False),
+
+            (Exception, False),
+            (Exception(), True),
+            (Exx, False),
+            (Exx(), True),
+
+            (Cls, False),
+            (Cls(), True),
+            (ClsInt, False),
+            (ClsInt(), False),    # int() == 0!!!
+
+            (func, False),
+            (func_lambda, False),
+            (Cls.meth, False),
+            (Cls().meth, False),
+            (Cls.attr, False),
+            (Cls().attr, False),
+
+            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__instance_not_elementary(self, args, _EXPECTED):
+        victim = self.Victim.check__instance_not_elementary
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
     # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
         argvalues=[
             (None, False),
+            (True, False),
+            (False, False),
             (0, False),
             (111, False),
             (111.222, False),
@@ -592,5 +659,6 @@ class Test__1:
     def test__check__nested__by_cls_or_inst(self, args, _EXPECTED):
         victim = self.Victim.check__nested__by_cls_or_inst
         pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
 
 # =====================================================================================================================

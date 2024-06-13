@@ -22,6 +22,23 @@ class TypeChecker:
 
     # -----------------------------------------------------------------------------------------------------------------
     @staticmethod
+    def check__elementary(source) -> bool:
+        return isinstance(source, TypeChecker.TYPES__ELEMENTARY)
+
+    @staticmethod
+    def check__elementary_single(source) -> bool:
+        return isinstance(source, TypeChecker.TYPES__ELEMENTARY_SINGLE)
+
+    @staticmethod
+    def check__elementary_collection(source) -> bool:
+        return isinstance(source, TypeChecker.TYPES__ELEMENTARY_COLLECTION)
+
+    @staticmethod
+    def check__elementary_collection_not_dict(source) -> bool:
+        return isinstance(source, TypeChecker.TYPES__ELEMENTARY_COLLECTION) and not isinstance(source, dict)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @staticmethod
     def check__iterable(
             # self,
             source: Any,
@@ -50,26 +67,9 @@ class TypeChecker:
         return False
 
     @staticmethod
-    def check__iterable_but_not_str(source):
+    def check__iterable_not_str(source):
         """checks if SOURCE is iterable, but not exactly str!!!"""
         return TypeChecker.check__iterable(source, str_and_bytes_as_iterable=False)
-
-    # -----------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def check__elementary(source) -> bool:
-        return isinstance(source, TypeChecker.TYPES__ELEMENTARY)
-
-    @staticmethod
-    def check__elementary_single(source) -> bool:
-        return isinstance(source, TypeChecker.TYPES__ELEMENTARY_SINGLE)
-
-    @staticmethod
-    def check__elementary_collection(source) -> bool:
-        return isinstance(source, TypeChecker.TYPES__ELEMENTARY_COLLECTION)
-
-    @staticmethod
-    def check__elementary_collection_not_dict(source) -> bool:
-        return isinstance(source, TypeChecker.TYPES__ELEMENTARY_COLLECTION) and not isinstance(source, dict)
 
     # CLASSES ---------------------------------------------------------------------------------------------------------
     @staticmethod
@@ -102,7 +102,9 @@ class TypeChecker:
     def check__instance(source: Any) -> bool:
         return not TypeChecker.check__class(source) and not TypeChecker.check__func_or_meth(source)
 
-    # TODO: add check__instance_of_user_class
+    @staticmethod
+    def check__instance_not_elementary(source: Any) -> bool:
+        return TypeChecker.check__instance(source) and not TypeChecker.check__elementary(source)
 
     @staticmethod
     def check__exception(source) -> bool:

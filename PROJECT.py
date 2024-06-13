@@ -81,6 +81,7 @@ pass    # place debug point here
 
 
         ["[TypeChecker]",
+            "add check__instance_not_elementary",
             "zero finish test.parametrisation",
             "fix check__class for callables",
          ]
