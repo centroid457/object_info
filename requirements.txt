@@ -21,6 +21,7 @@ annot_attrs
 numpy
 
 # TESTS ----------------------------------
+PyQt5
 
 # ========================================
 # SPECIAL FOR THIS PROJECT - ROOT --------

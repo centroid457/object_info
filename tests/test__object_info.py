@@ -1,16 +1,14 @@
-import os
+from typing import *
+import pathlib
 import time
 
 import pytest
-import pathlib
-import shutil
-from tempfile import TemporaryDirectory
-from typing import *
-from configparser import ConfigParser
-
-from PyQt5.QtCore import QThread
+from pytest import mark
+from pytest_aux import *
 
 from object_info import *
+
+from PyQt5.QtCore import QThread
 
 
 # =====================================================================================================================

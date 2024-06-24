@@ -11,7 +11,8 @@ pass
 
 
 # =====================================================================================================================
-def _value_search_by_list(source=None, search_list=[]):
+def _value_search_by_list(source: Any | None = None, search_list: list[Any] | None = None):
+    search_list = search_list or []
     match_item = None
 
     for search_item in search_list:
