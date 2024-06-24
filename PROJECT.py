@@ -3,7 +3,8 @@ from _aux__release_files import release_files_update
 
 
 # =====================================================================================================================
-VERSION = (0, 0, 3)   # 1/deprecate _VERSION_TEMPLATE from PRJ object +2/place update_prj here in __main__ +3/separate finalize attrs
+# VERSION = (0, 0, 3)   # 1/deprecate _VERSION_TEMPLATE from PRJ object +2/place update_prj here in __main__ +3/separate finalize attrs
+VERSION = (0, 0, 4)     # add AUTHOR_NICKNAME_GITHUB for badges
 
 
 # =====================================================================================================================
@@ -12,15 +13,16 @@ class PROJECT:    # AUX --------------------------------------------------
     AUTHOR_NAME: str = "Andrei Starichenko"
     AUTHOR_EMAIL: str = "centroid@mail.ru"
     AUTHOR_HOMEPAGE: str = "https://github.com/centroid457/"
+    AUTHOR_NICKNAME_GITHUB: str = "centroid457"
 
     # PROJECT ----------------------------------------------
     NAME_IMPORT: str = "object_info"
-    KEYWORDS: List[str] = [
+    KEYWORDS: list[str] = [
         "object info",
         "object attributes", "object properties", "object methods",
         "print attributes", "print properties", "print methods",
     ]
-    CLASSIFIERS_TOPICS_ADD: List[str] = [
+    CLASSIFIERS_TOPICS_ADD: list[str] = [
         # "Topic :: Communications",
         # "Topic :: Communications :: Email",
     ]
@@ -46,7 +48,7 @@ pass    # place debug point here
 ```  
 3. Useful if you wish to see info from remote SOURCE if connecting directly over ssh for example  
     """
-    FEATURES: List[str] = [
+    FEATURES: list[str] = [
         # "feat1",
         # ["feat2", "block1", "block2"],
 
@@ -57,8 +59,8 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 10)
-    TODO: List[str] = [
+    VERSION: tuple[int, int, int] = (0, 2, 11)
+    TODO: list[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
             "realise PRINT_DIFFS=CHANGE_state/COMPARE_objects (one from different states like thread before and after start)!",
@@ -72,13 +74,12 @@ pass    # place debug point here
         "add check__instance_of_user_class",
 
     ]
-    FIXME: List[str] = [
+    FIXME: list[str] = [
         "..."
     ]
-    NEWS: List[str] = [
-
-
-
+    NEWS: list[str] = [
+        "[CICD+BADGEs] apply",
+        "[TESTS] separate in folder",
         "[TypeChecker] fix check__nested__by_cls_or_inst",
     ]
 

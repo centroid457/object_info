@@ -1,4 +1,15 @@
-# object_info (v0.2.10)
+![Ver/TestedPython](https://img.shields.io/pypi/pyversions/object_info)
+![Ver/Os](https://img.shields.io/badge/os_development-Windows-blue)  
+![repo/Created](https://img.shields.io/github/created-at/centroid457/object_info)
+![Commit/Last](https://img.shields.io/github/last-commit/centroid457/object_info)
+![Tests/GitHubWorkflowStatus](https://github.com/centroid457/object_info/actions/workflows/test_linux.yml/badge.svg)
+![Tests/GitHubWorkflowStatus](https://github.com/centroid457/object_info/actions/workflows/test_windows.yml/badge.svg)  
+![repo/Size](https://img.shields.io/github/repo-size/centroid457/object_info)
+![Commit/Count/t](https://img.shields.io/github/commit-activity/t/centroid457/object_info)
+![Commit/Count/y](https://img.shields.io/github/commit-activity/y/centroid457/object_info)
+![Commit/Count/m](https://img.shields.io/github/commit-activity/m/centroid457/object_info)
+
+# object_info (current v0.2.11/![Ver/Pypi Latest](https://img.shields.io/pypi/v/object_info?label=pypi%20latest))
 
 ## DESCRIPTION_SHORT
 print info about object (attributes+properties+methods results)
