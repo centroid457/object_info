@@ -654,6 +654,14 @@ class Test__1:
             ((Exception(), Exx), False),    # REMEMBER! not clear!
             ((Exception, Exx()), False),    # REMEMBER! not clear!
             ((Exception(), Exx()), False),  # REMEMBER! not clear!
+
+            ((Cls, Cls), True),
+            ((Cls, Cls()), True),
+            ((Cls(), Cls), True),
+            ((Cls(), Cls()), True),
+
+            ((func, Cls), None),
+            ((func, Cls()), None),
         ]
     )
     def test__check__nested__by_cls_or_inst(self, args, _EXPECTED):

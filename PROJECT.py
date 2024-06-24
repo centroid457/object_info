@@ -76,11 +76,10 @@ pass    # place debug point here
         "..."
     ]
     NEWS: List[str] = [
-        ["[TypeChecker]",
-            "add check__instance_not_elementary",
-            "zero finish test.parametrisation",
-            "fix check__class for callables",
-         ]
+
+
+
+        "[TypeChecker] fix check__nested__by_cls_or_inst",
     ]
 
     # FINALIZE -----------------------------------------------

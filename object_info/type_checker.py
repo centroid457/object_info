@@ -23,6 +23,8 @@ class TypeChecker:
     # -----------------------------------------------------------------------------------------------------------------
     @staticmethod
     def check__elementary(source) -> bool:
+        if callable(source):
+            return False
         return isinstance(source, TypeChecker.TYPES__ELEMENTARY)
 
     @staticmethod
@@ -109,7 +111,7 @@ class TypeChecker:
     @staticmethod
     def check__exception(source) -> bool:
         """
-        any of both variant (Instyance/Class) of any Exception!
+        any of both variant (Instance/Class) of any Exception!
         """
         if isinstance(source, Exception):
             return True
@@ -120,9 +122,9 @@ class TypeChecker:
         return False
 
     @staticmethod
-    def check__nested__by_cls_or_inst(source: Any, parent: Any) -> bool:
+    def check__nested__by_cls_or_inst(source: Any, parent: Any) -> bool | None:
         """
-        any of both variant (Instyance/Class) comparing with TARGET of both variant (Instyance/Class)
+        any of both variant (Instance/Class) comparing with TARGET of both variant (Instance/Class)
 
         specially created for pytest_aux for comparing with Exception!
         """
@@ -130,6 +132,10 @@ class TypeChecker:
             source = source.__class__
         if TypeChecker.check__instance(parent):
             parent = parent.__class__
+
+        if not TypeChecker.check__class(source) or not TypeChecker.check__class(parent):
+            return None
+
         return issubclass(source, parent)
 
 
