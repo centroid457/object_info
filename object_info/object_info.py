@@ -276,7 +276,7 @@ class ObjectInfo:
         print(result)
 
         # -------------------------------
-        if name and TypeChecker.check__instance(value):
+        if name and TypeChecker.check__instance_not_elementary(value) and not TypeChecker.check__exception(value):
             # additional print for object
             self._print_line__name_type_value(name=None, type_replace="__repr()", value=f"{value!r}")
 
@@ -311,14 +311,6 @@ class ObjectInfo:
         if len(str(value)) <= self.MAX_LINE_LEN:
             return
 
-        # SINGLE/EXX/OBJECTS ---------------------------------------------------------------------
-        if any([
-            TypeChecker.check__elementary_single(value),
-            TypeChecker.check__exception(value),
-            TypeChecker.check__instance(value),
-        ]):
-            pass
-
         # COLLECTION -----------------------------------------------------------------------------
         if TypeChecker.check__elementary_collection(value):
             # start some pretty style -------------------------------------
@@ -339,6 +331,14 @@ class ObjectInfo:
                         self._print_line__name_type_value(name=None, type_replace="", value="...", intend=1)
                         break
                     self._print_line__name_type_value(name=None, value=ItemInternal(item_key, item_value))
+
+        # SINGLE/EXX/OBJECTS ---------------------------------------------------------------------
+        if any([
+            TypeChecker.check__elementary_single(value),
+            TypeChecker.check__exception(value),
+            TypeChecker.check__instance(value),
+        ]):
+            pass    # DONT USE RETURN HERE OR ELIF IN NEXT LINE!!!
 
     # =================================================================================================================
     def print(self) -> None:
