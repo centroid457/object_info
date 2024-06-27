@@ -1,36 +1,17 @@
 from object_info import *
+from pytest_aux import *
 
-class Cls0:
-    attr1 = 1
 
-class Cls1:
-    ATTR_UPPERCASE = "UPPERCASE"
+# =====================================================================================================================
+class ClsMain(ClsFullTypes):
+    attrUpper = "ATTRUPPER"
+    attrLower = "attrlower"
     attrSkipFullName = "attrSkipFullName"
     attrSkipPartName = "SkipPartName"
-    attrNone = None
-    attrInt = 1
-    attrFloat = 2.2
-    attrClass = Cls0
-    attrObj = Cls0()
-    attrSet = {1,2,3}
-    attrList = [1,2,3]
-    attrTuple = (1,2,3)
-    attrDict = {1:1}
-    attrListObj = [*[Cls0(), ] * 5, 1]
-    @property
-    def propertyInt(self):
-        return 1
-    @property
-    def propertyExx(self):
-        raise Exception("exxMsg")
-    def methInt(self):
-        return 1
-    def methExx(self):
-        raise Exception("exxMsg")
 
 
 ObjectInfo(
-    Cls1(),
+    ClsMain(),
     log_iter=True,
     names__use_only_parts=[],
     names__skip_full=["attrSkipFullName", ],
@@ -40,8 +21,8 @@ ObjectInfo(
 """
 ==========================================================================================
 ----------OBJECTINFO.PRINT--------------------------------------------------------------------------
-str(SOURCE)=<__main__.Cls1 object at 0x000001A014B97950>
-repr(SOURCE)=<__main__.Cls1 object at 0x000001A014B97950>
+str(SOURCE)=<__main__.ClsMain object at 0x000001AD37B06C90>
+repr(SOURCE)=<__main__.ClsMain object at 0x000001AD37B06C90>
 ----------SETTINGS----------------------------------------------------------------------------------
 self.NAMES__USE_ONLY_PARTS=[]
 self.NAMES__SKIP_FULL=['attrSkipFullName']
@@ -51,50 +32,62 @@ self.LOG_ITER=True
 self.MAX_LINE_LEN=100
 self.MAX_ITER_ITEMS=5
 ----------log_iter(wait last touched)---------------------------------------------------------------
-1:	ATTR_UPPERCASE
-2:	__class__
-3:	__delattr__
-4:	__dict__
-5:	__dir__
-6:	__doc__
-7:	__eq__
-8:	__format__
-9:	__ge__
-10:	__getattribute__
-11:	__getstate__
-12:	__gt__
-13:	__hash__
-14:	__init__
-15:	__init_subclass__
-16:	__le__
-17:	__lt__
-18:	__module__
-19:	__ne__
-20:	__new__
-21:	__reduce__
-22:	__reduce_ex__
-23:	__repr__
-24:	__setattr__
-25:	__sizeof__
-26:	__str__
-27:	__subclasshook__
-28:	__weakref__
-29:	attrClass
+1:	__class__
+2:	__delattr__
+3:	__dict__
+4:	__dir__
+5:	__doc__
+6:	__eq__
+7:	__format__
+8:	__ge__
+9:	__getattribute__
+10:	__getstate__
+11:	__gt__
+12:	__hash__
+13:	__init__
+14:	__init_subclass__
+15:	__le__
+16:	__lt__
+17:	__module__
+18:	__ne__
+19:	__new__
+20:	__reduce__
+21:	__reduce_ex__
+22:	__repr__
+23:	__setattr__
+24:	__sizeof__
+25:	__str__
+26:	__subclasshook__
+27:	__weakref__
+28:	attrBytes
+29:	attrCls
 30:	attrDict
-31:	attrFloat
-32:	attrInt
-33:	attrList
-34:	attrListObj
-35:	attrNone
-36:	attrObj
-37:	attrSet
-38:	attrSkipFullName
-39:	attrSkipPartName
-40:	attrTuple
-41:	methExx
-42:	methInt
-43:	propertyExx
-44:	propertyInt
+31:	attrFalse
+32:	attrFloat
+33:	attrFunc
+34:	attrFuncTrue
+35:	attrInst
+36:	attrInstCallable
+37:	attrInstMeth
+38:	attrInt
+39:	attrList
+40:	attrListInst
+41:	attrLower
+42:	attrNone
+43:	attrSet
+44:	attrSkipFullName
+45:	attrSkipPartName
+46:	attrStr
+47:	attrTrue
+48:	attrTuple
+49:	attrUpper
+50:	attrZero
+51:	methExx
+52:	methFunc
+53:	methInt
+54:	propertyExx
+55:	propertyFunc
+56:	propertyInt
 ----------SKIPPED_FULLNAMES-------------------------------------------------------------------------
 1:	attrSkipFullName
 ----------SKIPPED_PARTNAMES-------------------------------------------------------------------------
@@ -107,57 +100,67 @@ self.MAX_ITER_ITEMS=5
 7:	__setattr__
 8:	attrSkipPartName
 ----------PROPERTIES__ELEMENTARY_SINGLE-------------------------------------------------------------
-ATTR_UPPERCASE      	str         :UPPERCASE
 __doc__             	NoneType    :None
 __module__          	str         :__main__
 __weakref__         	NoneType    :None
-attrFloat           	float       :2.2
+attrBytes           	bytes       :b'bytes'
+attrFalse           	bool        :False
+attrFloat           	float       :1.1
 attrInt             	int         :1
+attrLower           	str         :attrlower
 attrNone            	NoneType    :None
+attrStr             	str         :str
+attrTrue            	bool        :True
+attrUpper           	str         :ATTRUPPER
+attrZero            	int         :0
 propertyInt         	int         :1
 ----------PROPERTIES__ELEMENTARY_COLLECTION---------------------------------------------------------
 __dict__            	dict        :{}
 attrDict            	dict        :{1: 1}
 attrList            	list        :[1, 2, 3]
-attrListObj         	list        :[<__main__.Cls0 object at 0x000001A014B96E10>, <__main__.Cls0 o...
-                    	Cls0        :	<__main__.Cls0 object at 0x000001A014B96E10>
-                    	Cls0        :	<__main__.Cls0 object at 0x000001A014B96E10>
-                    	Cls0        :	<__main__.Cls0 object at 0x000001A014B96E10>
-                    	Cls0        :	<__main__.Cls0 object at 0x000001A014B96E10>
-                    	Cls0        :	<__main__.Cls0 object at 0x000001A014B96E10>
-                    	            :	...
+attrListInst        	list        :[<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D...
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
+                    	int         :	1
 attrSet             	set         :{1, 2, 3}
 attrTuple           	tuple       :(1, 2, 3)
 ----------PROPERTIES__OBJECTS-----------------------------------------------------------------------
-attrObj             	Cls0        :<__main__.Cls0 object at 0x000001A014B978D0>
-                    	__repr()    :<__main__.Cls0 object at 0x000001A014B978D0>
+attrInst            	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD487672D0>
+                    	__repr()    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD487672D0>
 ----------PROPERTIES__EXX---------------------------------------------------------------------------
 propertyExx         	Exception   :Exception('exxMsg')
 ----------METHODS__ELEMENTARY_SINGLE----------------------------------------------------------------
 __getstate__        	NoneType    :None
-__hash__            	int         :111690880917
-__repr__            	str         :<__main__.Cls1 object at 0x000001A014B97950>
+__hash__            	int         :115217204937
+__repr__            	str         :<__main__.ClsMain object at 0x000001AD37B06C90>
 __sizeof__          	int         :24
-__str__             	str         :<__main__.Cls1 object at 0x000001A014B97950>
+__str__             	str         :<__main__.ClsMain object at 0x000001AD37B06C90>
+attrFunc            	NoneType    :None
+attrFuncTrue        	bool        :True
+attrInstCallable    	NoneType    :None
+attrInstMeth        	NoneType    :None
 methInt             	int         :1
+propertyFunc        	NoneType    :None
 ----------METHODS__ELEMENTARY_COLLECTION------------------------------------------------------------
-__dir__             	list        :['__module__', 'ATTR_UPPERCASE', 'attrSkipFullName', 'attrSkipP...
+__dir__             	list        :['__module__', 'attrUpper', 'attrLower', 'attrSkipFullName',...
                     	str         :	__module__
-                    	str         :	ATTR_UPPERCASE
+                    	str         :	attrUpper
+                    	str         :	attrLower
                     	str         :	attrSkipFullName
                     	str         :	attrSkipPartName
-                    	str         :	attrNone
                     	            :	...
 ----------METHODS__OBJECTS--------------------------------------------------------------------------
-__class__           	Cls1        :<__main__.Cls1 object at 0x000001A014B97C10>
-                    	__repr()    :<__main__.Cls1 object at 0x000001A014B97C10>
+__class__           	ClsMain     :<__main__.ClsMain object at 0x000001AD37B06ED0>
+                    	__repr()    :<__main__.ClsMain object at 0x000001AD37B06ED0>
 __subclasshook__    	NotImplementedType:NotImplemented
                     	__repr()    :NotImplemented
-attrClass           	Cls0        :<__main__.Cls0 object at 0x000001A0151A9150>
-                    	__repr()    :<__main__.Cls0 object at 0x000001A0151A9150>
+attrCls             	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD48767B50>
+                    	__repr()    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD48767B50>
+methFunc            	function    :<function FUNC at 0x000001AD48768540>
 ----------METHODS__EXX------------------------------------------------------------------------------
 __eq__              	TypeError   :TypeError('expected 1 argument, got 0')
-__format__          	TypeError   :TypeError('Cls1.__format__() takes exactly one argument (0 give...
+__format__          	TypeError   :TypeError('ClsMain.__format__() takes exactly one argument (...
 __ge__              	TypeError   :TypeError('expected 1 argument, got 0')
 __getattribute__    	TypeError   :TypeError('expected 1 argument, got 0')
 __gt__              	TypeError   :TypeError('expected 1 argument, got 0')
@@ -169,7 +172,7 @@ methExx             	Exception   :Exception('exxMsg')
 """
 
 ObjectInfo(
-    Cls1(),
+    ClsMain(),
     log_iter=False,
     names__use_only_parts="attr",
     # names__skip_full=["attrSkipFullName", ],
@@ -181,8 +184,8 @@ ObjectInfo(
 """
 ==========================================================================================
 ----------OBJECTINFO.PRINT--------------------------------------------------------------------------
-str(SOURCE)=<__main__.Cls1 object at 0x000001A014BE28D0>
-repr(SOURCE)=<__main__.Cls1 object at 0x000001A014BE28D0>
+str(SOURCE)=<__main__.ClsMain object at 0x000001AD38A0FDD0>
+repr(SOURCE)=<__main__.ClsMain object at 0x000001AD38A0FDD0>
 ----------SETTINGS----------------------------------------------------------------------------------
 self.NAMES__USE_ONLY_PARTS=['attr']
 self.NAMES__SKIP_FULL=['attrSkipFullName']
@@ -199,31 +202,39 @@ self.MAX_ITER_ITEMS=5
 2:	__setattr__
 3:	attrSkipPartName
 ----------PROPERTIES__ELEMENTARY_SINGLE-------------------------------------------------------------
-ATTR_UPPERCASE      	str         :UPPERCASE
-attrFloat           	float       :2.2
+attrBytes           	bytes       :b'bytes'
+attrFalse           	bool        :False
+attrFloat           	float       :1.1
 attrInt             	int         :1
+attrLower           	str         :attrlower
 attrNone            	NoneType    :None
+attrStr             	str         :str
+attrTrue            	bool        :True
+attrUpper           	str         :ATTRUPPER
+attrZero            	int         :0
 ----------PROPERTIES__ELEMENTARY_COLLECTION---------------------------------------------------------
 attrDict            	dict        :{1: 1}
 attrList            	list        :[1, 2, 3]
-attrListObj         	list        :[<__main__.Cls0 object at 0x000001A014B96E10>, <__main__.Cls0 o...
-                    	Cls0        :	<__main__.Cls0 object at 0x000001A014B96E10>
-                    	Cls0        :	<__main__.Cls0 object at 0x000001A014B96E10>
-                    	Cls0        :	<__main__.Cls0 object at 0x000001A014B96E10>
-                    	Cls0        :	<__main__.Cls0 object at 0x000001A014B96E10>
-                    	Cls0        :	<__main__.Cls0 object at 0x000001A014B96E10>
-                    	            :	...
+attrListInst        	list        :[<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D...
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
+                    	int         :	1
 attrSet             	set         :{1, 2, 3}
 attrTuple           	tuple       :(1, 2, 3)
 ----------PROPERTIES__OBJECTS-----------------------------------------------------------------------
-attrObj             	Cls0        :<__main__.Cls0 object at 0x000001A014B978D0>
-                    	__repr()    :<__main__.Cls0 object at 0x000001A014B978D0>
+attrInst            	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD487672D0>
+                    	__repr()    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD487672D0>
 ----------PROPERTIES__EXX---------------------------------------------------------------------------
 ----------METHODS__ELEMENTARY_SINGLE----------------------------------------------------------------
+attrFunc            	NoneType    :None
+attrFuncTrue        	bool        :True
+attrInstCallable    	NoneType    :None
+attrInstMeth        	NoneType    :None
 ----------METHODS__ELEMENTARY_COLLECTION------------------------------------------------------------
 ----------METHODS__OBJECTS--------------------------------------------------------------------------
-attrClass           	Cls0        :<__main__.Cls0 object at 0x000001A0151A9C90>
-                    	__repr()    :<__main__.Cls0 object at 0x000001A0151A9C90>
+attrCls             	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD48774190>
+                    	__repr()    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD48774190>
 ----------METHODS__EXX------------------------------------------------------------------------------
 __getattribute__    	TypeError   :TypeError('expected 1 argument, got 0')
 ==========================================================================================

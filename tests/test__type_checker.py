@@ -12,13 +12,6 @@ from object_info import *
 values_elementary_single = [None, True, False, 0, 11, 11.22]
 
 
-func_lambda = lambda: None
-
-
-def func():
-    pass
-
-
 class Cls:
     attr = None
 
@@ -26,36 +19,7 @@ class Cls:
         pass
 
 
-class Exx(Exception):
-    pass
-
-
-# ---------------------------------------------------------------------------------------------------------------------
-# class ClsBool(bool):  # cant use it!
-#     pass
-
-
-class ClsInt(int):
-    pass
-
-
-class ClsStr(str):
-    pass
-
-
-class ClsList(list):
-    pass
-
-
-class ClsSet(set):
-    pass
-
-
-class ClsDict(dict):
-    pass
-
-
-CLASSES__AS_FUNC: list = [ClsInt, ClsStr, ClsList, ClsSet, ClsDict, ]
+CLASSES__AS_FUNC: list = [ClsInt, ClsStr, ClsList, ClsSet, ClsDict, ]   # actually this is keep all buildIn
 
 
 # =====================================================================================================================
@@ -134,8 +98,8 @@ class Test__1:
             (ClsInt, False),
             (ClsInt(), True),    # int() == 0!!!
 
-            (func, False),
-            (func_lambda, False),
+            (FUNC, False),
+            (LAMBDA, False),
             (Cls.meth, False),
             (Cls().meth, False),
             (Cls.attr, True),
@@ -180,8 +144,8 @@ class Test__1:
             (ClsInt, False),
             (ClsInt(), True),    # int() == 0!!!
 
-            (func, False),
-            (func_lambda, False),
+            (FUNC, False),
+            (LAMBDA, False),
             (Cls.meth, False),
             (Cls().meth, False),
             (Cls.attr, True),
@@ -226,8 +190,8 @@ class Test__1:
             (ClsInt, False),
             (ClsInt(), False),    # int() == 0!!!
 
-            (func, False),
-            (func_lambda, False),
+            (FUNC, False),
+            (LAMBDA, False),
             (Cls.meth, False),
             (Cls().meth, False),
             (Cls.attr, False),
@@ -272,8 +236,8 @@ class Test__1:
             (ClsInt, False),
             (ClsInt(), False),    # int() == 0!!!
 
-            (func, False),
-            (func_lambda, False),
+            (FUNC, False),
+            (LAMBDA, False),
             (Cls.meth, False),
             (Cls().meth, False),
             (Cls.attr, False),
@@ -328,8 +292,8 @@ class Test__1:
             (ClsInt, False),
             (ClsInt(), False),
 
-            (func, False),
-            (func_lambda, False),
+            (FUNC, False),
+            (LAMBDA, False),
             (Cls.meth, False),
             (Cls().meth, False),
             (Cls.attr, False),
@@ -374,8 +338,8 @@ class Test__1:
             (ClsInt, False),
             (ClsInt(), False),
 
-            (func, False),
-            (func_lambda, False),
+            (FUNC, False),
+            (LAMBDA, False),
             (Cls.meth, False),
             (Cls().meth, False),
             (Cls.attr, False),
@@ -421,8 +385,8 @@ class Test__1:
             (ClsInt, True),
             (ClsInt(), False),    # int() == 0!!!
 
-            (func, True),
-            (func_lambda, True),
+            (FUNC, True),
+            (LAMBDA, True),
             (Cls.meth, True),
             (Cls().meth, True),
             (Cls.attr, False),
@@ -468,8 +432,8 @@ class Test__1:
             (ClsInt, True),
             (ClsInt(), False),    # int() == 0!!!
 
-            (func, False),
-            (func_lambda, False),
+            (FUNC, False),
+            (LAMBDA, False),
             (Cls.meth, False),
             (Cls().meth, False),
             (Cls.attr, False),
@@ -514,8 +478,8 @@ class Test__1:
             (ClsInt, False),
             (ClsInt(), True),    # int() == 0!!!
 
-            (func, False),
-            (func_lambda, False),
+            (FUNC, False),
+            (LAMBDA, False),
             (Cls.meth, False),
             (Cls().meth, False),
             (Cls.attr, True),
@@ -560,8 +524,8 @@ class Test__1:
             (ClsInt, False),
             (ClsInt(), False),    # int() == 0!!!
 
-            (func, False),
-            (func_lambda, False),
+            (FUNC, False),
+            (LAMBDA, False),
             (Cls.meth, False),
             (Cls().meth, False),
             (Cls.attr, False),
@@ -607,8 +571,8 @@ class Test__1:
             (ClsInt, False),
             (ClsInt(), False),    # int() == 0!!!
 
-            (func, False),
-            (func_lambda, False),
+            (FUNC, False),
+            (LAMBDA, False),
             (Cls.meth, False),
             (Cls().meth, False),
             (Cls.attr, False),
@@ -658,8 +622,8 @@ class Test__1:
             ((Cls(), Cls), True),
             ((Cls(), Cls()), True),
 
-            ((func, Cls), None),
-            ((func, Cls()), None),
+            ((FUNC, Cls), None),
+            ((FUNC, Cls()), None),
         ]
     )
     def test__check__nested__by_cls_or_inst(self, args, _EXPECTED):
