@@ -59,7 +59,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 2, 11)
+    VERSION: tuple[int, int, int] = (0, 2, 12)
     TODO: list[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -78,9 +78,8 @@ pass    # place debug point here
         "..."
     ]
     NEWS: list[str] = [
-        "[CICD+BADGEs] apply",
-        "[TESTS] separate in folder",
-        "[TypeChecker] fix check__nested__by_cls_or_inst",
+        "[OInfo] fix print",
+        "[TestPrimitives] move into pytest_aux",
     ]
 
     # FINALIZE -----------------------------------------------
