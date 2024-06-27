@@ -173,7 +173,7 @@ methExx             	Exception   :Exception('exxMsg')
 
 ObjectInfo(
     ClsMain(),
-    log_iter=False,
+    # log_iter=False,
     names__use_only_parts="attr",
     # names__skip_full=["attrSkipFullName", ],
     # names__skip_parts=["SkipPartName", ],
