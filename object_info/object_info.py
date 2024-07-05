@@ -276,9 +276,9 @@ class ObjectInfo:
         print(result)
 
         # -------------------------------
-        if name and TypeChecker.check__instance_not_elementary(value) and not TypeChecker.check__exception(value):
-            # additional print for object
-            self._print_line__name_type_value(name=None, type_replace="__repr()", value=f"{value!r}")
+        if name and str(value) != repr(value) and str(value) != str(block_value) and not TypeChecker.check__exception(value):
+            # additional print repr()
+            self._print_line__name_type_value(name=None, type_replace="__repr()", value=repr(value))
 
         return result
 
@@ -290,6 +290,15 @@ class ObjectInfo:
 
         print(f"str(SOURCE)={str(self.SOURCE)}")
         print(f"repr(SOURCE)={repr(self.SOURCE)}")
+
+        try:
+            mro = self.SOURCE.__class__.__mro__
+        except:
+            mro = self.SOURCE.__mro__
+
+        mro = [cls.__name__ for cls in mro]
+
+        print(f"mro(SOURCE)={mro}")
 
         # SETTINGS ----------------------------------------
         name = "SETTINGS"
