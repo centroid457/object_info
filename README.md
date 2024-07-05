@@ -9,7 +9,7 @@
 ![Commit/Count/y](https://img.shields.io/github/commit-activity/y/centroid457/object_info)
 ![Commit/Count/m](https://img.shields.io/github/commit-activity/m/centroid457/object_info)
 
-# object_info (current v0.2.12/![Ver/Pypi Latest](https://img.shields.io/pypi/v/object_info?label=pypi%20latest))
+# object_info (current v0.2.13/![Ver/Pypi Latest](https://img.shields.io/pypi/v/object_info?label=pypi%20latest))
 
 ## DESCRIPTION_SHORT
 print info about object (attributes+properties+methods results)
@@ -91,8 +91,9 @@ ObjectInfo(
 """
 ==========================================================================================
 ----------OBJECTINFO.PRINT--------------------------------------------------------------------------
-str(SOURCE)=<__main__.ClsMain object at 0x000001AD37B06C90>
-repr(SOURCE)=<__main__.ClsMain object at 0x000001AD37B06C90>
+str(SOURCE)=<__main__.ClsMain object at 0x000001FB9A4F6B50>
+repr(SOURCE)=<__main__.ClsMain object at 0x000001FB9A4F6B50>
+mro(SOURCE)=['ClsMain', 'ClsFullTypes', 'object']
 ----------SETTINGS----------------------------------------------------------------------------------
 self.NAMES__USE_ONLY_PARTS=[]
 self.NAMES__SKIP_FULL=['attrSkipFullName']
@@ -131,33 +132,41 @@ self.MAX_ITER_ITEMS=5
 27:	__weakref__
 28:	attrBytes
 29:	attrCls
-30:	attrDict
-31:	attrFalse
-32:	attrFloat
-33:	attrFunc
-34:	attrFuncTrue
-35:	attrInst
-36:	attrInstCallable
-37:	attrInstMeth
-38:	attrInt
-39:	attrList
-40:	attrListInst
-41:	attrLower
-42:	attrNone
-43:	attrSet
-44:	attrSkipFullName
-45:	attrSkipPartName
-46:	attrStr
-47:	attrTrue
-48:	attrTuple
-49:	attrUpper
-50:	attrZero
-51:	methExx
-52:	methFunc
-53:	methInt
-54:	propertyExx
-55:	propertyFunc
-56:	propertyInt
+30:	attrClsCallable
+31:	attrClsGen
+32:	attrClsIterable
+33:	attrDict
+34:	attrFalse
+35:	attrFloat
+36:	attrFunc
+37:	attrFuncExx
+38:	attrFuncGen
+39:	attrFuncTrue
+40:	attrGenCompr
+41:	attrInst
+42:	attrInstCallable
+43:	attrInstGen
+44:	attrInstIterable
+45:	attrInstMeth
+46:	attrInt
+47:	attrList
+48:	attrListInst
+49:	attrLower
+50:	attrNone
+51:	attrSet
+52:	attrSkipFullName
+53:	attrSkipPartName
+54:	attrStr
+55:	attrTrue
+56:	attrTuple
+57:	attrUpper
+58:	attrZero
+59:	methExx
+60:	methFunc
+61:	methInt
+62:	propertyExx
+63:	propertyFunc
+64:	propertyInt
 ----------SKIPPED_FULLNAMES-------------------------------------------------------------------------
 1:	attrSkipFullName
 ----------SKIPPED_PARTNAMES-------------------------------------------------------------------------
@@ -188,24 +197,26 @@ propertyInt         	int         :1
 __dict__            	dict        :{}
 attrDict            	dict        :{1: 1}
 attrList            	list        :[1, 2, 3]
-attrListInst        	list        :[<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D...
-                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
-                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
-                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
+attrListInst        	list        :[<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1C791...
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1C7910>
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1C7910>
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1C7910>
                     	int         :	1
 attrSet             	set         :{1, 2, 3}
 attrTuple           	tuple       :(1, 2, 3)
 ----------PROPERTIES__OBJECTS-----------------------------------------------------------------------
-attrInst            	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD487672D0>
-                    	__repr()    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD487672D0>
+attrGenCompr        	generator   :<generator object <genexpr> at 0x000001FB9A29FED0>
+attrInst            	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1C7790>
+attrInstGen         	ClsGen      :<pytest_aux.primitives.ClsGen object at 0x000001FBAB1C78D0>
+attrInstIterable    	ClsIterable :<pytest_aux.primitives.ClsIterable object at 0x000001FBAB1C7890>
 ----------PROPERTIES__EXX---------------------------------------------------------------------------
 propertyExx         	Exception   :Exception('exxMsg')
 ----------METHODS__ELEMENTARY_SINGLE----------------------------------------------------------------
 __getstate__        	NoneType    :None
-__hash__            	int         :115217204937
-__repr__            	str         :<__main__.ClsMain object at 0x000001AD37B06C90>
+__hash__            	int         :136258582197
+__repr__            	str         :<__main__.ClsMain object at 0x000001FB9A4F6B50>
 __sizeof__          	int         :24
-__str__             	str         :<__main__.ClsMain object at 0x000001AD37B06C90>
+__str__             	str         :<__main__.ClsMain object at 0x000001FB9A4F6B50>
 attrFunc            	NoneType    :None
 attrFuncTrue        	bool        :True
 attrInstCallable    	NoneType    :None
@@ -221,13 +232,14 @@ __dir__             	list        :['__module__', 'attrUpper', 'attrLower', 'attr
                     	str         :	attrSkipPartName
                     	            :	...
 ----------METHODS__OBJECTS--------------------------------------------------------------------------
-__class__           	ClsMain     :<__main__.ClsMain object at 0x000001AD37B06ED0>
-                    	__repr()    :<__main__.ClsMain object at 0x000001AD37B06ED0>
+__class__           	ClsMain     :<__main__.ClsMain object at 0x000001FB9A4F6D90>
 __subclasshook__    	NotImplementedType:NotImplemented
-                    	__repr()    :NotImplemented
-attrCls             	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD48767B50>
-                    	__repr()    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD48767B50>
-methFunc            	function    :<function FUNC at 0x000001AD48768540>
+attrCls             	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1C7F90>
+attrClsCallable     	ClsCallable :<pytest_aux.primitives.ClsCallable object at 0x000001FBAB1C7E50>
+attrClsGen          	ClsGen      :<pytest_aux.primitives.ClsGen object at 0x000001FBAB1C7FD0>
+attrClsIterable     	ClsIterable :<pytest_aux.primitives.ClsIterable object at 0x000001FBAB1C7E10>
+attrFuncGen         	generator   :<generator object FUNC_GEN at 0x000001FBAB1979F0>
+methFunc            	function    :<function FUNC at 0x000001FBAB1C8680>
 ----------METHODS__EXX------------------------------------------------------------------------------
 __eq__              	TypeError   :TypeError('expected 1 argument, got 0')
 __format__          	TypeError   :TypeError('ClsMain.__format__() takes exactly one argument (...
@@ -237,6 +249,7 @@ __gt__              	TypeError   :TypeError('expected 1 argument, got 0')
 __le__              	TypeError   :TypeError('expected 1 argument, got 0')
 __lt__              	TypeError   :TypeError('expected 1 argument, got 0')
 __ne__              	TypeError   :TypeError('expected 1 argument, got 0')
+attrFuncExx         	Exception   :Exception('CALLABLE_EXX')
 methExx             	Exception   :Exception('exxMsg')
 ==========================================================================================
 """
@@ -254,14 +267,15 @@ ObjectInfo(
 """
 ==========================================================================================
 ----------OBJECTINFO.PRINT--------------------------------------------------------------------------
-str(SOURCE)=<__main__.ClsMain object at 0x000001AD38A0FDD0>
-repr(SOURCE)=<__main__.ClsMain object at 0x000001AD38A0FDD0>
+str(SOURCE)=<__main__.ClsMain object at 0x000001FBA9819F10>
+repr(SOURCE)=<__main__.ClsMain object at 0x000001FBA9819F10>
+mro(SOURCE)=['ClsMain', 'ClsFullTypes', 'object']
 ----------SETTINGS----------------------------------------------------------------------------------
 self.NAMES__USE_ONLY_PARTS=['attr']
 self.NAMES__SKIP_FULL=['attrSkipFullName']
 self.NAMES__SKIP_PARTS=['init', 'new', 'create', 'enter', 'install', 'set', 'clone', 'copy', 'move', 'next', 'clear', 'reduce', 'close', 'del', 'exit', 'kill', 'exec', 'exec_', 'pyqtConfigure', 'checkout', 'detach', 'run', 'start', 'wait', 'join', 'terminate', 'quit', 'disconnect', 'pop', 'popleft', 'append', 'appendleft', 'extend', 'extendleft', 'add', 'insert', 'reverse', 'rotate', 'sort', 'SkipPartName']
 self.HIDE_BUILD_IN=None
-self.LOG_ITER=False
+self.LOG_ITER=None
 self.MAX_LINE_LEN=100
 self.MAX_ITER_ITEMS=5
 ----------log_iter(wait last touched)---------------------------------------------------------------
@@ -285,16 +299,18 @@ attrZero            	int         :0
 ----------PROPERTIES__ELEMENTARY_COLLECTION---------------------------------------------------------
 attrDict            	dict        :{1: 1}
 attrList            	list        :[1, 2, 3]
-attrListInst        	list        :[<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D...
-                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
-                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
-                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001AD487673D0>
+attrListInst        	list        :[<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1C791...
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1C7910>
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1C7910>
+                    	ClsEmpty    :	<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1C7910>
                     	int         :	1
 attrSet             	set         :{1, 2, 3}
 attrTuple           	tuple       :(1, 2, 3)
 ----------PROPERTIES__OBJECTS-----------------------------------------------------------------------
-attrInst            	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD487672D0>
-                    	__repr()    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD487672D0>
+attrGenCompr        	generator   :<generator object <genexpr> at 0x000001FB9A29FED0>
+attrInst            	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1C7790>
+attrInstGen         	ClsGen      :<pytest_aux.primitives.ClsGen object at 0x000001FBAB1C78D0>
+attrInstIterable    	ClsIterable :<pytest_aux.primitives.ClsIterable object at 0x000001FBAB1C7890>
 ----------PROPERTIES__EXX---------------------------------------------------------------------------
 ----------METHODS__ELEMENTARY_SINGLE----------------------------------------------------------------
 attrFunc            	NoneType    :None
@@ -303,10 +319,14 @@ attrInstCallable    	NoneType    :None
 attrInstMeth        	NoneType    :None
 ----------METHODS__ELEMENTARY_COLLECTION------------------------------------------------------------
 ----------METHODS__OBJECTS--------------------------------------------------------------------------
-attrCls             	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD48774190>
-                    	__repr()    :<pytest_aux.primitives.ClsEmpty object at 0x000001AD48774190>
+attrCls             	ClsEmpty    :<pytest_aux.primitives.ClsEmpty object at 0x000001FBAB1D8650>
+attrClsCallable     	ClsCallable :<pytest_aux.primitives.ClsCallable object at 0x000001FBAB1D8690>
+attrClsGen          	ClsGen      :<pytest_aux.primitives.ClsGen object at 0x000001FBAB1D86D0>
+attrClsIterable     	ClsIterable :<pytest_aux.primitives.ClsIterable object at 0x000001FBAB1D8710>
+attrFuncGen         	generator   :<generator object FUNC_GEN at 0x000001FBAB197AC0>
 ----------METHODS__EXX------------------------------------------------------------------------------
 __getattribute__    	TypeError   :TypeError('expected 1 argument, got 0')
+attrFuncExx         	Exception   :Exception('CALLABLE_EXX')
 ==========================================================================================
 """
 ```

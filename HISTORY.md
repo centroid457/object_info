@@ -18,6 +18,13 @@
 ********************************************************************************
 ## NEWS
 
+0.2.13 (2024/07/05 11:51:43)
+------------------------------
+- [OInfo]:  
+	- fix print repr (only if not equal to str!)  
+	- add mro in head!  
+	- use extemded ClsFullTypes with gens+iterables  
+
 0.2.12 (2024/06/27 11:34:44)
 ------------------------------
 - [OInfo] fix print  
