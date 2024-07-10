@@ -9,7 +9,7 @@
 ![Commit/Count/y](https://img.shields.io/github/commit-activity/y/centroid457/object_info)
 ![Commit/Count/m](https://img.shields.io/github/commit-activity/m/centroid457/object_info)
 
-# object_info (current v0.2.13/![Ver/Pypi Latest](https://img.shields.io/pypi/v/object_info?label=pypi%20latest))
+# object_info (current v0.2.14/![Ver/Pypi Latest](https://img.shields.io/pypi/v/object_info?label=pypi%20latest))
 
 ## DESCRIPTION_SHORT
 print info about object (attributes+properties+methods results)
@@ -93,6 +93,7 @@ ObjectInfo(
 ----------OBJECTINFO.PRINT--------------------------------------------------------------------------
 str(SOURCE)=<__main__.ClsMain object at 0x000001FB9A4F6B50>
 repr(SOURCE)=<__main__.ClsMain object at 0x000001FB9A4F6B50>
+type(SOURCE)=<class '__main__.ClsMain'>
 mro(SOURCE)=['ClsMain', 'ClsFullTypes', 'object']
 ----------SETTINGS----------------------------------------------------------------------------------
 self.NAMES__USE_ONLY_PARTS=[]
@@ -269,6 +270,7 @@ ObjectInfo(
 ----------OBJECTINFO.PRINT--------------------------------------------------------------------------
 str(SOURCE)=<__main__.ClsMain object at 0x000001FBA9819F10>
 repr(SOURCE)=<__main__.ClsMain object at 0x000001FBA9819F10>
+type(SOURCE)=<class '__main__.ClsMain'>
 mro(SOURCE)=['ClsMain', 'ClsFullTypes', 'object']
 ----------SETTINGS----------------------------------------------------------------------------------
 self.NAMES__USE_ONLY_PARTS=['attr']

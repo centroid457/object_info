@@ -59,7 +59,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 2, 13)
+    VERSION: tuple[int, int, int] = (0, 2, 14)
     TODO: list[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -78,11 +78,7 @@ pass    # place debug point here
         "..."
     ]
     NEWS: list[str] = [
-        ["[OInfo]",
-            "fix print repr (only if not equal to str!)",
-            "add mro in head!",
-            "use extemded ClsFullTypes with gens+iterables",
-         ]
+        "[OInfo.print] add type() in head",
     ]
 
     # FINALIZE -----------------------------------------------

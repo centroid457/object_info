@@ -23,6 +23,7 @@ ObjectInfo(
 ----------OBJECTINFO.PRINT--------------------------------------------------------------------------
 str(SOURCE)=<__main__.ClsMain object at 0x000001FB9A4F6B50>
 repr(SOURCE)=<__main__.ClsMain object at 0x000001FB9A4F6B50>
+type(SOURCE)=<class '__main__.ClsMain'>
 mro(SOURCE)=['ClsMain', 'ClsFullTypes', 'object']
 ----------SETTINGS----------------------------------------------------------------------------------
 self.NAMES__USE_ONLY_PARTS=[]
@@ -199,6 +200,7 @@ ObjectInfo(
 ----------OBJECTINFO.PRINT--------------------------------------------------------------------------
 str(SOURCE)=<__main__.ClsMain object at 0x000001FBA9819F10>
 repr(SOURCE)=<__main__.ClsMain object at 0x000001FBA9819F10>
+type(SOURCE)=<class '__main__.ClsMain'>
 mro(SOURCE)=['ClsMain', 'ClsFullTypes', 'object']
 ----------SETTINGS----------------------------------------------------------------------------------
 self.NAMES__USE_ONLY_PARTS=['attr']

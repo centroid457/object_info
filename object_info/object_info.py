@@ -290,6 +290,7 @@ class ObjectInfo:
 
         print(f"str(SOURCE)={str(self.SOURCE)}")
         print(f"repr(SOURCE)={repr(self.SOURCE)}")
+        print(f"type(SOURCE)={type(self.SOURCE)}")
 
         try:
             mro = self.SOURCE.__class__.__mro__
