@@ -60,21 +60,21 @@ class Test__1:
             (None, True),
             (True, True),
             (False, True),
-            (0, True),
-            (111, True),
-            (111.222, True),
-            ("str", True),
-            (b"bytes", True),
+            (0, False),
+            (111, False),
+            (111.222, False),
+            ("str", False),
+            (b"bytes", False),
 
-            (((111, ),), True),
-            (([111, ],), True),
-            (({111, },), True),
-            (({111: 222, },), True),
+            (((111, ),), False),
+            (([111, ],), False),
+            (({111, },), False),
+            (({111: 222, },), False),
 
             (int, False),
-            (int(1), True),
+            (int(1), False),
             (str, False),
-            (str(1), True),
+            (str(1), False),
 
             (Exception, False),
             (Exception(), False),
@@ -84,7 +84,7 @@ class Test__1:
             (Cls, False),
             (Cls(), False),
             (ClsInt, False),
-            (ClsInt(), True),    # int() == 0!!!
+            (ClsInt(), False),    # int() == 0!!!
 
             (FUNC, False),
             (LAMBDA, False),
