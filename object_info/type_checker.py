@@ -22,21 +22,37 @@ class TypeChecker:
 
     # -----------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def check__elementary(source) -> bool:
+    def check__bool_none(source: Any) -> bool:
+        """
+        GOAL
+        ----
+        help in case of
+            assert 0 == False
+            assert 1 == True
+            assert 2 == False   # unclear!!!
+
+        CREATED SPECIALLY FOR
+        ---------------------
+        funcs_aux.Valid.compare_doublesided
+        """
+        return isinstance(source, (bool, type(None)))
+
+    @staticmethod
+    def check__elementary(source: Any) -> bool:
         if callable(source):
             return False
         return isinstance(source, TypeChecker.TYPES__ELEMENTARY)
 
     @staticmethod
-    def check__elementary_single(source) -> bool:
+    def check__elementary_single(source: Any) -> bool:
         return isinstance(source, TypeChecker.TYPES__ELEMENTARY_SINGLE)
 
     @staticmethod
-    def check__elementary_collection(source) -> bool:
+    def check__elementary_collection(source: Any) -> bool:
         return isinstance(source, TypeChecker.TYPES__ELEMENTARY_COLLECTION)
 
     @staticmethod
-    def check__elementary_collection_not_dict(source) -> bool:
+    def check__elementary_collection_not_dict(source: Any) -> bool:
         return isinstance(source, TypeChecker.TYPES__ELEMENTARY_COLLECTION) and not isinstance(source, dict)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -69,7 +85,7 @@ class TypeChecker:
         return False
 
     @staticmethod
-    def check__iterable_not_str(source):
+    def check__iterable_not_str(source: Any) -> bool:
         """checks if SOURCE is iterable, but not exactly str!!!"""
         return TypeChecker.check__iterable(source, str_and_bytes_as_iterable=False)
 
@@ -109,7 +125,7 @@ class TypeChecker:
         return TypeChecker.check__instance(source) and not TypeChecker.check__elementary(source)
 
     @staticmethod
-    def check__exception(source) -> bool:
+    def check__exception(source: Any) -> bool:
         """
         any of both variant (Instance/Class) of any Exception!
         """

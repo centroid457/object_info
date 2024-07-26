@@ -1,24 +1,12 @@
 from typing import *
-import pathlib
-
 import pytest
 from pytest import mark
 from pytest_aux import *
-
 from object_info import *
 
 
 # =====================================================================================================================
 values_elementary_single = [None, True, False, 0, 11, 11.22]
-
-
-class Cls:
-    attr = None
-
-    def meth(self):
-        pass
-
-
 CLASSES__AS_FUNC: list = [ClsInt, ClsStr, ClsList, ClsSet, ClsDict, ]   # actually this is keep all buildIn
 
 
@@ -65,7 +53,7 @@ class Test__1:
         victim = self.Victim.check__name_is_build_in
         pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
 
-    # -----------------------------------------------------------------------------------------------------------------
+    # =================================================================================================================
     @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
         argvalues=[
@@ -100,10 +88,60 @@ class Test__1:
 
             (FUNC, False),
             (LAMBDA, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, True),
-            (Cls().attr, True),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), True),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, True),
+            (ClsFullTypes().attrNone, True),
+
+            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__bool_none(self, args, _EXPECTED):
+        victim = self.Victim.check__bool_none
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (None, True),
+            (True, True),
+            (False, True),
+            (0, True),
+            (111, True),
+            (111.222, True),
+            ("str", True),
+            (b"bytes", True),
+
+            (((111, ),), True),
+            (([111, ],), True),
+            (({111, },), True),
+            (({111: 222, },), True),
+
+            (int, False),
+            (int(1), True),
+            (str, False),
+            (str(1), True),
+
+            (Exception, False),
+            (Exception(), False),
+            (Exx, False),
+            (Exx(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, False),
+            (ClsInt(), True),    # int() == 0!!!
+
+            (FUNC, False),
+            (LAMBDA, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), True),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, True),
+            (ClsFullTypes().attrNone, True),
 
             *[(class_i, False) for class_i in CLASSES__AS_FUNC]
         ]
@@ -146,10 +184,13 @@ class Test__1:
 
             (FUNC, False),
             (LAMBDA, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, True),
-            (Cls().attr, True),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), True),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, True),
+            (ClsFullTypes().attrNone, True),
 
             *[(class_i, False) for class_i in CLASSES__AS_FUNC]
         ]
@@ -192,10 +233,13 @@ class Test__1:
 
             (FUNC, False),
             (LAMBDA, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, False),
-            (Cls().attr, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
 
             *[(class_i, False) for class_i in CLASSES__AS_FUNC]
         ]
@@ -238,10 +282,13 @@ class Test__1:
 
             (FUNC, False),
             (LAMBDA, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, False),
-            (Cls().attr, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
 
             *[(class_i, False) for class_i in CLASSES__AS_FUNC]
         ]
@@ -294,10 +341,13 @@ class Test__1:
 
             (FUNC, False),
             (LAMBDA, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, False),
-            (Cls().attr, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
 
             # *[(class_i, False) for class_i in CLASSES__AS_FUNC]
         ]
@@ -340,10 +390,13 @@ class Test__1:
 
             (FUNC, False),
             (LAMBDA, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, False),
-            (Cls().attr, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
 
             # *[(class_i, False) for class_i in CLASSES__AS_FUNC]
         ]
@@ -387,10 +440,13 @@ class Test__1:
 
             (FUNC, True),
             (LAMBDA, True),
-            (Cls.meth, True),
-            (Cls().meth, True),
-            (Cls.attr, False),
-            (Cls().attr, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), True),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, True),
+            (ClsCall().meth, True),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
 
             *[(class_i, True) for class_i in CLASSES__AS_FUNC]
         ]
@@ -434,10 +490,13 @@ class Test__1:
 
             (FUNC, False),
             (LAMBDA, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, False),
-            (Cls().attr, False),
+            (ClsCallNone, True),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
 
             *[(class_i, True) for class_i in CLASSES__AS_FUNC]
         ]
@@ -480,10 +539,13 @@ class Test__1:
 
             (FUNC, False),
             (LAMBDA, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, True),
-            (Cls().attr, True),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),     # CAREFUL!!!! not clear!!!
+            (ClsCallNone()(), True),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, True),
+            (ClsFullTypes().attrNone, True),
 
             *[(class_i, False) for class_i in CLASSES__AS_FUNC]
         ]
@@ -526,10 +588,13 @@ class Test__1:
 
             (FUNC, False),
             (LAMBDA, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, False),
-            (Cls().attr, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),     # CAREFUL!!!! not clear!!!
+            (ClsCallNone()(), False),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
 
             *[(class_i, False) for class_i in CLASSES__AS_FUNC]
         ]
@@ -573,10 +638,13 @@ class Test__1:
 
             (FUNC, False),
             (LAMBDA, False),
-            (Cls.meth, False),
-            (Cls().meth, False),
-            (Cls.attr, False),
-            (Cls().attr, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
 
             *[(class_i, False) for class_i in CLASSES__AS_FUNC]
         ]
@@ -585,7 +653,7 @@ class Test__1:
         victim = self.Victim.check__exception
         pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
 
-    # -----------------------------------------------------------------------------------------------------------------
+    # =================================================================================================================
     @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
         argvalues=[

@@ -8,23 +8,17 @@
 from .object_info import (
     # BASE
     ObjectInfo,
-
     # AUX
     ItemInternal,
     ObjectState,
-
     # TYPES
-
     # EXX
 )
 from .type_checker import (
     # BASE
     TypeChecker,
-
     # AUX
-
     # TYPES
-
     # EXX
 )
 
