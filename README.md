@@ -9,7 +9,7 @@
 ![Commit/Count/y](https://img.shields.io/github/commit-activity/y/centroid457/object_info)
 ![Commit/Count/m](https://img.shields.io/github/commit-activity/m/centroid457/object_info)
 
-# object_info (current v0.2.15/![Ver/Pypi Latest](https://img.shields.io/pypi/v/object_info?label=pypi%20latest))
+# object_info (current v0.2.16/![Ver/Pypi Latest](https://img.shields.io/pypi/v/object_info?label=pypi%20latest))
 
 ## DESCRIPTION_SHORT
 print info about object (attributes+properties+methods results)

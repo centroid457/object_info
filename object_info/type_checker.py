@@ -107,13 +107,10 @@ class TypeChecker:
         creates specially for detect all funcs like func/meth/or even DescriptedClasses (it is class but actually used like func!)
         recommended using instead of just Callable! cause Callable keeps additionally every class instead of just simple func/method!
         """
-        result = (
-                (not TypeChecker.check__class(source) and callable(source))
-                # or
-                # source in TypeChecker.TYPES__ELEMENTARY
-                or
-                (TypeChecker.check__class(source) and issubclass(source, TypeChecker.TYPES__ELEMENTARY))
-        )
+        if TypeChecker.check__class(source):
+            result = issubclass(source, TypeChecker.TYPES__ELEMENTARY)
+        else:
+            result = callable(source)
         return result
 
     @staticmethod

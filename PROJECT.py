@@ -79,7 +79,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 2, 15)
+    VERSION: tuple[int, int, int] = (0, 2, 16)
     TODO: list[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -98,7 +98,7 @@ pass    # place debug point here
         "..."
     ]
     NEWS: list[str] = [
-        "[TypeChecker] add check__bool_none",
+        "[TypeChecker] fix check__func_or_meth",
     ]
 
 
