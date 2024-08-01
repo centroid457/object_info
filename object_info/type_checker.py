@@ -48,6 +48,22 @@ class TypeChecker:
         return isinstance(source, TypeChecker.TYPES__ELEMENTARY_SINGLE)
 
     @staticmethod
+    def check__elementary_single_not_none(source: Any) -> bool:
+        """
+        its just an Idea!!!
+
+        GOAL
+        ----
+        prepare to work with ensure_collection
+        None assumed as not Passed value! so we can ensure to return None -> ()
+
+        SPECIALLY CREATED FOR
+        ---------------------
+        ensure_collection somewhere!
+        """
+        return TypeChecker.check__elementary_single(source) and source is not None
+
+    @staticmethod
     def check__elementary_collection(source: Any) -> bool:
         return isinstance(source, TypeChecker.TYPES__ELEMENTARY_COLLECTION)
 
@@ -86,7 +102,15 @@ class TypeChecker:
 
     @staticmethod
     def check__iterable_not_str(source: Any) -> bool:
-        """checks if SOURCE is iterable, but not exactly str!!!"""
+        """
+        GOAL
+        ----
+        checks if SOURCE is iterable, but not exactly str!!!
+
+        NOTE
+        ----
+        DONT USE FOR ensure_collection! instead prefer check__elementary_single
+        """
         return TypeChecker.check__iterable(source, str_and_bytes_as_iterable=False)
 
     # CLASSES ---------------------------------------------------------------------------------------------------------

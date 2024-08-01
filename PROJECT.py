@@ -98,7 +98,7 @@ pass    # place debug point here
         "..."
     ]
     NEWS: list[str] = [
-        "[TypeChecker] fix check__func_or_meth",
+        "[TypeChecker] add check__elementary_single_not_none",
     ]
 
 

@@ -203,6 +203,55 @@ class Test__1:
         argnames="args, _EXPECTED",
         argvalues=[
             (None, False),
+            (True, True),
+            (False, True),
+            (0, True),
+            (111, True),
+            (111.222, True),
+            ("str", True),
+            (b"bytes", True),
+
+            (((111, ),), False),
+            (([111, ],), False),
+            (({111, },), False),
+            (({111: 222, },), False),
+
+            (int, False),
+            (int(1), True),
+            (str, False),
+            (str(1), True),
+
+            (Exception, False),
+            (Exception(), False),
+            (Exx, False),
+            (Exx(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, False),
+            (ClsInt(), True),    # int() == 0!!!
+
+            (FUNC, False),
+            (LAMBDA, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
+
+            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__elementary_single_not_none(self, args, _EXPECTED):
+        victim = self.Victim.check__elementary_single_not_none
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (None, False),
             (True, False),
             (False, False),
             (0, False),
