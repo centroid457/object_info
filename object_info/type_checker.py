@@ -65,6 +65,12 @@ class TypeChecker:
 
     @staticmethod
     def check__elementary_collection(source: Any) -> bool:
+        """
+        GOAL
+        ----
+        MOST PREFERRED to use for ensure_collection! and apply for Args!
+        all other objects (ClsInst) will covered by brackets!
+        """
         return isinstance(source, TypeChecker.TYPES__ELEMENTARY_COLLECTION)
 
     @staticmethod
@@ -106,10 +112,6 @@ class TypeChecker:
         GOAL
         ----
         checks if SOURCE is iterable, but not exactly str!!!
-
-        NOTE
-        ----
-        DONT USE FOR ensure_collection! instead prefer check__elementary_single
         """
         return TypeChecker.check__iterable(source, str_and_bytes_as_iterable=False)
 
