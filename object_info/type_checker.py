@@ -2,6 +2,15 @@ from typing import *
 
 
 # =====================================================================================================================
+LAMBDA_TRUE = lambda *args, **kwargs: True
+
+
+class Cls:
+    def meth(self):
+        pass
+
+
+# =====================================================================================================================
 @final
 class TypeChecker:
     TYPES__ELEMENTARY_SINGLE: tuple = (
@@ -115,7 +124,71 @@ class TypeChecker:
         """
         return TypeChecker.check__iterable(source, str_and_bytes_as_iterable=False)
 
-    # CLASSES ---------------------------------------------------------------------------------------------------------
+    # CALLABLE --------------------------------------------------------------------------------------------------------
+    @staticmethod
+    def check__callable_func_meth_inst(source: Any) -> bool:
+        """
+        GOAL
+        ----
+        just any callable but NO CLASS!!!
+
+
+        creates specially for detect all funcs like func/meth/or even DescriptedClasses (it is class but actually used like func!)
+        recommended using instead of just Callable! cause Callable keeps additionally every class instead of just simple func/method!
+        """
+        if TypeChecker.check__class(source):
+            result = issubclass(source, TypeChecker.TYPES__ELEMENTARY)
+        else:
+            result = callable(source)
+        return result
+
+    @staticmethod
+    def check__callable_func_meth(source: Any) -> bool:
+        return TypeChecker.check__callable_func(source) or TypeChecker.check__callable_meth(source)
+
+    @staticmethod
+    def check__callable_func(source: Any) -> bool:
+        """
+        if only the exact generic function! no class method!
+        Lambda included!
+        Classmethod included!
+
+        CREATED SPECIALLY FOR
+        ---------------------
+        not special! just as ones found ability to!
+        """
+        if TypeChecker.check__class(source) and issubclass(source, TypeChecker.TYPES__ELEMENTARY):
+            result = True
+        else:
+            result = type(LAMBDA_TRUE) in source.__class__.__mro__
+        return result
+
+    @staticmethod
+    def check__callable_meth(source: Any) -> bool:
+        """
+        if only the exact instance method!
+        no generic funcs!
+        no CALLABLE INSTANCE!
+        no callable classes!
+
+        CREATED SPECIALLY FOR
+        ---------------------
+        not special! just as ones found ability to!
+        """
+        result = not TypeChecker.check__class(source) and type(Cls().meth) in source.__class__.__mro__
+        return result
+
+    @staticmethod
+    def check__callable_inst(source: Any) -> bool:
+        """
+        CREATED SPECIALLY FOR
+        ---------------------
+        not special! just as ones found ability to!
+        """
+        result = TypeChecker.check__instance(source) and hasattr(source, "__call__")
+        return result
+
+    # CLS/INST --------------------------------------------------------------------------------------------------------
     @staticmethod
     def check__class(source: Any) -> bool:
         """
@@ -128,20 +201,8 @@ class TypeChecker:
             return False
 
     @staticmethod
-    def check__func_or_meth(source: Any) -> bool:
-        """
-        creates specially for detect all funcs like func/meth/or even DescriptedClasses (it is class but actually used like func!)
-        recommended using instead of just Callable! cause Callable keeps additionally every class instead of just simple func/method!
-        """
-        if TypeChecker.check__class(source):
-            result = issubclass(source, TypeChecker.TYPES__ELEMENTARY)
-        else:
-            result = callable(source)
-        return result
-
-    @staticmethod
     def check__instance(source: Any) -> bool:
-        return not TypeChecker.check__class(source) and not TypeChecker.check__func_or_meth(source)
+        return not TypeChecker.check__class(source) and not TypeChecker.check__callable_func(source) and not TypeChecker.check__callable_meth(source)
 
     @staticmethod
     def check__instance_not_elementary(source: Any) -> bool:

@@ -450,11 +450,11 @@ class Test__1:
             # *[(class_i, False) for class_i in CLASSES__AS_FUNC]
         ]
     )
-    def test__iterable_but_not_str(self, args, _EXPECTED):
+    def test__iterable_not_str(self, args, _EXPECTED):
         victim = self.Victim.check__iterable_not_str
         pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
 
-    # -----------------------------------------------------------------------------------------------------------------
+    # CALLABLE --------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
         argvalues=[
@@ -500,8 +500,204 @@ class Test__1:
             *[(class_i, True) for class_i in CLASSES__AS_FUNC]
         ]
     )
-    def test__check__func_or_meth(self, args, _EXPECTED):
-        victim = self.Victim.check__func_or_meth
+    def test__check__callable_func_meth_inst(self, args, _EXPECTED):
+        victim = self.Victim.check__callable_func_meth_inst
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (None, False),
+            (True, False),
+            (False, False),
+            (0, False),
+            (111, False),
+            (111.222, False),
+            ("str", False),
+            (b"bytes", False),
+
+            (((111, ),), False),
+            (([111, ],), False),
+            (({111, },), False),
+            (({111: 222, },), False),
+
+            (int, True),
+            (int(1), False),
+            (str, True),
+            (str(1), False),
+
+            (Exception, False),
+            (Exception(), False),
+            (Exx, False),
+            (Exx(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, True),
+            (ClsInt(), False),    # int() == 0!!!
+
+            (FUNC, True),
+            (LAMBDA, True),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, True),
+            (ClsCall().meth, True),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
+
+            *[(class_i, True) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__callable_func_meth(self, args, _EXPECTED):
+        victim = self.Victim.check__callable_func_meth
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (None, False),
+            (True, False),
+            (False, False),
+            (0, False),
+            (111, False),
+            (111.222, False),
+            ("str", False),
+            (b"bytes", False),
+
+            (((111, ),), False),
+            (([111, ],), False),
+            (({111, },), False),
+            (({111: 222, },), False),
+
+            (int, True),
+            (int(1), False),
+            (str, True),
+            (str(1), False),
+
+            (Exception, False),
+            (Exception(), False),
+            (Exx, False),
+            (Exx(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, True),
+            (ClsInt(), False),    # int() == 0!!!
+
+            (FUNC, True),
+            (LAMBDA, True),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, True),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
+
+            *[(class_i, True) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__callable_func(self, args, _EXPECTED):
+        victim = self.Victim.check__callable_func
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (None, False),
+            (True, False),
+            (False, False),
+            (0, False),
+            (111, False),
+            (111.222, False),
+            ("str", False),
+            (b"bytes", False),
+
+            (((111, ),), False),
+            (([111, ],), False),
+            (({111, },), False),
+            (({111: 222, },), False),
+
+            (int, False),
+            (int(1), False),
+            (str, False),
+            (str(1), False),
+
+            (Exception, False),
+            (Exception(), False),
+            (Exx, False),
+            (Exx(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, False),
+            (ClsInt(), False),    # int() == 0!!!
+
+            (FUNC, False),
+            (LAMBDA, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, False),
+            (ClsCall().meth, True),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
+
+            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__callable_meth(self, args, _EXPECTED):
+        victim = self.Victim.check__callable_meth
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (None, False),
+            (True, False),
+            (False, False),
+            (0, False),
+            (111, False),
+            (111.222, False),
+            ("str", False),
+            (b"bytes", False),
+
+            (((111, ),), False),
+            (([111, ],), False),
+            (({111, },), False),
+            (({111: 222, },), False),
+
+            (int, False),
+            (int(1), False),
+            (str, False),
+            (str(1), False),
+
+            (Exception, False),
+            (Exception(), False),
+            (Exx, False),
+            (Exx(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, False),
+            (ClsInt(), False),    # int() == 0!!!
+
+            (FUNC, False),
+            (LAMBDA, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), True),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
+
+            *[(class_i, False) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__callable_inst(self, args, _EXPECTED):
+        victim = self.Victim.check__callable_inst
         pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -589,7 +785,7 @@ class Test__1:
             (FUNC, False),
             (LAMBDA, False),
             (ClsCallNone, False),
-            (ClsCallNone(), False),     # CAREFUL!!!! not clear!!!
+            (ClsCallNone(), True),
             (ClsCallNone()(), True),
             (ClsCall.meth, False),
             (ClsCall().meth, False),
@@ -638,7 +834,7 @@ class Test__1:
             (FUNC, False),
             (LAMBDA, False),
             (ClsCallNone, False),
-            (ClsCallNone(), False),     # CAREFUL!!!! not clear!!!
+            (ClsCallNone(), True),
             (ClsCallNone()(), False),
             (ClsCall.meth, False),
             (ClsCall().meth, False),
