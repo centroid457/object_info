@@ -79,7 +79,7 @@ pass    # place debug point here
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 2, 18)
+    VERSION: tuple[int, int, int] = (0, 2, 19)
     TODO: list[str] = [
         "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
         [
@@ -92,14 +92,11 @@ pass    # place debug point here
         "merge items Property/Meth? - cause it does not matter callable or not (just add type info block)",
 
         "add check__instance_of_user_class",
-
     ]
     FIXME: list[str] = [
         "..."
     ]
     NEWS: list[str] = [
-
-
         "[TypeChecker] add check__callable_cls_as_func_builtin",
     ]
 

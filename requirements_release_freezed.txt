@@ -33,7 +33,7 @@ more-itertools==10.3.0
 multidict==6.0.5
 nh3==0.2.18
 numpy==2.0.1
-object_info==0.2.17
+object_info==0.2.18
 packaging==24.1
 pkginfo==1.10.0
 pluggy==1.5.0
@@ -48,7 +48,7 @@ PyQt5_sip==12.15.0
 pyqt_templates==0.1.0
 pyserial==3.5
 pytest==8.3.2
-pytest_aux==0.1.10
+pytest_aux==0.1.11
 pywin32-ctypes==0.2.2
 PyYAML==6.0.1
 readme_renderer==44.0
