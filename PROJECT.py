@@ -100,7 +100,7 @@ pass    # place debug point here
     NEWS: list[str] = [
 
 
-        "[TypeChecker] add check__callable_cls_as_func_buildin",
+        "[TypeChecker] add check__callable_cls_as_func_builtin",
     ]
 
 

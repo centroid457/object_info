@@ -157,7 +157,7 @@ class TypeChecker:
         ---------------------
         not special! just as ones found ability to!
         """
-        if TypeChecker.check__callable_cls_as_func_buildin(source):
+        if TypeChecker.check__callable_cls_as_func_builtin(source):
             result = True
         else:
             result = type(LAMBDA_TRUE) in source.__class__.__mro__
@@ -189,7 +189,7 @@ class TypeChecker:
         return result
 
     @staticmethod
-    def check__callable_cls_as_func_buildin(source: Any) -> bool:
+    def check__callable_cls_as_func_builtin(source: Any) -> bool:
         """
         if class and class is as func like int/str/*  or nested
         """

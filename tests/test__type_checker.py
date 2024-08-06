@@ -700,6 +700,55 @@ class Test__1:
         victim = self.Victim.check__callable_inst
         pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
 
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (None, False),
+            (True, False),
+            (False, False),
+            (0, False),
+            (111, False),
+            (111.222, False),
+            ("str", False),
+            (b"bytes", False),
+
+            (((111, ),), False),
+            (([111, ],), False),
+            (({111, },), False),
+            (({111: 222, },), False),
+
+            (int, True),
+            (int(1), False),
+            (str, True),
+            (str(1), False),
+
+            (Exception, False),
+            (Exception(), False),
+            (Exx, False),
+            (Exx(), False),
+
+            (Cls, False),
+            (Cls(), False),
+            (ClsInt, True),
+            (ClsInt(), False),    # int() == 0!!!
+
+            (FUNC, False),
+            (LAMBDA, False),
+            (ClsCallNone, False),
+            (ClsCallNone(), False),
+            (ClsCallNone()(), False),
+            (ClsCall.meth, False),
+            (ClsCall().meth, False),
+            (ClsFullTypes.attrNone, False),
+            (ClsFullTypes().attrNone, False),
+
+            *[(class_i, True) for class_i in CLASSES__AS_FUNC]
+        ]
+    )
+    def test__check__callable_cls_as_func_builtin(self, args, _EXPECTED):
+        victim = self.Victim.check__callable_cls_as_func_builtin
+        pytest_func_tester__no_kwargs(victim, args, _EXPECTED)
+
     # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
