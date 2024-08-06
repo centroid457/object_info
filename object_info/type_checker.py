@@ -157,7 +157,7 @@ class TypeChecker:
         ---------------------
         not special! just as ones found ability to!
         """
-        if TypeChecker.check__class(source) and issubclass(source, TypeChecker.TYPES__ELEMENTARY):
+        if TypeChecker.check__callable_cls_as_func_buildin(source):
             result = True
         else:
             result = type(LAMBDA_TRUE) in source.__class__.__mro__
@@ -187,6 +187,13 @@ class TypeChecker:
         """
         result = TypeChecker.check__instance(source) and hasattr(source, "__call__")
         return result
+
+    @staticmethod
+    def check__callable_cls_as_func_buildin(source: Any) -> bool:
+        """
+        if class and class is as func like int/str/*  or nested
+        """
+        return TypeChecker.check__class(source) and issubclass(source, TypeChecker.TYPES__ELEMENTARY)
 
     # CLS/INST --------------------------------------------------------------------------------------------------------
     @staticmethod

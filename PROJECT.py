@@ -98,7 +98,9 @@ pass    # place debug point here
         "..."
     ]
     NEWS: list[str] = [
-        "[TypeChecker] extend and fix all check__callable_func_meth_inst*",
+
+
+        "[TypeChecker] add check__callable_cls_as_func_buildin",
     ]
 
 
