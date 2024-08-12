@@ -19,6 +19,9 @@ from .type_checker import (
     TypeChecker,
     # AUX
     # TYPES
+    TYPE__NONE,
+    TYPE__FUNCTION,
+    TYPE__METHOD,
     # EXX
 )
 
