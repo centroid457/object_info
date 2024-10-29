@@ -81,17 +81,7 @@ pass    # place debug point here
     # HISTORY -----------------------------------------------
     VERSION: tuple[int, int, int] = (0, 2, 20)
     TODO: list[str] = [
-        "add TIMEOUT (use start in thread!) for print! use timeout for GETATTR!!!",
-        [
-            "realise PRINT_DIFFS=CHANGE_state/COMPARE_objects (one from different states like thread before and after start)!",
-            "this is about to save object STATE!",
-            "add parameter show only diffs or show all",
-            "add TESTS after this step!",
-        ],
-        "apply asyncio.run for coroutine?",
-        "merge items Property/Meth? - cause it does not matter callable or not (just add type info block)",
 
-        "add check__instance_of_user_class",
     ]
     FIXME: list[str] = [
         "..."
